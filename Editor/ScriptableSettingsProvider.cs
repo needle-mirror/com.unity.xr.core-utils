@@ -73,7 +73,7 @@ namespace Unity.XR.CoreUtils.Editor
         {
             if (typeof(EditorScriptableSettings<T>).IsAssignableFrom(typeof(T)))
             {
-                m_Target = EditorScriptableSettings<T>.instance;
+                m_Target = EditorScriptableSettings<T>.Instance;
                 return new SerializedObject(m_Target);
             }
 

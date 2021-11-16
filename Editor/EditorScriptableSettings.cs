@@ -19,7 +19,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <summary>
         /// Retrieves a reference to the given settings class. Will load and initialize once, and cache for all future access.
         /// </summary>
-        public static T instance
+        public static T Instance
         {
             get
             {

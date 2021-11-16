@@ -7,6 +7,7 @@ namespace Unity.XR.CoreUtils
     /// Behavior that fires a callback when it is destroyed
     /// </summary>
     [ExecuteInEditMode]
+    [HelpURL("https://docs.unity3d.com/Packages/com.unity.xr.core-utils@2.0/api/Unity.XR.CoreUtils.OnDestroyNotifier.html")]
     public class OnDestroyNotifier : MonoBehaviour
     {
         /// <summary>

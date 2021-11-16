@@ -40,9 +40,9 @@ namespace Unity.XR.CoreUtils
         static readonly string[] k_InvalidStrings = { "\\.", "/.", ".\\", "./" };
 
         /// <summary>
-        /// Looks up the static 'instance' property of the given ScriptableSettings
+        /// Looks up the static 'Instance' property of the given ScriptableSettings
         /// </summary>
-        /// <param name="settingsType">The type that refers to a singleton class, which implements an 'instance' property</param>
+        /// <param name="settingsType">The type that refers to a singleton class, which implements an 'Instance' property</param>
         /// <returns>The actual singleton instance of the specified class</returns>
         public static ScriptableSettingsBase GetInstanceByType(Type settingsType)
         {

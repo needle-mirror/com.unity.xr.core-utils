@@ -4,28 +4,28 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Event arguments for the <see cref="XROrigin.trackablesParentTransformChanged"/> event.
+    /// Event arguments for the <see cref="XROrigin.TrackablesParentTransformChanged"/> event.
     /// </summary>
     public readonly struct ARTrackablesParentTransformChangedEventArgs : IEquatable<ARTrackablesParentTransformChangedEventArgs>
     {
         /// <summary>
-        /// (Read Only) The <see cref="XROrigin"/> whose <see cref="XROrigin.trackablesParent"/> has
+        /// (Read Only) The <see cref="XROrigin"/> whose <see cref="XROrigin.TrackablesParent"/> has
         /// changed.
         /// </summary>
-        public XROrigin origin { get; }
+        public XROrigin Origin { get; }
 
         /// <summary>
         /// (Read Only) The parent transform for all
         /// [ARTrackable](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest?subfolder=/api/UnityEngine.XR.ARFoundation.ARTrackable)s
         /// under a <see cref="XROrigin"/>.
         /// </summary>
-        public Transform trackablesParent { get; }
+        public Transform TrackablesParent { get; }
 
         /// <summary>
         /// Constructs an <see cref="ARTrackablesParentTransformChangedEventArgs"/>.
         /// </summary>
         /// <param name="origin">The <see cref="XROrigin"/> whose
-        ///     <see cref="XROrigin.trackablesParent"/> has changed.</param>
+        ///     <see cref="XROrigin.TrackablesParent"/> has changed.</param>
         /// <param name="trackablesParent">The parent transform for all
         ///     [ARTrackable](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest?subfolder=/api/UnityEngine.XR.ARFoundation.ARTrackable)s
         ///     under the <paramref name="origin"/>.</param>
@@ -39,8 +39,8 @@ namespace Unity.XR.CoreUtils
             if (trackablesParent == null)
                 throw new ArgumentNullException(nameof(trackablesParent));
 
-            this.origin = origin;
-            this.trackablesParent = trackablesParent;
+            this.Origin = origin;
+            this.TrackablesParent = trackablesParent;
         }
 
         /// <summary>
@@ -50,8 +50,8 @@ namespace Unity.XR.CoreUtils
         /// <returns>Returns `true` if each property in <paramref name="other"/> is equal (using `==`) to the
         ///     corresponding property in this one. Returns `false` otherwise.</returns>
         public bool Equals(ARTrackablesParentTransformChangedEventArgs other) =>
-            origin == other.origin &&
-            trackablesParent == other.trackablesParent;
+            Origin == other.Origin &&
+            TrackablesParent == other.TrackablesParent;
 
         /// <summary>
         /// Compares for equality.
@@ -69,8 +69,8 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <returns>Returns a hash code suitable for using in a `HashSet` or `Dictionary`.</returns>
         public override int GetHashCode() => HashCodeUtil.Combine(
-            HashCodeUtil.ReferenceHash(origin),
-            HashCodeUtil.ReferenceHash(trackablesParent));
+            HashCodeUtil.ReferenceHash(Origin),
+            HashCodeUtil.ReferenceHash(TrackablesParent));
 
         /// <summary>
         /// Compares for equality. Same as

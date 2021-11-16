@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 #if INCLUDE_INPUT_SYSTEM
 using UnityEngine.InputSystem.XR;
 #endif
@@ -17,6 +18,7 @@ namespace Unity.XR.CoreUtils
     /// It is also used for offsetting the camera.
     /// </summary>
     [DisallowMultipleComponent]
+    [HelpURL("https://docs.unity3d.com/Packages/com.unity.xr.core-utils@2.0/api/Unity.XR.CoreUtils.XROrigin.html")]
     public class XROrigin : MonoBehaviour
     {
         [SerializeField]
@@ -31,11 +33,7 @@ namespace Unity.XR.CoreUtils
         /// This is typically accomplished by adding a <c>TrackedPoseDriver</c> component to the
         /// <c>Camera</c>.
         /// </remarks>
-#if UNITY_EDITOR
-        public new Camera camera
-#else
-        public Camera camera
-#endif
+        public Camera Camera
         {
             get => m_Camera;
             set => m_Camera = value;
@@ -44,19 +42,19 @@ namespace Unity.XR.CoreUtils
         /// <summary>
         /// The parent <c>Transform</c> for all "trackables" (for example, planes and feature points).
         /// </summary>
-        public Transform trackablesParent { get; private set; }
+        public Transform TrackablesParent { get; private set; }
 
         /// <summary>
         /// Invoked during
         /// [Application.onBeforeRender](xref:UnityEngine.Application.onBeforeRender(UnityEngine.Events.UnityAction))
-        /// whenever the <see cref="trackablesParent"/> [transform](xref:UnityEngine.Transform) changes.
+        /// whenever the <see cref="TrackablesParent"/> [transform](xref:UnityEngine.Transform) changes.
         /// </summary>
-        public event Action<ARTrackablesParentTransformChangedEventArgs> trackablesParentTransformChanged;
+        public event Action<ARTrackablesParentTransformChangedEventArgs> TrackablesParentTransformChanged;
 
         /// <summary>
         /// Sets which Tracking Origin Mode to use when initializing the input device.
         /// </summary>
-        /// <seealso cref="requestedTrackingOriginMode"/>
+        /// <seealso cref="RequestedTrackingOriginMode"/>
         /// <seealso cref="TrackingOriginModeFlags"/>
         /// <seealso cref="XRInputSubsystem.TrySetTrackingOriginMode"/>
         public enum TrackingOriginMode
@@ -100,14 +98,14 @@ namespace Unity.XR.CoreUtils
         //This is the average seated height, which is 44 inches.
         const float k_DefaultCameraYOffset = 1.1176f;
 
-        [SerializeField]
+        [SerializeField, FormerlySerializedAs("m_RigBaseGameObject")]
         GameObject m_OriginBaseGameObject;
 
         /// <summary>
-        /// The "Rig" <see cref="GameObject"/> is used to refer to the base of the XR Rig, by default it is this <see cref="GameObject"/>.
+        /// The "Origin" <see cref="GameObject"/> is used to refer to the base of the XR Origin, by default it is this <see cref="GameObject"/>.
         /// This is the <see cref="GameObject"/> that will be manipulated via locomotion.
         /// </summary>
-        public GameObject origin
+        public GameObject Origin
         {
             get => m_OriginBaseGameObject;
             set => m_OriginBaseGameObject = value;
@@ -120,7 +118,7 @@ namespace Unity.XR.CoreUtils
         /// The <see cref="GameObject"/> to move to desired height off the floor (defaults to this object if none provided).
         /// This is used to transform the XR device from camera space to XR Origin space.
         /// </summary>
-        public GameObject cameraFloorOffsetObject
+        public GameObject CameraFloorOffsetObject
         {
             get => m_CameraFloorOffsetObject;
             set
@@ -134,11 +132,11 @@ namespace Unity.XR.CoreUtils
         TrackingOriginMode m_RequestedTrackingOriginMode = TrackingOriginMode.NotSpecified;
 
         /// <summary>
-        /// The type of tracking origin to use for this Rig. Tracking origins identify where (0, 0, 0) is in the world
+        /// The type of tracking origin to use for this XROrigin. Tracking origins identify where (0, 0, 0) is in the world
         /// of tracking. Not all devices support all tracking origin modes.
         /// </summary>
         /// <seealso cref="TrackingOriginMode"/>
-        public TrackingOriginMode requestedTrackingOriginMode
+        public TrackingOriginMode RequestedTrackingOriginMode
         {
             get => m_RequestedTrackingOriginMode;
             set
@@ -153,9 +151,9 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Camera height to be used when in <c>Device</c> Tracking Origin Mode to define the height of the user from the floor.
-        /// This is the amount that the camera is offset from the floor when moving the <see cref="cameraFloorOffsetObject"/>.
+        /// This is the amount that the camera is offset from the floor when moving the <see cref="CameraFloorOffsetObject"/>.
         /// </summary>
-        public float cameraYOffset
+        public float CameraYOffset
         {
             get => m_CameraYOffset;
             set
@@ -168,23 +166,23 @@ namespace Unity.XR.CoreUtils
         /// <summary>
         /// (Read Only) The Tracking Origin Mode of this XR Origin.
         /// </summary>
-        /// <seealso cref="requestedTrackingOriginMode"/>
-        public TrackingOriginModeFlags currentTrackingOriginMode { get; private set; }
+        /// <seealso cref="RequestedTrackingOriginMode"/>
+        public TrackingOriginModeFlags CurrentTrackingOriginMode { get; private set; }
 
         /// <summary>
-        /// (Read Only) The rig's local position in camera space.
+        /// (Read Only) The origin's local position in camera space.
         /// </summary>
-        public Vector3 originInCameraSpacePos => m_Camera.transform.InverseTransformPoint(m_OriginBaseGameObject.transform.position);
+        public Vector3 OriginInCameraSpacePos => m_Camera.transform.InverseTransformPoint(m_OriginBaseGameObject.transform.position);
 
         /// <summary>
         /// (Read Only) The camera's local position in origin space.
         /// </summary>
-        public Vector3 cameraInOriginSpacePos => m_Camera.transform.InverseTransformPoint(m_Camera.transform.position);
+        public Vector3 CameraInOriginSpacePos => m_OriginBaseGameObject.transform.InverseTransformPoint(m_Camera.transform.position);
 
         /// <summary>
-        /// (Read Only) The camera's height relative to the rig.
+        /// (Read Only) The camera's height relative to the origin.
         /// </summary>
-        public float cameraInOriginSpaceHeight => cameraInOriginSpacePos.y;
+        public float CameraInOriginSpaceHeight => CameraInOriginSpacePos.y;
 
         /// <summary>
         /// Used to cache the input subsystems without creating additional GC allocations.
@@ -198,14 +196,14 @@ namespace Unity.XR.CoreUtils
         //XRI Functions
 
         /// <summary>
-        /// Sets the height of the camera based on the current tracking origin mode by updating the <see cref="cameraFloorOffsetObject"/>.
+        /// Sets the height of the camera based on the current tracking origin mode by updating the <see cref="CameraFloorOffsetObject"/>.
         /// </summary>
         void MoveOffsetHeight()
         {
             if (!Application.isPlaying)
                 return;
 
-            switch (currentTrackingOriginMode)
+            switch (CurrentTrackingOriginMode)
             {
                 case TrackingOriginModeFlags.Floor:
                     MoveOffsetHeight(0f);
@@ -219,7 +217,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Sets the height of the camera to the given <paramref name="y"/> value by updating the <see cref="cameraFloorOffsetObject"/>.
+        /// Sets the height of the camera to the given <paramref name="y"/> value by updating the <see cref="CameraFloorOffsetObject"/>.
         /// </summary>
         /// <param name="y">The local y-position to set.</param>
         void MoveOffsetHeight(float y)
@@ -232,7 +230,7 @@ namespace Unity.XR.CoreUtils
                 offsetTransform.localPosition = desiredPosition;
             }
         }
-        
+
         /// <summary>
         /// Repeatedly attempt to initialize the camera.
         /// </summary>
@@ -285,7 +283,7 @@ namespace Unity.XR.CoreUtils
             switch (m_RequestedTrackingOriginMode)
             {
                 case TrackingOriginMode.NotSpecified:
-                    currentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
+                    CurrentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
                     break;
                 case TrackingOriginMode.Device:
                 case TrackingOriginMode.Floor:
@@ -305,9 +303,9 @@ namespace Unity.XR.CoreUtils
                     if ((supportedModes & equivalentFlagsMode) == 0)
                     {
                         m_RequestedTrackingOriginMode = TrackingOriginMode.NotSpecified;
-                        currentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
+                        CurrentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
                         Debug.LogWarning($"Attempting to set the tracking origin mode to {equivalentFlagsMode}, but that is not supported by the SDK." +
-                            $" Supported types: {supportedModes:F}. Using the current mode of {currentTrackingOriginMode} instead.", this);
+                            $" Supported types: {supportedModes:F}. Using the current mode of {CurrentTrackingOriginMode} instead.", this);
                     }
                     else
                     {
@@ -323,7 +321,7 @@ namespace Unity.XR.CoreUtils
             if (successful)
                 MoveOffsetHeight();
 
-            if (currentTrackingOriginMode == TrackingOriginModeFlags.Device || m_RequestedTrackingOriginMode == TrackingOriginMode.Device)
+            if (CurrentTrackingOriginMode == TrackingOriginModeFlags.Device || m_RequestedTrackingOriginMode == TrackingOriginMode.Device)
                 successful = inputSubsystem.TryRecenter();
 
             return successful;
@@ -343,13 +341,13 @@ namespace Unity.XR.CoreUtils
 
         void OnInputSubsystemTrackingOriginUpdated(XRInputSubsystem inputSubsystem)
         {
-            currentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
+            CurrentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
             MoveOffsetHeight();
         }
 
         /// <summary>
         /// Rotates the XR origin object around the camera object by the provided <paramref name="angleDegrees"/>.
-        /// This rotation only occurs around the rig's Up vector
+        /// This rotation only occurs around the origin's Up vector
         /// </summary>
         /// <param name="angleDegrees">The amount of rotation in degrees.</param>
         /// <returns>Returns <see langword="true"/> if the rotation is performed. Otherwise, returns <see langword="false"/>.</returns>
@@ -357,7 +355,7 @@ namespace Unity.XR.CoreUtils
         {
             return RotateAroundCameraPosition(m_OriginBaseGameObject.transform.up, angleDegrees);
         }
-        
+
         /// <summary>
         /// Rotates the XR origin object around the camera object's position in world space using the provided <paramref name="vector"/>
         /// as the rotation axis. The XR Origin object is rotated by the amount of degrees provided in <paramref name="angleDegrees"/>.
@@ -377,7 +375,7 @@ namespace Unity.XR.CoreUtils
 
             return true;
         }
-        
+
         /// <summary>
         /// This function will rotate the XR Origin object such that the XR Origin's up vector will match the provided vector.
         /// </summary>
@@ -408,7 +406,7 @@ namespace Unity.XR.CoreUtils
         /// <item>The up vector of the XR Origin object will match the provided <paramref name="destinationUp"/> vector (note that the camera's Up vector can not be manipulated)</item>
         /// </list>
         /// </summary>
-        /// <param name="destinationUp">The up vector that the rig's up vector will be matched to.</param>
+        /// <param name="destinationUp">The up vector that the origin's up vector will be matched to.</param>
         /// <param name="destinationForward">The forward vector that will be matched to the projection of the camera's forward vector on the plane with the normal <paramref name="destinationUp"/>.</param>
         /// <returns>Returns <see langword="true"/> if the rotation is performed. Otherwise, returns <see langword="false"/>.</returns>
         public bool MatchOriginUpCameraForward(Vector3 destinationUp, Vector3 destinationForward)
@@ -436,7 +434,7 @@ namespace Unity.XR.CoreUtils
         /// <item>The up vector of the XR Origin object will match the provided <paramref name="destinationUp"/> vector</item>
         /// </list>
         /// </summary>
-        /// <param name="destinationUp">The up vector that the rig's up vector will be matched to.</param>
+        /// <param name="destinationUp">The up vector that the origin's up vector will be matched to.</param>
         /// <param name="destinationForward">The forward vector that will be matched to the forward vector of the XR Origin object,
         /// which is the direction the player moves in Unity when walking forward in the physical world.</param>
         /// <returns>Returns <see langword="true"/> if the rotation is performed. Otherwise, returns <see langword="false"/>.</returns>
@@ -444,7 +442,7 @@ namespace Unity.XR.CoreUtils
         {
             if (m_OriginBaseGameObject != null && MatchOriginUp(destinationUp))
             {
-                // The angle that we want the XR Origin to rotate is the signed angle between the rig's forward and destinationForward, after the up vectors are matched.
+                // The angle that we want the XR Origin to rotate is the signed angle between the origin's forward and destinationForward, after the up vectors are matched.
                 var signedAngle = Vector3.SignedAngle(m_OriginBaseGameObject.transform.forward, destinationForward, destinationUp);
 
                 RotateAroundCameraPosition(destinationUp, signedAngle);
@@ -456,7 +454,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// This function moves the camera to the world location provided by desiredWorldLocation.
+        /// This function moves the camera to the world location provided by <paramref name="desiredWorldLocation"/>.
         /// It does this by moving the XR Origin object so that the camera's world location matches the desiredWorldLocation
         /// </summary>
         /// <param name="desiredWorldLocation">the position in world space that the camera should be moved to</param>
@@ -469,7 +467,7 @@ namespace Unity.XR.CoreUtils
             }
 
             var rot = Matrix4x4.Rotate(m_Camera.transform.rotation);
-            var delta = rot.MultiplyPoint3x4(originInCameraSpacePos);
+            var delta = rot.MultiplyPoint3x4(OriginInCameraSpacePos);
             m_OriginBaseGameObject.transform.position = delta + desiredWorldLocation;
 
             return true;
@@ -477,46 +475,50 @@ namespace Unity.XR.CoreUtils
 
         //Unity Callbacks
 
-        void Awake()
+        /// <summary>
+        /// See <see cref="MonoBehaviour"/>.
+        /// </summary>
+        protected void Awake()
         {
             if (m_CameraFloorOffsetObject == null)
             {
-                Debug.LogWarning("No Camera Floor Offset Object specified for XR Rig, using attached GameObject.", this);
+                Debug.LogWarning("No Camera Floor Offset Object specified for XR Origin, using attached GameObject.", this);
                 m_CameraFloorOffsetObject = gameObject;
             }
 
             if (m_Camera == null)
             {
-                if (Camera.main != null)
-                    m_Camera = Camera.main;
+                var mainCamera = Camera.main;
+                if (mainCamera != null)
+                    m_Camera = mainCamera;
                 else
-                    Debug.LogWarning("No Main Camera is found for XR Rig, please assign the Camera GameObject field manually.", this);
+                    Debug.LogWarning("No Main Camera is found for XR Origin, please assign the Camera field manually.", this);
             }
 
             // This will be the parent GameObject for any trackables (such as planes) for which
             // we want a corresponding GameObject.
-            trackablesParent = (new GameObject("Trackables")).transform;
-            trackablesParent.SetParent(transform, false);
-            trackablesParent.localPosition = Vector3.zero;
-            trackablesParent.localRotation = Quaternion.identity;
-            trackablesParent.localScale = Vector3.one;
+            TrackablesParent = (new GameObject("Trackables")).transform;
+            TrackablesParent.SetParent(transform, false);
+            TrackablesParent.localPosition = Vector3.zero;
+            TrackablesParent.localRotation = Quaternion.identity;
+            TrackablesParent.localScale = Vector3.one;
 
             if (m_Camera)
             {
 #if INCLUDE_INPUT_SYSTEM
-                var trackedPoseDriver = camera.GetComponent<TrackedPoseDriver>();
+                var trackedPoseDriver = m_Camera.GetComponent<TrackedPoseDriver>();
                 if (trackedPoseDriver == null)
                 {
                     Debug.LogWarning(
-                        $"Camera \"{camera.name}\" does not use a Tracked Pose Driver, " +
+                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver, " +
                         "so its transform will not be updated by an XR device.  In order for this to be " +
-                        "updated, please add a Tracked Pose Driver.");
+                        "updated, please add a Tracked Pose Driver.", this);
                 }
 #else
                     Debug.LogWarning(
-                        $"Camera \"{camera.name}\" does not use a Tracked Pose Driver and com.unity.inputsystem is not installed, " +
+                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver and com.unity.inputsystem is not installed, " +
                         "so its transform will not be updated by an XR device.  In order for this to be " +
-                        "updated, please install com.unity.inputsystem and add a Tracked Pose Driver.");
+                        "updated, please install com.unity.inputsystem and add a Tracked Pose Driver.", this);
 #endif
             }
         }
@@ -531,24 +533,30 @@ namespace Unity.XR.CoreUtils
                 : localOriginPose;
         }
 
-        void OnEnable() => Application.onBeforeRender += OnBeforeRender;
+        /// <summary>
+        /// See <see cref="MonoBehaviour"/>.
+        /// </summary>
+        protected void OnEnable() => Application.onBeforeRender += OnBeforeRender;
 
-        void OnDisable() => Application.onBeforeRender -= OnBeforeRender;
+        /// <summary>
+        /// See <see cref="MonoBehaviour"/>.
+        /// </summary>
+        protected void OnDisable() => Application.onBeforeRender -= OnBeforeRender;
 
         void OnBeforeRender()
         {
             if (m_Camera)
             {
                 var pose = GetCameraOriginPose();
-                trackablesParent.position = pose.position;
-                trackablesParent.rotation = pose.rotation;
+                TrackablesParent.position = pose.position;
+                TrackablesParent.rotation = pose.rotation;
             }
 
-            if (trackablesParent.hasChanged)
+            if (TrackablesParent.hasChanged)
             {
-                trackablesParentTransformChanged?.Invoke(
-                    new ARTrackablesParentTransformChangedEventArgs(this, trackablesParent));
-                 trackablesParent.hasChanged = false;
+                TrackablesParentTransformChanged?.Invoke(
+                    new ARTrackablesParentTransformChangedEventArgs(this, TrackablesParent));
+                 TrackablesParent.hasChanged = false;
             }
         }
 
