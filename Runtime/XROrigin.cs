@@ -9,6 +9,9 @@ using UnityEngine.Serialization;
 #if INCLUDE_INPUT_SYSTEM
 using UnityEngine.InputSystem.XR;
 #endif
+#if INCLUDE_LEGACY_INPUT_HELPERS
+using UnityEngine.SpatialTracking;
+#endif
 
 namespace Unity.XR.CoreUtils
 {
@@ -22,14 +25,14 @@ namespace Unity.XR.CoreUtils
     public class XROrigin : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("The Camera to associate with the AR device.")]
+        [Tooltip("The Camera to associate with the XR device.")]
         Camera m_Camera;
 
         /// <summary>
-        /// The <c>Camera</c> to associate with the AR device. It must be a child of this <c>XROrigin</c>.
+        /// The <c>Camera</c> to associate with the XR device. It must be a child of this <c>XROrigin</c>.
         /// </summary>
         /// <remarks>
-        /// The <c>Camera</c> should update its position and rotation according to the AR device.
+        /// The <c>Camera</c> should update its position and rotation according to the XR device.
         /// This is typically accomplished by adding a <c>TrackedPoseDriver</c> component to the
         /// <c>Camera</c>.
         /// </remarks>
@@ -192,8 +195,6 @@ namespace Unity.XR.CoreUtils
         // Bookkeeping to track lazy initialization of the tracking origin mode type.
         bool m_CameraInitialized;
         bool m_CameraInitializing;
-
-        //XRI Functions
 
         /// <summary>
         /// Sets the height of the camera based on the current tracking origin mode by updating the <see cref="CameraFloorOffsetObject"/>.
@@ -473,8 +474,6 @@ namespace Unity.XR.CoreUtils
             return true;
         }
 
-        //Unity Callbacks
-
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
         /// </summary>
@@ -505,20 +504,39 @@ namespace Unity.XR.CoreUtils
 
             if (m_Camera)
             {
-#if INCLUDE_INPUT_SYSTEM
-                var trackedPoseDriver = m_Camera.GetComponent<TrackedPoseDriver>();
+#if INCLUDE_INPUT_SYSTEM && INCLUDE_LEGACY_INPUT_HELPERS
+                var trackedPoseDriver = m_Camera.GetComponent<UnityEngine.InputSystem.XR.TrackedPoseDriver>();
+                var trackedPoseDriverOld = m_Camera.GetComponent<UnityEngine.SpatialTracking.TrackedPoseDriver>();
+                if (trackedPoseDriver == null && trackedPoseDriverOld == null)
+                {
+                    Debug.LogWarning(
+                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver (Input System), " +
+                        "so its transform will not be updated by an XR device.  In order for this to be " +
+                        "updated, please add a Tracked Pose Driver (Input System) with bindings for position and rotation of the center eye.", this);
+                }
+#elif !INCLUDE_INPUT_SYSTEM && INCLUDE_LEGACY_INPUT_HELPERS
+                var trackedPoseDriverOld = m_Camera.GetComponent<UnityEngine.SpatialTracking.TrackedPoseDriver>();
+                if (trackedPoseDriverOld == null)
+                {
+                    Debug.LogWarning(
+                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver, and com.unity.xr.legacyinputhelpers is installed. " +
+                        "Although the Tracked Pose Driver from Legacy Input Helpers can be used, it is recommended to " +
+                        "install com.unity.inputsystem instead and add a Tracked Pose Driver (Input System) with bindings for position and rotation of the center eye.", this);
+                }
+#elif INCLUDE_INPUT_SYSTEM && !INCLUDE_LEGACY_INPUT_HELPERS
+                var trackedPoseDriver = m_Camera.GetComponent<UnityEngine.InputSystem.XR.TrackedPoseDriver>();
                 if (trackedPoseDriver == null)
                 {
                     Debug.LogWarning(
-                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver, " +
+                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver (Input System), " +
                         "so its transform will not be updated by an XR device.  In order for this to be " +
-                        "updated, please add a Tracked Pose Driver.", this);
+                        "updated, please add a Tracked Pose Driver (Input System) with bindings for position and rotation of the center eye.", this);
                 }
-#else
-                    Debug.LogWarning(
-                        $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver and com.unity.inputsystem is not installed, " +
-                        "so its transform will not be updated by an XR device.  In order for this to be " +
-                        "updated, please install com.unity.inputsystem and add a Tracked Pose Driver.", this);
+#elif !INCLUDE_INPUT_SYSTEM && !INCLUDE_LEGACY_INPUT_HELPERS
+                Debug.LogWarning(
+                    $"Camera \"{m_Camera.name}\" does not use a Tracked Pose Driver and com.unity.inputsystem is not installed, " +
+                    "so its transform will not be updated by an XR device.  In order for this to be " +
+                    "updated, please install com.unity.inputsystem and add a Tracked Pose Driver (Input System) with bindings for position and rotation of the center eye.", this);
 #endif
             }
         }
