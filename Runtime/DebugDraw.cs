@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils
 {
+    /// <summary>
+    /// Helpers for drawing shapes for debugging purposes.
+    /// </summary>
     public static class DebugDraw
     {
         /// <summary>

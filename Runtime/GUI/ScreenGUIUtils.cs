@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils.GUI
 {
+    /// <summary>
+    /// Helpers for handling screen DPI in GUI.
+    /// </summary>
     public static class ScreenGUIUtils
     {
         /// <summary>

@@ -245,7 +245,6 @@ namespace Unity.XR.CoreUtils.Editor
         /// </summary>
         /// <param name="editor">The <see cref="Editor"/> instance to reflect.</param>
         /// <returns>Returns a list of strings with property names.</returns>
-        /// <seealso cref="Editor.DrawPropertiesExcluding"/>
         static List<string> GetDerivedSerializedPropertyNames(UnityEditor.Editor editor)
         {
             if (editor == null)

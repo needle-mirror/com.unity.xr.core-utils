@@ -2,6 +2,7 @@
 
 namespace Unity.XR.CoreUtils.Tests
 {
+    [AddComponentMenu("")]
     class CustomApproximatePerformanceTest : PerformanceComparisonTest
     {
         Vector2[] m_Cases;

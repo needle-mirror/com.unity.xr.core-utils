@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Tests
 {
+    [AddComponentMenu("")]
     class ConvexHullPerformanceTest : PerformanceTest
     {
         const int k_ExampleCount = 3;

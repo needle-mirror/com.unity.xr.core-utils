@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Tests
 {
+    [AddComponentMenu("")]
     class PointInPolygonPerformanceTest : PerformanceTest
     {
         static readonly List<Vector3> k_TestHexagon = new List<Vector3>

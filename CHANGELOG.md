@@ -6,11 +6,22 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2022-02-16
+
+### Added
+
+- Define constants for documentation to include missing APIs.
+
+### Fixed
+
+- Fixed XR Origin so it appears in the **Component &gt; XR** menu.
+- Fixed so test behaviors and [OnDestroyNotifier](xref:Unity.XR.CoreUtils.OnDestroyNotifier) do not show up in the **Component &gt; Add** menu since those are not intended to be used directly by users.
+
 ## [2.0.0-pre.6] - 2021-12-10
 
 ### Changed
 
-- Stopped firing warnings when users attach the [TrackedPoseDriver](https://docs.unity3d.com/Packages/com.unity.xr.legacyinputhelpers@2.1/api/UnityEngine.SpatialTracking.TrackedPoseDriver.html) from `com.unity.xr.legacyinputhelpers`, but strongly reccomend users attach the [TrackedPoseDriver](https://docs.unity.cn/Packages/com.unity.inputsystem@1.2/api/UnityEngine.InputSystem.XR.TrackedPoseDriver.html) from `com.unity.inputsystem` to the `camera` property of [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) instead.
+- Stopped firing warnings when users attach the [TrackedPoseDriver](https://docs.unity3d.com/Packages/com.unity.xr.legacyinputhelpers@2.1/api/UnityEngine.SpatialTracking.TrackedPoseDriver.html) from `com.unity.xr.legacyinputhelpers`, but strongly recommend that users attach the [TrackedPoseDriver](https://docs.unity.cn/Packages/com.unity.inputsystem@1.2/api/UnityEngine.InputSystem.XR.TrackedPoseDriver.html) from `com.unity.inputsystem` to the `camera` property of [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) instead. ([1388617](https://issuetracker.unity3d.com/product/unity/issues/guid/1388617))
 
 ## [2.0.0-pre.5] - 2021-11-16
 
