@@ -1,4 +1,9 @@
-﻿using System;
+﻿// ENABLE_VR is not defined on Game Core but the assembly is available with limited features when the XR module is enabled.
+#if ENABLE_VR || UNITY_GAMECORE
+#define XR_MODULE_AVAILABLE
+#endif
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +25,7 @@ namespace Unity.XR.CoreUtils.Editor
         protected SerializedProperty m_CameraFloorOffsetObject;
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="XROrigin.Camera"/>.</summary>
         protected SerializedProperty m_Camera;
-        /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="XROrigin.CurrentTrackingOriginMode"/>.</summary>
+        /// <summary>m_TrackingOriginMode has been deprecated. Use m_RequestedTrackingOriginMode instead.</summary>
         [Obsolete("m_TrackingOriginMode has been deprecated. Use m_RequestedTrackingOriginMode instead.")]
         protected SerializedProperty m_TrackingOriginMode;
         /// <summary><see cref="SerializedProperty"/> of the <see cref="SerializeField"/> backing <see cref="XROrigin.RequestedTrackingOriginMode"/>.</summary>
@@ -199,6 +204,7 @@ namespace Unity.XR.CoreUtils.Editor
                 m_RequestedTrackingOriginMode.hasMultipleDifferentValues;
             if (showCameraYOffset)
             {
+#if XR_MODULE_AVAILABLE
                 // The property should be enabled when not playing since the default for the XR device
                 // may be Device, so the property should be editable to define the offset.
                 // When playing, disable the property to convey that it isn't having an effect,
@@ -210,6 +216,9 @@ namespace Unity.XR.CoreUtils.Editor
                     !m_RequestedTrackingOriginMode.hasMultipleDifferentValues &&
                     m_RequestedTrackingOriginMode.enumValueIndex == (int)XROrigin.TrackingOriginMode.NotSpecified &&
                     allCurrentlyFloor;
+#else
+                const bool disabled = false;
+#endif
                 using (new EditorGUI.IndentLevelScope())
                 using (new EditorGUI.DisabledScope(disabled))
                 {
@@ -226,6 +235,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <seealso cref="XROrigin.CurrentTrackingOriginMode"/>
         protected void DrawCurrentTrackingOriginMode()
         {
+#if XR_MODULE_AVAILABLE
             if (!Application.isPlaying)
                 return;
 
@@ -237,6 +247,7 @@ namespace Unity.XR.CoreUtils.Editor
                 else
                     EditorGUILayout.Popup(Contents.CurrentTrackingOriginMode, 0, m_MixedValuesOptions);
             }
+#endif
         }
 
         /// <summary>

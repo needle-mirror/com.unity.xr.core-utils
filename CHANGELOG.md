@@ -6,6 +6,21 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.1.0-pre.1] - 2022-04-21
+
+### Added
+
+- Add Project Validation for validating packages against package configuration correctness. See the [manual entry for project validation](xref:xr-core-utils-project-validation) for more details.
+
+### Removed
+
+- Removed the **GameObject** &gt; **XR** &gt; **XR Origin** menu item. To create a new XR Origin, users should instead use the menu items provided by [AR Foundation](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@5.0/manual/index.html#scene-setup) and/or [XR Interaction Toolkit](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest?subfolder=/manual/general-setup.html).
+
+### Fixed
+
+- [NativeArrayUtils.EnsureCapacity](xref:Unity.XR.CoreUtils.NativeArrayUtils.EnsureCapacity*) now checks for unallocated array before disposing it and reallocating for a larger capacity.
+- Fixed compilation errors on platforms such as Stadia where the XR module is not available.
+
 ## [2.0.0] - 2022-02-16
 
 ### Added

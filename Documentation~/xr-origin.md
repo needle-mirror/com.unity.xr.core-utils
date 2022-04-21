@@ -9,45 +9,36 @@ The XR Origin represents the center of worldspace in an XR scene.
 
 The purpose of the XR Origin is to transform objects and trackable features to their final position, orientation, and scale in the Unity scene. It specifies an Origin, a Camera Floor Offset Object, and a Camera.
 
-## Adding XR Origin to Scene
+## Setting up the XR Origin
 
-To create a pre-configured XR Origin with a floor offset GameObject and camera already set up, you should right-click anywhere in the scene inspector and select **XR** &gt; **XR Origin**.
+The [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) class is a shared dependency between two packages: [AR Foundation (com.unity.xr.arfoundation)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html) and [XR Interaction Toolkit (com.unity.xr.interaction.toolkit)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html). AR Foundation and XR Interaction Toolkit are independent packages, but can also be used together to build XR applications. Each package provides different XR Origin configuration options based on the types of hardware each package supports.
 
-Right-click to open Scene Inspector Menu       |  Select XR Origin
+## How to Setup for mobile AR
+
+To create a pre-configured [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) for mobile AR:
+- Install [AR Foundation (com.unity.xr.arfoundation)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html).
+- Enable the [provider plug-in(s)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@5.0/manual/index.html#provider-plug-in-setup) for your platform targets in the [XR Plug-in Management](https://docs.unity3d.com/Manual/configuring-project-for-xr.html) window. 
+- Right-click anywhere in the Hierarchy window and select **XR** &gt; **XR Origin (Mobile AR)**.
+
+Right-click in the Hierarchy window       |  Select XR Origin (Mobile AR)
 :-------------------------:|:-------------------------:
-![Scene Inspector Menu](images/xr-origin-xr.png "Select XR")  |  ![XR Submenu](images/xr-origin-scene-inspector.png "Select ARDebugMenu")
+![Select XR](images/xr-origin-xr.png)  |  ![Select XR Origin (Mobile AR)](images/xr-origin-mobile.png)
 
-For a non-configured XR Origin, add the [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) component to any `GameObject`.
+## How to Setup for VR HMD
 
-## How to Setup for AR
-
-To use [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) for an AR experience:
-- Install [com.unity.xr.arfoundation](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html).
-- Right-click anywhere in the scene inspector and select **XR** &gt; **XR Origin**.
-- To display the camera feed onto which the AR graphics are mapped, under the `Camera` object associated with the XR Origin, attach the `ARCameraManager` and `ARCameraBackground` scripts.
-
-## How to Setup with XR Controllers
-
-To create a pre-configured XR Origin with controllers:
-- Install [com.unity.xr.interaction.toolkit](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html).
-- Right-click anywhere in the scene inspector and select **XR** &gt; **XR Origin (Action-based)**.
-
-Note that Action-based menu items in the XR Interaction Toolkit make use of the [InputSystem](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.2/manual/Installation.html). For more about the difference between Device-based and Action-based behaviors in XRI, see the `com.unity.xr.interaction.toolkit` documentation linked above.
-
-## How to Setup Tracked Pose Driver
-
-In order to get position and rotation data from the XR device applied to the camera associated with the XR origin, users should add a [Tracked Pose Driver component](https://docs.unity.cn/Packages/com.unity.inputsystem@1.2/api/UnityEngine.InputSystem.XR.TrackedPoseDriver.html) from `com.unity.inputsystem`
-
-The bindings should be as follows for an XR HMD:
-
-- `<XRHMD>/centerEyePosition`
-- `<XRHMD>/centerEyeRotation`
-
-![Tracked Pose Driver](images/xr-origin-trackedposedriver.png "Tracked Pose Driver")
+To create a pre-configured [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) for VR with controllers:
+- Install [XR Interaction Toolkit (com.unity.xr.interaction.toolkit)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html).
+- Right-click anywhere in the Hierarchy window and select **XR** &gt; **XR Origin (VR)**.
 
 > [!NOTE]
-> There is currently an issue with finding the bindings for Mobile AR via the component editor. To add Mobile AR support, input the following binding paths when adding a new binding to Position Input or Rotation Input respectively:
->- `<HandheldARInputDevice>/devicePosition`
->- `<HandheldARInputDevice>/deviceRotation`
+> Components in the XR Interaction Toolkit (XRI) are Action-based by default, and make use of the [InputSystem](https://docs.unity3d.com/Packages/com.unity.inputsystem@latest?subfolder=/manual/Installation.html). See the [XRI Samples](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest?subfolder=/manual/samples.html) for example Input Actions you can use to map inputs from your controllers.
+> If your project depends on the Legacy Input System, a legacy Device-based XR Origin is available by right-clicking in the Hierarchy window and selecting **XR** &gt; **Device-based** &gt; **XR Origin (Device-based)**. See [Action-based vs Device-based behaviors](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest?subfolder=/manual/general-setup.html) in the XR Interaction Toolkit manual for more information.
 
-![Binding](images/xr-origin-add-binding.png "Binding")
+## How to setup for all-purpose AR
+
+To create a pre-configured [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) for AR which supports both HMD and mobile platforms:
+- Install [AR Foundation (com.unity.xr.arfoundation)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html).
+- Enable the [provider plug-in(s)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@5.0/manual/index.html#provider-plug-in-setup) for your platform targets in the [XR Plug-in Management](https://docs.unity3d.com/Manual/configuring-project-for-xr.html) window.
+- Install [XR Interaction Toolkit (com.unity.xr.interaction.toolkit)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html).
+- Right-click anywhere in the Hierarchy window and select **XR** &gt; **XR Origin (AR)**.
+- For further configuration guidance of the XR Origin GameObject and its components, see the [XR Interaction Toolkit manual](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest?subfolder=/manual/general-setup.html).

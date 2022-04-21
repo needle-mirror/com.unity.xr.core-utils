@@ -18,7 +18,8 @@ The XR Core Utilities package contains a variety of classes and extension method
   - Flags Property Drawer
 - Scriptable Settings (serialized project settings)
 - Conditional Compilation Utility
-- XROrigin
+- [XROrigin](xref:xr-core-utils-xr-origin)
+- [Project validation](xref:xr-core-utils-project-validation)
 
 # Installing XR Core Utilities
 

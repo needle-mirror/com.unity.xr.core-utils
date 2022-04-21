@@ -1,17 +1,15 @@
+// ENABLE_VR is not defined on Game Core but the assembly is available with limited features when the XR module is enabled.
+#if ENABLE_VR || UNITY_GAMECORE
+#define XR_MODULE_AVAILABLE
+#endif
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
-using UnityEngine.XR;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
-#if INCLUDE_INPUT_SYSTEM
-using UnityEngine.InputSystem.XR;
-#endif
-#if INCLUDE_LEGACY_INPUT_HELPERS
-using UnityEngine.SpatialTracking;
-#endif
+using UnityEngine.XR;
 
 namespace Unity.XR.CoreUtils
 {
@@ -167,11 +165,13 @@ namespace Unity.XR.CoreUtils
             }
         }
 
+#if XR_MODULE_AVAILABLE || PACKAGE_DOCS_GENERATION
         /// <summary>
         /// (Read Only) The Tracking Origin Mode of this XR Origin.
         /// </summary>
         /// <seealso cref="RequestedTrackingOriginMode"/>
         public TrackingOriginModeFlags CurrentTrackingOriginMode { get; private set; }
+#endif
 
         /// <summary>
         /// (Read Only) The origin's local position in camera space.
@@ -188,10 +188,12 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         public float CameraInOriginSpaceHeight => CameraInOriginSpacePos.y;
 
+#if XR_MODULE_AVAILABLE
         /// <summary>
         /// Used to cache the input subsystems without creating additional GC allocations.
         /// </summary>
         static readonly List<XRInputSubsystem> s_InputSubsystems = new List<XRInputSubsystem>();
+#endif
 
         // Bookkeeping to track lazy initialization of the tracking origin mode type.
         bool m_CameraInitialized;
@@ -202,6 +204,7 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         void MoveOffsetHeight()
         {
+#if XR_MODULE_AVAILABLE
             if (!Application.isPlaying)
                 return;
 
@@ -216,6 +219,7 @@ namespace Unity.XR.CoreUtils
                 default:
                     return;
             }
+#endif
         }
 
         /// <summary>
@@ -253,6 +257,7 @@ namespace Unity.XR.CoreUtils
         {
             var initialized = true;
 
+#if XR_MODULE_AVAILABLE
             SubsystemManager.GetInstances(s_InputSubsystems);
             if (s_InputSubsystems.Count > 0)
             {
@@ -271,10 +276,12 @@ namespace Unity.XR.CoreUtils
                     }
                 }
             }
+#endif
 
             return initialized;
         }
 
+#if XR_MODULE_AVAILABLE
         bool SetupCamera(XRInputSubsystem inputSubsystem)
         {
             if (inputSubsystem == null)
@@ -314,7 +321,7 @@ namespace Unity.XR.CoreUtils
                         successful = inputSubsystem.TrySetTrackingOriginMode(equivalentFlagsMode);
                     }
                 }
-                    break;
+                break;
                 default:
                     Assert.IsTrue(false, $"Unhandled {nameof(TrackingOriginMode)}={m_RequestedTrackingOriginMode}");
                     return false;
@@ -329,6 +336,13 @@ namespace Unity.XR.CoreUtils
             return successful;
         }
 
+        void OnInputSubsystemTrackingOriginUpdated(XRInputSubsystem inputSubsystem)
+        {
+            CurrentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
+            MoveOffsetHeight();
+        }
+#endif
+
         IEnumerator RepeatInitializeCamera()
         {
             m_CameraInitializing = true;
@@ -339,12 +353,6 @@ namespace Unity.XR.CoreUtils
                     m_CameraInitialized = SetupCamera();
             }
             m_CameraInitializing = false;
-        }
-
-        void OnInputSubsystemTrackingOriginUpdated(XRInputSubsystem inputSubsystem)
-        {
-            CurrentTrackingOriginMode = inputSubsystem.GetTrackingOriginMode();
-            MoveOffsetHeight();
         }
 
         /// <summary>
@@ -585,7 +593,7 @@ namespace Unity.XR.CoreUtils
             {
                 TrackablesParentTransformChanged?.Invoke(
                     new ARTrackablesParentTransformChangedEventArgs(this, TrackablesParent));
-                 TrackablesParent.hasChanged = false;
+                TrackablesParent.hasChanged = false;
             }
         }
 
@@ -609,6 +617,7 @@ namespace Unity.XR.CoreUtils
 
             bool IsModeStale()
             {
+#if XR_MODULE_AVAILABLE
                 if (s_InputSubsystems.Count > 0)
                 {
                     foreach (var inputSubsystem in s_InputSubsystems)
@@ -637,6 +646,7 @@ namespace Unity.XR.CoreUtils
                         }
                     }
                 }
+#endif
                 return false;
             }
         }
@@ -654,11 +664,13 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         protected void OnDestroy()
         {
+#if XR_MODULE_AVAILABLE
             foreach (var inputSubsystem in s_InputSubsystems)
             {
                 if (inputSubsystem != null)
                     inputSubsystem.trackingOriginUpdated -= OnInputSubsystemTrackingOriginUpdated;
             }
+#endif
         }
     }
 }
