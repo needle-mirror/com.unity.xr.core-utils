@@ -15,7 +15,8 @@ namespace Unity.XR.CoreUtils.Editor
             internal static readonly float MessagePadding = Styles.IconSize.x + styles.IconStyle.padding.horizontal;
 
             internal const float NoButtonPadding = 5;
-            
+            internal const float ErrorIconPadding = 3;
+
             internal const float Space = 15.0f;
             internal const float FixButtonWidth = 80.0f;
             internal const float ShowAllChecksWidth = 96f;
@@ -80,7 +81,7 @@ namespace Unity.XR.CoreUtils.Editor
 
                 IconStyle = new GUIStyle(EditorStyles.label)
                 {
-                    margin = new RectOffset(5, 5, 0, 0),
+                    margin = new RectOffset(5, 5, 4, 0),
                     fixedWidth = IconSize.x * 2
                 };
 
@@ -299,6 +300,9 @@ namespace Unity.XR.CoreUtils.Editor
                 EditorGUILayout.BeginHorizontal(styles.ListLabel);
                 if (isRuleEnabled)
                 {
+                    if(!rulePassed && result.Error)
+                        GUILayout.Space(Styles.ErrorIconPadding);
+
                     GUILayout.Label(rulePassed ? styles.TestPassedIcon
                         : result.Error ? styles.ErrorIcon
                         : styles.WarningIcon, styles.IconStyle,
