@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Behavior that fires a callback when it is destroyed.
+    /// <see cref="MonoBehaviour"/> that invokes a callback when it is destroyed.
     /// </summary>
     [AddComponentMenu("")]
     [ExecuteInEditMode]

@@ -85,7 +85,7 @@ namespace Unity.XR.CoreUtils.Editor
             m_Origins = targets.Cast<XROrigin>().ToList();
         }
 
-        /// <inheritdoc />
+        ///<summary>Any inheriting classes should invoke this method.</summary>
         public override void OnInspectorGUI()
         {
             InitializeKnownSerializedPropertyNames();

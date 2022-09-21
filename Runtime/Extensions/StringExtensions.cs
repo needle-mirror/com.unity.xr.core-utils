@@ -3,17 +3,17 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for strings
+    /// Extension methods for <see cref="string"/> objects.
     /// </summary>
     public static class StringExtensions
     {
         static readonly StringBuilder k_StringBuilder = new StringBuilder();
 
         /// <summary>
-        /// Capitalizes the first letter of a string
+        /// Capitalizes the first letter of a string.
         /// </summary>
-        /// <param name="str">String to be capitalized</param>
-        /// <returns>The new string</returns>
+        /// <param name="str">String to be capitalized.</param>
+        /// <returns>The new string.</returns>
         public static string FirstToUpper(this string str)
         {
             if (string.IsNullOrEmpty(str))
@@ -27,10 +27,14 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Inserts spaces into a string between words separated by uppercase letters. Numbers are treated as uppercase.
-        /// E.g. "HelloWorld" -> "Hello World" or "HelloWORLDAgain" -> "Hello WORLD Again"
         /// </summary>
-        /// <param name="str">Input string</param>
-        /// <returns>Input string with spaces added</returns>
+        /// <remarks>
+        /// Examples:
+        /// * "HelloWorld" -> "Hello World"
+        /// * "HelloWORLDAgain" -> "Hello WORLD Again"
+        /// </remarks>
+        /// <param name="str">Input string.</param>
+        /// <returns>Input string with spaces added.</returns>
         public static string InsertSpacesBetweenWords(this string str)
         {
             if (string.IsNullOrEmpty(str))

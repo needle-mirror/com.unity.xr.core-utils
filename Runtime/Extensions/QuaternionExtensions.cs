@@ -3,16 +3,16 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for Quaternion structs
+    /// Extension methods for <see cref="Quaternion"/> structs.
     /// </summary>
     public static class QuaternionExtensions
     {
         /// <summary>
-        /// Returns a rotation which only contains the yaw component of the given rotation.
+        /// Returns a rotation that only contains the yaw component of the specified rotation.
         /// The resulting rotation is not normalized.
         /// </summary>
-        /// <param name="rotation">The rotation we would like to constrain</param>
-        /// <returns>A yaw-only rotation which matches the input's yaw</returns>
+        /// <param name="rotation">The source rotation.</param>
+        /// <returns>A yaw-only rotation that matches the input rotation's yaw.</returns>
         public static Quaternion ConstrainYaw(this Quaternion rotation)
         {
             rotation.x = 0;
@@ -21,10 +21,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns a rotation which only contains the yaw component of the given rotation
+        /// Returns a normalized rotation that only contains the yaw component of the specified rotation.
         /// </summary>
-        /// <param name="rotation">The rotation we would like to constrain</param>
-        /// <returns>A yaw-only rotation which matches the input's yaw</returns>
+        /// <param name="rotation">The source rotation.</param>
+        /// <returns>A yaw-only rotation that matches the input rotation's yaw.</returns>
         public static Quaternion ConstrainYawNormalized(this Quaternion rotation)
         {
             rotation.x = 0;
@@ -34,10 +34,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns a rotation which only contains the yaw and pitch component of the given rotation
+        /// Returns a normalized rotation that only contains the yaw and pitch components of the specified rotation
         /// </summary>
-        /// <param name="rotation">The rotation we would like to constrain</param>
-        /// <returns>A yaw/pitch-only rotation which matches the input's yaw and pitch</returns>
+        /// <param name="rotation">The source rotation.</param>
+        /// <returns>A yaw- and pitch-only rotation that matches the input rotation's yaw and pitch.</returns>
         public static Quaternion ConstrainYawPitchNormalized(this Quaternion rotation)
         {
             var euler = rotation.eulerAngles;

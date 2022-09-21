@@ -12,14 +12,14 @@ namespace Unity.XR.CoreUtils
         readonly string m_Path;
 
         /// <summary>
-        /// The path where this ScriptableSettings should be stored
+        /// The path where this ScriptableSettings should be stored.
         /// </summary>
         public string Path => m_Path;
 
         /// <summary>
-        /// Initialize a new ScriptableSettingsPathAttribute
+        /// Initialize a new ScriptableSettingsPathAttribute.
         /// </summary>
-        /// <param name="path">The path where the ScriptableSettings should be stored</param>
+        /// <param name="path">The path where the ScriptableSettings should be stored.</param>
         public ScriptableSettingsPathAttribute(string path = "")
         {
             m_Path = path;

@@ -10,15 +10,20 @@ using UnityEngine.UI;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Runtime Material utilities
+    /// Runtime Material utilities.
     /// </summary>
     public static class MaterialUtils
     {
         /// <summary>
-        /// Get a material clone; IMPORTANT: Make sure to call UnityObjectUtils.Destroy() on this material when done!
+        /// Clones and replaces the material assigned to a <see cref="Renderer"/>.
         /// </summary>
-        /// <param name="renderer">Renderer that will have its material clone and replaced</param>
-        /// <returns>Cloned material</returns>
+        /// <remarks>
+        /// > [!WARNING]
+        /// > You must call <see cref="UnityObjectUtils.Destroy(UnityObject, bool)"/> on this material object when done.
+        /// </remarks>
+        /// <seealso cref="Renderer.material"/>
+        /// <param name="renderer">The renderer assigned the material to clone.</param>
+        /// <returns>The cloned material.</returns>
         public static Material GetMaterialClone(Renderer renderer)
         {
             // The following is equivalent to renderer.material, but gets rid of the error messages in edit mode
@@ -27,9 +32,17 @@ namespace Unity.XR.CoreUtils
 
 #if INCLUDE_UGUI
         /// <summary>
-        /// Get a material clone; IMPORTANT: Make sure to call UnityObjectUtils.Destroy() on this material when done!
+        /// Clones and replaces the material assigned to a <see cref="Graphic"/>.
         /// </summary>
-        /// <param name="graphic">Graphic that will have its material cloned and replaced</param>
+        /// <remarks>
+        /// To use this function, your project must contain the
+        /// [Unity UI package (com.unity.ugui)](https://docs.unity3d.com/Manual/com.unity.ugui.html).
+        /// 
+        /// > [!WARNING]
+        /// > You must call <see cref="UnityObjectUtils.Destroy(UnityObject, bool)"/> on this material object when done.
+        /// </remarks>
+        /// <seealso cref="Graphic.material"/>
+        /// <param name="graphic">The Graphic object assigned the material to clone.</param>
         /// <returns>Cloned material</returns>
         public static Material GetMaterialClone(Graphic graphic)
         {
@@ -39,9 +52,14 @@ namespace Unity.XR.CoreUtils
 #endif
 
         /// <summary>
-        /// Clone all materials within a renderer; IMPORTANT: Make sure to call UnityObjectUtils.Destroy() on this material when done!
+        /// Clones and replaces all materials assigned to a <see cref="Renderer"/>
         /// </summary>
-        /// <param name="renderer">Renderer that will have its materials cloned and replaced</param>
+        /// <remarks>
+        /// > [!WARNING]
+        /// > You must call <see cref="UnityObjectUtils.Destroy(UnityObject, bool)"/> on each cloned material object in the array when done.
+        /// </remarks>
+        /// <seealso cref="Renderer.materials"/>
+        /// <param name="renderer">Renderer assigned the materials to clone and replace.</param>
         /// <returns>Cloned materials</returns>
         public static Material[] CloneMaterials(Renderer renderer)
         {
@@ -56,10 +74,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Convert a formatted hex string to a Color
+        /// Converts an RGB or RGBA formatted hex string to a <see cref="Color"/> object.
         /// </summary>
-        /// <param name="hex">The formatted string, with an optional 0x or # prefix</param>
-        /// <returns>The color value represented by the formatted string</returns>
+        /// <param name="hex">The formatted string, with an optional "0x" or "#" prefix.</param>
+        /// <returns>The color value represented by the formatted string.</returns>
         public static Color HexToColor(string hex)
         {
             hex = hex.Replace("0x", "").Replace("#", "");
@@ -72,11 +90,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Shift the hue of a color by a given amount
+        /// Shift the hue of a color by a given amount.
         /// </summary>
-        /// <param name="color">The input color</param>
-        /// <param name="shift">The amount of shift</param>
-        /// <returns>The output color</returns>
+        /// <remarks>The hue value wraps around to 0 if the shifted hue exceeds 1.0.</remarks>
+        /// <param name="color">The input color.</param>
+        /// <param name="shift">The amount of shift.</param>
+        /// <returns>The output color.</returns>
         public static Color HueShift(Color color, float shift)
         {
             Vector3 hsv;
@@ -86,10 +105,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Add a material to this renderer's shared materials
+        /// Adds a material to this renderer's array of shared materials.
         /// </summary>
-        /// <param name="renderer">The renderer on which to add the material</param>
-        /// <param name="material">The material to be added</param>
+        /// <param name="renderer">The renderer on which to add the material.</param>
+        /// <param name="material">The material to add.</param>
         public static void AddMaterial(this Renderer renderer, Material material)
         {
             var materials = renderer.sharedMaterials;

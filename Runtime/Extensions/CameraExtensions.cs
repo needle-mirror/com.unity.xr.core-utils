@@ -3,7 +3,7 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for Camera components
+    /// Extension methods for <see cref="Camera"/> components.
     /// </summary>
     public static class CameraExtensions
     {
@@ -11,11 +11,13 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Calculates the vertical field of view from an aspect neutral (diagonal) field of view and the camera's aspect ratio.
-        /// Unity cameras' field of view properties are storing the vertical field of view.
         /// </summary>
-        /// <param name="camera">The camera to get the aspect ratio from</param>
-        /// <param name="aspectNeutralFieldOfView"> The "aspect neutral" field of view, which is the diagonal field of view</param>
-        /// <returns>The vertical field of view calculated</returns>
+        /// <remarks>
+        /// The field of view property of a Unity <see cref="Camera"/> stores the vertical field of view.
+        /// </remarks>
+        /// <param name="camera">The camera to get the aspect ratio from.</param>
+        /// <param name="aspectNeutralFieldOfView"> The "aspect neutral" field of view, which is the diagonal field of view.</param>
+        /// <returns>The vertical field of view calculated.</returns>
         public static float GetVerticalFieldOfView(this Camera camera, float aspectNeutralFieldOfView)
         {
             var verticalHalfFieldOfViewTangent = Mathf.Tan(aspectNeutralFieldOfView * 0.5f * Mathf.Deg2Rad) *
@@ -24,10 +26,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Calculates the horizontal field of view of the camera
+        /// Calculates the horizontal field of view of the <see cref="Camera"/>.
         /// </summary>
-        /// <param name="camera">The camera to get the aspect ratio and vertical field of view from</param>
-        /// <returns>The horizontal field of view of the camera</returns>
+        /// <param name="camera">The camera to get the aspect ratio and vertical field of view from.</param>
+        /// <returns>The horizontal field of view of the camera.</returns>
         public static float GetHorizontalFieldOfView(this Camera camera)
         {
             var halfFieldOfView = camera.fieldOfView * 0.5f;
@@ -35,11 +37,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Calculates the vertical orthographic size for a camera and a given diagonal size
+        /// Calculates the vertical orthographic size for a <see cref="Camera"/> and a given diagonal size.
         /// </summary>
-        /// <param name="camera">The camera to get the aspect ratio from</param>
-        /// <param name="size">The diagonal orthographic size</param>
-        /// <returns>The vertical orthographic size calculated </returns>
+        /// <param name="camera">The camera to get the aspect ratio from.</param>
+        /// <param name="size">The diagonal orthographic size.</param>
+        /// <returns>The vertical orthographic size calculated.</returns>
         public static float GetVerticalOrthographicSize(this Camera camera, float size)
         {
             return size * k_OneOverSqrt2 / Mathf.Sqrt(camera.aspect);

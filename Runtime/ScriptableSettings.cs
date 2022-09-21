@@ -3,11 +3,10 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils
 {
-    /// <inheritdoc />
     /// <summary>
-    /// Based off of Unity's Internal ScriptableSingleton with UnityEditorInternal bits removed
+    /// A helper class for accesing settings stored in <see cref="ScriptableObject"/> instances.
     /// </summary>
-    /// <typeparam name="T">The class being created</typeparam>
+    /// <typeparam name="T">A class derived from <see cref="ScriptableObject"/>.</typeparam>
     public abstract class ScriptableSettings<T> : ScriptableSettingsBase<T> where T : ScriptableObject
     {
         const string k_CustomSavePathFormat = "{0}Resources/{1}.asset";
@@ -15,8 +14,9 @@ namespace Unity.XR.CoreUtils
         const string k_LoadPathFormat = "ScriptableSettings/{0}";
 
         /// <summary>
-        /// Retrieves a reference to the given settings class. Will load and initialize once, and cache for all future access.
+        /// Retrieves a reference to the given settings class. Loads and initializes the class once, and caches the reference for all future access.
         /// </summary>
+        /// <value>A settings class derived from <see cref="ScriptableObject"/>.</value>
         public static T Instance
         {
             get

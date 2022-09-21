@@ -3,16 +3,19 @@ using System.Collections.Generic;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for HashSet&lt;T&gt; objects
+    /// Extension methods for <see cref="HashSet{T}"/> objects.
     /// </summary>
     public static class HashSetExtensions
     {
         /// <summary>
-        /// Like HashSet.ExceptWith() but without any garbage allocation
+        /// Remove any elements in this set that are in the set specified by <paramref name="other"/>. 
         /// </summary>
-        /// <param name="self">The set to remove from</param>
-        /// <param name="other">The set of elements to remove</param>
-        /// <typeparam name="T">The type contained in the set</typeparam>
+        /// <remarks>
+        /// Equivalent to <see cref="HashSet{T}.ExceptWith(IEnumerable{T})"/>, but without any allocation.
+        /// </remarks>
+        /// <param name="self">The set from which to remove elements.</param>
+        /// <param name="other">The set of elements to remove.</param>
+        /// <typeparam name="T">The type contained in the set.</typeparam>
         public static void ExceptWithNonAlloc<T>(this HashSet<T> self, HashSet<T> other)
         {
             foreach (var entry in other)
@@ -20,8 +23,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Like LINQ's .First(), but does not allocate
+        /// Gets the first element of a HashSet.
         /// </summary>
+        /// <remarks>
+        /// Equivalent to the <see cref="System.Linq"/> `.First()` method, but does not allocate.
+        /// </remarks>
         /// <param name="set">Set to retrieve the element from</param>
         /// <typeparam name="T">Type contained in the set</typeparam>
         /// <returns>The first element in the set</returns>

@@ -3,15 +3,18 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extensions methods for GameObjects
+    /// Extensions methods for the <see cref="GameObject"/> class.
     /// </summary>
     public static class GameObjectExtensions
     {
         /// <summary>
-        /// Sets the hide flags on this GameObject and all of its descendants
+        /// Sets the hide flags on this GameObject and all of its descendants.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
-        /// <param name="hideFlags">Should the GameObjects be hidden, saved with the scene or modifiable by the user?</param>
+        /// <remarks>
+        /// This function overwrites the existing flags of a <see cref="GameObject"/> with those specified by <paramref name="hideFlags"/>.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
+        /// <param name="hideFlags">Should the GameObjects be hidden, saved with the scene, or modifiable by the user?</param>
         public static void SetHideFlagsRecursively(this GameObject gameObject, HideFlags hideFlags)
         {
             gameObject.hideFlags = hideFlags;
@@ -22,9 +25,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Adds <paramref name="hideFlags"/> to the hide flags on this GameObject and all of its descendants
+        /// Adds <paramref name="hideFlags"/> to the hide flags on this GameObject and all of its descendants.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
+        /// <remarks>
+        /// This function combines the <paramref name="hideFlags"/> with the existing flags of a <see cref="GameObject"/>.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
         /// <param name="hideFlags">Should the GameObjects be hidden, saved with the scene or modifiable by the user?</param>
         public static void AddToHideFlagsRecursively(this GameObject gameObject, HideFlags hideFlags)
         {
@@ -36,10 +42,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Sets the layer of this GameObject and all of its descendants
+        /// Sets the layer of this GameObject and all of its descendants.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
-        /// <param name="layer">The layer to recursively assign GameObjects to</param>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
+        /// <param name="layer">The layer to recursively assign GameObjects to.</param>
         public static void SetLayerRecursively(this GameObject gameObject, int layer)
         {
             gameObject.layer = layer;
@@ -50,10 +56,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Sets the layer of this GameObject and adds to its HideFlags, and does the same for all of its descendants
+        /// Sets the layer of this GameObject and adds to its HideFlags, and does the same for all of its descendants.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
-        /// <param name="layer">The layer to recursively assign GameObjects to</param>
+        /// <remarks>
+        /// This function combines the <paramref name="hideFlags"/> with the existing flags of a <see cref="GameObject"/>.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
+        /// <param name="layer">The layer to recursively assign GameObjects to.</param>
         /// <param name="hideFlags">Should the GameObjects be hidden, saved with the scene, or modifiable by the user?</param>
         public static void SetLayerAndAddToHideFlagsRecursively(this GameObject gameObject, int layer, HideFlags hideFlags)
         {
@@ -66,10 +75,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Sets the layer and HideFlags of this GameObject and all of its descendants
+        /// Sets the layer and HideFlags of this GameObject and all of its descendants.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
-        /// <param name="layer">The layer to recursively assign GameObjects to</param>
+        /// <remarks>
+        /// This function overwrites the existing flags of a <see cref="GameObject"/> with those specified by <paramref name="hideFlags"/>.
+        /// </remarks>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
+        /// <param name="layer">The layer to recursively assign GameObjects to.</param>
         /// <param name="hideFlags">Should the GameObjects be hidden, saved with the scene, or modifiable by the user?</param>
         public static void SetLayerAndHideFlagsRecursively(this GameObject gameObject, int layer, HideFlags hideFlags)
         {
@@ -82,10 +94,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Set runInEditMode on all MonoBehaviours on this GameObject and its children
+        /// Sets <see cref="MonoBehaviour.runInEditMode"/> for all MonoBehaviours on this GameObject and its children.
         /// </summary>
-        /// <param name="gameObject">The GameObject at the root of the hierarchy that will be modified</param>
-        /// <param name="enabled">The value to which runInEditMode will be assigned</param>
+        /// <param name="gameObject">The GameObject at the root of the hierarchy to be modified.</param>
+        /// <param name="enabled">The value to assign to runInEditMode.</param>
         public static void SetRunInEditModeRecursively(this GameObject gameObject, bool enabled)
         {
 #if UNITY_EDITOR

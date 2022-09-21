@@ -10,15 +10,17 @@ using UnityEditor;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Base for all scriptable settings that is easier to look up via-reflection.
-    /// DO NOT USE THIS CLASS DIRECTLY - Use the generic version - ScriptableSettingsBase<T /> above
+    /// Base class for all scriptable settings that is easier to look up via-reflection.
     /// </summary>
+    /// <remarks>
+    /// DO NOT USE THIS CLASS DIRECTLY - Use the generic version, <see cref="ScriptableSettingsBase{T}"/>.
+    /// </remarks>
     public abstract class ScriptableSettingsBase : ScriptableObject
     {
         const string k_AbsolutePathMessage = "Path cannot be absolute";
 
         /// <summary>
-        /// Message to display when path is invalid
+        /// Message to display when path is invalid.
         /// </summary>
         protected const string PathExceptionMessage = "Exception caught trying to create path.";
 
@@ -40,10 +42,10 @@ namespace Unity.XR.CoreUtils
         static readonly string[] k_InvalidStrings = { "\\.", "/.", ".\\", "./" };
 
         /// <summary>
-        /// Looks up the static 'Instance' property of the given ScriptableSettings
+        /// Looks up the static 'Instance' property of the given ScriptableSettings.
         /// </summary>
-        /// <param name="settingsType">The type that refers to a singleton class, which implements an 'Instance' property</param>
-        /// <returns>The actual singleton instance of the specified class</returns>
+        /// <param name="settingsType">The type that refers to a singleton class, which implements an 'Instance' property.</param>
+        /// <returns>The actual singleton instance of the specified class.</returns>
         public static ScriptableSettingsBase GetInstanceByType(Type settingsType)
         {
             var instanceProperty = settingsType.GetProperty("Instance",
@@ -74,7 +76,7 @@ namespace Unity.XR.CoreUtils
 #endif
 
         /// <summary>
-        /// Function called when all scriptable settings are loaded and ready for use
+        /// Function called when all scriptable settings are loaded and ready for use.
         /// </summary>
         protected virtual void OnLoaded()
         {
@@ -146,24 +148,24 @@ namespace Unity.XR.CoreUtils
     }
 
     /// <summary>
-    /// Base class for ScriptableSettings
+    /// Base class for ScriptableSettings.
     /// </summary>
-    /// <typeparam name="T">The implementing type of ScriptableSettings</typeparam>
+    /// <typeparam name="T">The implementing type of ScriptableSettings.</typeparam>
     public abstract class ScriptableSettingsBase<T> : ScriptableSettingsBase where T : ScriptableObject
     {
         /// <summary>
-        /// Does the class inheriting from <see cref="ScriptableSettingsBase"/> have a <see cref="ScriptableSettingsPathAttribute"/>
+        /// Reports whether the class inheriting from <see cref="ScriptableSettingsBase"/> has a <see cref="ScriptableSettingsPathAttribute"/>
         /// defining a custom path for the asset.
         /// </summary>
         protected static readonly bool HasCustomPath = typeof(T).IsDefined(typeof(ScriptableSettingsPathAttribute), true);
 
         /// <summary>
-        /// Singleton instance field
+        /// Singleton instance field.
         /// </summary>
         protected static T BaseInstance;
 
         /// <summary>
-        /// Initialize a new ScriptableSettingsBase
+        /// Initialize a new ScriptableSettingsBase.
         /// </summary>
         protected ScriptableSettingsBase()
         {
@@ -175,9 +177,9 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Save this ScriptableSettings to an asset
+        /// Save this ScriptableSettings to an asset.
         /// </summary>
-        /// <param name="savePathFormat">Format string for creating the path of the asset</param>
+        /// <param name="savePathFormat">Format string for creating the path of the asset.</param>
         protected static void Save(string savePathFormat)
         {
             // We only save in the editor during edit mode
@@ -261,9 +263,9 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Get the filename for this ScriptableSettings
+        /// Get the filename for this ScriptableSettings.
         /// </summary>
-        /// <returns>The filename</returns>
+        /// <returns>The filename.</returns>
         protected static string GetFilePath()
         {
             var type = typeof(T);

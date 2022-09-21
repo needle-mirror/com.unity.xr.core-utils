@@ -6,19 +6,19 @@ using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Editor
 {
-    /// <inheritdoc />
     /// <summary>
-    /// Based off of Unity's Internal ScriptableSingleton with UnityEditorInternal bits removed
+    /// A helper class for accesing settings stored in <see cref="ScriptableObject"/> instances from `UnityEditor` code.
     /// </summary>
-    /// <typeparam name="T">The class being created</typeparam>
+    /// <typeparam name="T">A class derived from <see cref="ScriptableObject"/>.</typeparam>
     public abstract class EditorScriptableSettings<T> : ScriptableSettingsBase<T> where T : ScriptableObject
     {
         const string k_CustomSavePathFormat = "{0}{1}.asset";
         const string k_SavePathFormat = "{0}ScriptableSettings/{1}.asset";
 
         /// <summary>
-        /// Retrieves a reference to the given settings class. Will load and initialize once, and cache for all future access.
+        /// Retrieves a reference to the given settings class. Loads and initializes the class once, and caches the reference for all future access.
         /// </summary>
+        /// <value>A settings class derived from <see cref="ScriptableObject"/>.</value>
         public static T Instance
         {
             get

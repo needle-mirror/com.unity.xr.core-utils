@@ -15,9 +15,17 @@ using PrefabStageUtility = UnityEditor.Experimental.SceneManagement.PrefabStageU
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Class that contains <see cref="BuildValidationRule"/>
-    /// rules for testing against package correctness
+    /// Manages <see cref="BuildValidationRule"/> rules for verifying that project settings are compatible
+    /// with the features of an installed XR package. 
     /// </summary>
+    /// <remarks>
+    /// XR packages can implement a set of <see cref="BuildValidationRule"/> objects and call
+    /// <see cref="AddRules(BuildTargetGroup, IEnumerable{BuildValidationRule})"/>
+    /// to add them to the UNity project validation system. The rules are displayed to
+    /// Unity developers in the **XR Plug-in Management** section of the **Project Settings** window.
+    ///
+    /// See [Project Validation](xref:xr-core-utils-project-validation) for more information.
+    /// </remarks>
     [InitializeOnLoad]
     public static class BuildValidator
     {
@@ -32,9 +40,9 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Adds a set of <see cref="BuildValidationRule"/> for a given platform
+        /// Adds a set of <see cref="BuildValidationRule"/> for a given platform (<see cref="BuildTargetGroup"/>).
         /// </summary>
-        /// <param name="group">The platform this rule will be added to.</param>
+        /// <param name="group">The platform to which to add these rules.</param>
         /// <param name="rules">The rules to add to the platform.</param>
         public static void AddRules(BuildTargetGroup group, IEnumerable<BuildValidationRule> rules)
         {
@@ -69,10 +77,10 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Checks if a given set of types are present in the current open scene
+        /// Checks if any member of a given set of types are present in the currently open scenes.
         /// </summary>
         /// <param name="subscribers">The set of types to check on scenes.</param>
-        /// <returns>Returns True if any of the types have been found in the current open scene.</returns>
+        /// <returns><see langword="true"/> if any of the types have been found in the currently open scenes.</returns>
         public static bool HasTypesInSceneSetup(IEnumerable<Type> subscribers)
         {
             if (Application.isPlaying)

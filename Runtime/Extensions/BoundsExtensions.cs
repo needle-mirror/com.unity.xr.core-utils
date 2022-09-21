@@ -3,16 +3,18 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for the Bounds type
+    /// Extension methods for the <see cref="Bounds"/> type.
     /// </summary>
     public static class BoundsExtensions
     {
         /// <summary>
-        /// Returns a whether the given bounds are contained completely within this one
+        /// Returns a whether the given bounds are contained completely within this one.
         /// </summary>
-        /// <param name="outerBounds">The outer bounds which may contain the inner bounds</param>
-        /// <param name="innerBounds">The inner bounds that may or may not fit within outerBounds</param>
-        /// <returns>True if outerBounds contains innerBounds completely</returns>
+        /// <remarks>If a boundary value is the same for both <see cref="Bounds"/> objects,
+        /// that boundary is considered to be within the <paramref name="outerBounds"/>.</remarks>
+        /// <param name="outerBounds">The outer bounds which may contain the inner bounds.</param>
+        /// <param name="innerBounds">The inner bounds that may or may not fit within outerBounds.</param>
+        /// <returns>True if outerBounds completely encloses innerBounds.</returns>
         public static bool ContainsCompletely(this Bounds outerBounds, Bounds innerBounds)
         {
             var outerBoundsMax = outerBounds.max;

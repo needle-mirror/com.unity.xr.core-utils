@@ -3,13 +3,13 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extensions to <c>System.Guid</c>
+    /// Extensions to the <see cref="System.Guid"/> type.
     /// </summary>
     public static class GuidExtensions
     {
         /// <summary>
         /// Decomposes a 16-byte <c>Guid</c> into two 8-byte <c>ulong</c>s.
-        /// Recompose using <c>Unity.XR.CoreUtils.GuidUtil.Compose</c>.
+        /// Recompose with <see cref="GuidUtil.Compose(ulong, ulong)"/>.
         /// </summary>
         /// <param name="guid">The <c>Guid</c> being extended</param>
         /// <param name="low">The lower 8 bytes of the guid.</param>

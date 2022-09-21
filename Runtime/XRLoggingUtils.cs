@@ -5,8 +5,15 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility methods for logging. These methods will not log anything if tests are being run via command line
+    /// Utility methods for logging.
     /// </summary>
+    /// <remarks>
+    /// These methods mirror the standard <see cref="Debug"/> log methods, but do not log
+    /// anything if tests are being run via command line (using `-runTests`).
+    ///
+    /// See [Running tests from the command line](https://docs.unity3d.com/Packages/com.unity.test-framework@latest?subfolder=/manual/reference-command-line.html)
+    /// for information about running tests. 
+    /// </remarks>
     public static class XRLoggingUtils
     {
         static readonly bool k_DontLogAnything;
@@ -17,7 +24,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Debug.Log, but will not print anything if tests are being run
+        /// Same as <see cref="Debug.Log(object, UnityEngine.Object)"/>, but does not print anything if tests are being run.
         /// </summary>
         /// <param name="message">Log message for display.</param>
         /// <param name="context">Object to which the message applies.</param>
@@ -28,7 +35,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Debug.LogWarning, but will not print anything if tests are being run
+        /// Same as <see cref="Debug.LogWarning(object, UnityEngine.Object)"/>, but does not print anything if tests are being run.
         /// </summary>
         /// <param name="message">Warning message for display.</param>
         /// <param name="context">Object to which the message applies.</param>
@@ -39,7 +46,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Debug.LogError, but will not print anything if tests are being run
+        /// Same as <see cref="Debug.LogError(object, UnityEngine.Object)"/>, but does not print anything if tests are being run.
         /// </summary>
         /// <param name="message">Error message for display.</param>
         /// <param name="context">Object to which the message applies.</param>
@@ -50,7 +57,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Debug.LogException, but will not print anything if tests are being run
+        /// Same as <see cref="Debug.LogException(Exception, UnityEngine.Object)"/>, but does not print anything if tests are being run.
         /// </summary>
         /// <param name="exception">Runtime Exception.</param>
         /// <param name="context">Object to which the message applies.</param>

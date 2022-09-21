@@ -3,8 +3,15 @@ using System;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Validation rule used for assessing package setup correctness 
+    /// Defines a validation rule used for assessing package setup correctness. 
     /// </summary>
+    /// <remarks>
+    /// Use <see cref="CheckPredicate"/> to define the validation logic. Use <see cref="FixIt"/> to
+    /// provide logic correct the validation problem. The other properties of `BuildValidationRule`
+    /// define when the rule function is executed and how the rule is displayed in the Editor.
+    ///
+    /// See [Project Validation](xref:xr-core-utils-project-validation) for more information.
+    /// </remarks>
     public class BuildValidationRule
     {
         /// <summary>
@@ -19,12 +26,13 @@ namespace Unity.XR.CoreUtils.Editor
         public string Category { get; set; }
 
         /// <summary>
-        /// Message describing the rule that will be showed to the developer if it fails.
+        /// Message describing the rule that will be shown to the developer when this rule fails.
         /// </summary>
         public string Message { get; set; }
 
         /// <summary>
-        /// Lambda function that returns true if validation passes, false if validation fails.
+        /// Lambda function that returns <see langword="true"/> if validation passes.
+        /// Otherwise, returns <see langword="false"/>.
         /// </summary>
         public Func<bool> CheckPredicate { get; set; }
 
@@ -39,15 +47,15 @@ namespace Unity.XR.CoreUtils.Editor
         public string FixItMessage { get; set; }
 
         /// <summary>
-        /// True if the fixIt Lambda function performs a function that is automatic and does not require user input.
-        /// If your fixIt function requires user input, set fixitAutomatic to false to prevent the fixIt method from
-        /// being executed during fixAll.
+        /// Returns <see langword="true"/> if the <see cref="FixIt"/> Lambda function performs a function that is automatic and does not require user input.
+        /// If your `FixIt` function requires user input, set `FixitAutomatic` to <see langword="false"/> to prevent the `FixIt` method from
+        /// being executed when the user clicks the **Fix All** button in the **Project Validation** category of **Project Settings**.
         /// </summary>
         public bool FixItAutomatic { get; set; } = true;
 
         /// <summary>
-        /// If true, failing the rule is treated as an error and stops the build.
-        /// If false, failing the rule is treated as a warning and it doesn't stop the build. The developer has the
+        /// If <see langword="true"/>, failing the rule is treated as an error and stops the build.
+        /// If <see langword="false"/>, failing the rule is treated as a warning and it doesn't stop the build. The developer has the
         /// option to correct the problem, but is not required to.
         /// </summary>
         public bool Error { get; set; }
@@ -63,9 +71,13 @@ namespace Unity.XR.CoreUtils.Editor
         public string HelpLink { get; set; }
 
         /// <summary>
-        /// If true, this build rule will only run on the currently loaded editor scenes when not in prefab isolation.
-        /// If false, this build rule will always run.
+        /// Whether to prevent this build rule from running when the Editor is in the
+        /// [Prefab mode](xref:EditingInPrefabMode)).
         /// </summary>
+        /// <remarks>
+        /// Set this property to <see langword="true"/> when you have a rule that checks whether a Scene is setup correctly, but which
+        /// fails in the special Editor Prefab mode. Set this property to <see langword="false"/> for other, general purpose rules.
+        /// </remarks>
         public bool SceneOnlyValidation { get; set; }
     }
 }

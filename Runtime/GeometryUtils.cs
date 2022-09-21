@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility methods for common geometric operations
+    /// Utility methods for common geometric operations.
     /// </summary>
     public static class GeometryUtils
     {
@@ -24,13 +24,13 @@ namespace Unity.XR.CoreUtils
         static readonly HashSet<int> k_HullIndices = new HashSet<int>();
 
         /// <summary>
-        /// Finds the two closest adjacent vertices in a polygon, to a separate world space position
+        /// Finds the side of a polygon closest to a specified world space position.
         /// </summary>
-        /// <param name="vertices">An outline of a polygon defined by vertices, each one connected to the next</param>
-        /// <param name="point">The position in space to find the two closest outline vertices to</param>
-        /// <param name="vertexA">One vertex of the nearest edge</param>
-        /// <param name="vertexB">The other vertex of the nearest edge</param>
-        /// <returns>True if a nearest edge could be found</returns>
+        /// <param name="vertices">Vertices defining the outline of a polygon.</param>
+        /// <param name="point">The position in space to find the two closest outline vertices to.</param>
+        /// <param name="vertexA">The coordinates of the first vertex of the nearest side is assigned to this `out` parameter.</param>
+        /// <param name="vertexB">The coordinates of the second vertex of the nearest side is assigned to this `out` parameter.</param>
+        /// <returns>True if a nearest edge could be found.</returns>
         public static bool FindClosestEdge(List<Vector3> vertices, Vector3 point,
             out Vector3 vertexA, out Vector3 vertexB)
         {
@@ -66,11 +66,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Finds the furthest intersection point on a polygon from a point in space
+        /// Finds the point on a polygon perimeter farthest from a specified point in space.
         /// </summary>
-        /// <param name="vertices">An outline of a polygon defined by vertices, each one connected to the next</param>
-        /// <param name="point">The position in world space to find the furthest intersection point </param>
-        /// <returns>A world space position of a point on the polygon that is as far from the input point as possible</returns>
+        /// <param name="vertices">Vertices defining the outline of a polygon.</param>
+        /// <param name="point">The position in world space to find the furthest intersection point.</param>
+        /// <returns>A world space position of a point on the polygon that is as far from the input point as possible.
+        /// Returns <see cref="Vector3.zero"/> if <paramref name="vertices"/> contains less than tree points.</returns>
         public static Vector3 PointOnOppositeSideOfPolygon(List<Vector3> vertices, Vector3 point)
         {
             const float oppositeSideBufferScale = 100.0f;
@@ -110,17 +111,23 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Given a number of perimeter vertices, generate a triangle buffer and add it to the given list
-        /// The winding order is reversible. Example winding orders:
-        /// Normal:   Reverse:
-        /// 0, 1, 2,  0, 2, 1,
-        /// 0, 2, 3,  0, 3, 2,
-        /// 0, 3, 4,  0, 4, 3,
-        /// --etc--
+        /// Generates a standard triangle buffer with a given number of indices and adds it to the specified list. 
         /// </summary>
-        /// <param name="indices">The list to which the triangle buffer will be added</param>
-        /// <param name="vertCount">The number of perimeter vertices</param>
-        /// <param name="reverse">(Optional) Whether to reverse the winding order of the vertices</param>
+        /// <remarks>
+        /// Set <paramref name="reverse"/> <see langword="true"/> to reverse the normal winding order.
+        ///
+        /// Example winding orders:
+        /// 
+        /// | **Normal winding** | **Reverse winding** |
+        /// | :----------------- | :------------------ |
+        /// | 0, 1, 2,  | 0, 2, 1,
+        /// | 0, 2, 3,  | 0, 3, 2,
+        /// | 0, 3, 4,  | 0, 4, 3,
+        /// | ... | ... |
+        /// </remarks>
+        /// <param name="indices">The list to which to add the triangle buffer. The list is not cleared.</param>
+        /// <param name="vertCount">The number of perimeter vertices.</param>
+        /// <param name="reverse">(Optional) Whether to reverse the winding order of the vertices.</param>
         public static void TriangulatePolygon(List<int> indices, int vertCount, bool reverse = false)
         {
             vertCount-= 2;
@@ -146,10 +153,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
+        /// Finds the times at which two linear trajectories are the closest to each other.
+        /// </summary>
+        /// <remarks>
         /// Two trajectories which may or may not intersect have a time along each path which minimizes the distance
         /// between trajectories. This function finds those two times. The same logic applies to line segments, where
         /// the one point is the starting position, and the second point is the position at t = 1.
-        /// </summary>
+        /// </remarks>
         /// <param name="positionA">Starting point of object a</param>
         /// <param name="velocityA">Velocity (direction and magnitude) of object a</param>
         /// <param name="positionB">Starting point of object b</param>
@@ -187,19 +197,22 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Two trajectories which may or may not intersect have a time along each path which minimizes the distance
+        /// Finds the times of closest approach between two non-parallel trajectories.
+        /// </summary>
+        /// <remarks>
+        /// Two trajectories, which may or may not intersect, have a time along each path that minimizes the distance
         /// between trajectories. This function finds those two times. The same logic applies to line segments, where
         /// the one point is the starting position, and the second point is the position at t = 1.
         /// This function ignores the y components.
-        /// </summary>
-        /// <param name="positionA">Starting point of object a</param>
-        /// <param name="velocityA">Velocity (direction and magnitude) of object a</param>
-        /// <param name="positionB">Starting point of object b</param>
-        /// <param name="velocityB">Velocity (direction and magnitude) of object b</param>
-        /// <param name="s">The time along trajectory a</param>
-        /// <param name="t">The time along trajectory b</param>
-        /// <param name="parallelTest">(Optional) epsilon value for parallel lines test</param>
-        /// <returns>False if the lines are parallel, otherwise true</returns>
+        /// </remarks>
+        /// <param name="positionA">Starting point of object A.</param>
+        /// <param name="velocityA">Velocity (direction and magnitude) of object A.</param>
+        /// <param name="positionB">Starting point of object B.</param>
+        /// <param name="velocityB">Velocity (direction and magnitude) of object B.</param>
+        /// <param name="s">Set to the calculated time of closest approach along trajectory A.</param>
+        /// <param name="t">Set to the calculated time of closest approach along trajectory B.</param>
+        /// <param name="parallelTest">(Optional) A custom epsilon value for teh parallel lines test.</param>
+        /// <returns>False if the lines are parallel, otherwise true.</returns>
         public static bool ClosestTimesOnTwoLinesXZ(Vector3 positionA, Vector3 velocityA, Vector3 positionB, Vector3 velocityB,
             out float s, out float t, double parallelTest = double.Epsilon)
         {
@@ -229,14 +242,18 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Finds the points along two line segments which are closest together
+        /// Finds the closest points between two line segments.
         /// </summary>
-        /// <param name="a">Starting point of segment A</param>
-        /// <param name="aLineVector">Vector from point a to the end point of segment A</param>
-        /// <param name="b">Starting point of segment B</param>
-        /// <param name="bLineVector">Vector from point b to the end point of segment B</param>
-        /// <param name="resultA">The resulting point along segment A</param>
-        /// <param name="resultB">The resulting point along segment B</param>
+        /// <remarks>
+        /// If the two line segments are parallel, then <paramref name="resultA"/> and <paramref name="resultB"/>
+        /// are set to the midpoint of the respective line segments.
+        /// </remarks>
+        /// <param name="a">Starting point of segment A.</param>
+        /// <param name="aLineVector">Vector from point a to the end point of segment A.</param>
+        /// <param name="b">Starting point of segment B.</param>
+        /// <param name="bLineVector">Vector from point b to the end point of segment B.</param>
+        /// <param name="resultA">Set to the coordinates of the point along segment A that is closest to any point on segment B.</param>
+        /// <param name="resultB">Set to the coordinates of the point along segment B that is closest to any point on segment A.</param>
         /// <param name="parallelTest">(Optional) epsilon value for parallel lines test</param>
         /// <returns>True if the line segments are parallel, false otherwise</returns>
         public static bool ClosestPointsOnTwoLineSegments(Vector3 a, Vector3 aLineVector, Vector3 b, Vector3 bLineVector,
@@ -317,12 +334,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns the closest point along a line segment to a given point
+        /// Returns the point along a line segment closest to a given point.
         /// </summary>
-        /// <param name="point">The point to test against the line segment</param>
-        /// <param name="a">The first point of the line segment</param>
-        /// <param name="b">The second point of the line segment</param>
-        /// <returns>The closest point along the line segment to <paramref name="point"/></returns>
+        /// <param name="point">The point to test against the line segment.</param>
+        /// <param name="a">The first point of the line segment.</param>
+        /// <param name="b">The second point of the line segment.</param>
+        /// <returns>The point along the line segment closest to <paramref name="point"/>.</returns>
         public static Vector3 ClosestPointOnLineSegment(Vector3 point, Vector3 a, Vector3 b)
         {
             var segment = b - a;
@@ -338,13 +355,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Find the closest points on the perimeter of a pair of polygons
+        /// Finds the closest points of the perimeters of two polygons.
         /// </summary>
-        /// <param name="verticesA">The vertex list of polygon A</param>
-        /// <param name="verticesB">The vertex list of polygon B</param>
-        /// <param name="pointA">The point on polygon A's closest to an edge of polygon B</param>
-        /// <param name="pointB">The point on polygon B's closest to an edge of polygon A</param>
-        /// <param name="parallelTest">The minimum distance between closest approaches used to detect parallel line segments</param>
+        /// <param name="verticesA">Vertices defining the outline of polygon A.</param>
+        /// <param name="verticesB">Vertices defining the outline of polygon B.</param>
+        /// <param name="pointA">The point on polygon A closest to an edge of polygon B.</param>
+        /// <param name="pointB">The point on polygon B closest to an edge of polygon A.</param>
+        /// <param name="parallelTest">The minimum distance between closest approaches used to detect parallel line segments.</param>
         public static void ClosestPolygonApproach(List<Vector3> verticesA, List<Vector3> verticesB,
             out Vector3 pointA, out Vector3 pointB, float parallelTest = 0f)
         {
@@ -395,11 +412,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Determines if a point is inside of a polygon on the XZ plane, the y value is not used
+        /// Determines if a point is inside of a polygon on the XZ plane. (The y value is not used.)
         /// </summary>
-        /// <param name="testPoint">The point to test</param>
-        /// <param name="vertices">The vertices that make up the bounds of the polygon</param>
-        /// <returns>True if the point is inside the polygon, false otherwise</returns>
+        /// <param name="testPoint">The point to test.</param>
+        /// <param name="vertices">Vertices defining the outline of a polygon.</param>
+        /// <returns>True if the point is inside the polygon, false otherwise.</returns>
         public static bool PointInPolygon(Vector3 testPoint, List<Vector3> vertices)
         {
             // Sanity check - not enough bounds vertices = nothing to be inside of
@@ -474,11 +491,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Determines if a point is inside of a convex polygon and lies on the surface
+        /// Determines if a point is inside of a convex polygon and lies on the surface.
         /// </summary>
-        /// <param name="testPoint">The point to test</param>
-        /// <param name="vertices">The vertices that make up the bounds of the polygon, these should be convex and coplanar but can have any normal</param>
-        /// <returns>True if the point is inside the polygon and coplanar, false otherwise</returns>
+        /// <param name="testPoint">The point to test.</param>
+        /// <param name="vertices">Vertices defining the outline of the polygon. The polygon must be convex.
+        /// The vertices must be coplanar, but can lie on any arbitrary plane.</param>
+        /// <returns>True if the point is inside the polygon and coplanar, false otherwise.</returns>
         public static bool PointInPolygon3D(Vector3 testPoint, List<Vector3> vertices)
         {
             // Not enough bounds vertices = nothing to be inside of
@@ -508,12 +526,12 @@ namespace Unity.XR.CoreUtils
 
 
         /// <summary>
-        /// Returns the closest point on a plane to another point
+        /// Returns the point on a plane closest to a specified point.
         /// </summary>
-        /// <param name="planeNormal">The plane normal</param>
-        /// <param name="planePoint">A point on the plane</param>
-        /// <param name="point">The other point</param>
-        /// <returns>The closest point on the plane to the other point</returns>
+        /// <param name="planeNormal">The plane normal. (It does not need to be normalized.)</param>
+        /// <param name="planePoint">Any point on the plane.</param>
+        /// <param name="point">The point to test.</param>
+        /// <returns>The point on the plane closest to <paramref name="point"/>.</returns>
         public static Vector3 ProjectPointOnPlane(Vector3 planeNormal, Vector3 planePoint, Vector3 point)
         {
             var distance = -Vector3.Dot(planeNormal.normalized, point - planePoint);
@@ -521,12 +539,16 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Finds the smallest convex polygon in the xz plane that contains <paramref name="points"/>
-        /// Based on algorithm outlined in https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html
+        /// Finds the smallest convex polygon in the XZ plane that contains <paramref name="points"/>.
         /// </summary>
-        /// <param name="points">Points used to find the convex hull. The y values of these points are ignored.</param>
-        /// <param name="hull">List that will be filled out with vertices that define a convex polygon</param>
-        /// <returns>True if <paramref name="points"/> has at least 3 entries, false otherwise</returns>
+        /// <remarks>
+        /// Based on algorithm outlined in
+        /// <see href="https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html">
+        /// Gift Wrapping Convex Hull Algorithm With Unity Implementation</see>.
+        /// </remarks>
+        /// <param name="points">Points used to find the convex hull. The y coordinates of these points are ignored.</param>
+        /// <param name="hull">The vertices that define the smallest convex polygon are assigned to this list. The list is not cleared.</param>
+        /// <returns>True if <paramref name="points"/> has at least 3 elements, false otherwise.</returns>
         public static bool ConvexHull2D(List<Vector3> points, List<Vector3> hull)
         {
             if (points.Count < 3)
@@ -618,10 +640,10 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Given a list of vertices of a 2d convex polygon, find the centroid of the polygon.
-        /// This implementation operates only on the X and Z axes
+        /// This implementation operates only on the X and Z axes.
         /// </summary>
-        /// <param name="vertices">The vertices of the 2D polygon</param>
-        /// <returns>The centroid point for the polygon</returns>
+        /// <param name="vertices">Vertices defining the outline of a 2D polygon.</param>
+        /// <returns>The centroid point for the polygon.</returns>
         public static Vector3 PolygonCentroid2D(List<Vector3> vertices)
         {
             var vertexCount = vertices.Count;
@@ -671,13 +693,15 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Find the oriented minimum bounding box for a 2D convex hull.
+        /// </summary>
+        /// <remarks>
         /// This implements the 'rotating calipers' algorithm and operates in linear time.
         /// Operates only on the X and Z axes of the input.
-        /// </summary>
-        /// <param name="convexHull">The list of all points in a 2D convex hull on the x and z axes, in a clockwise winding order</param>
+        /// </remarks>
+        /// <param name="convexHull">The list of all points in a 2D convex hull on the X and Z axes, in a clockwise winding order.</param>
         /// <param name="boundingBox">An array of length 4 to fill with the vertex positions of the bounding box,
-        /// in the order { top left, bottom left, bottom right, top right }</param>
-        /// <returns>The size of the bounding box on each axis. Y here maps to the Z axis</returns>
+        /// in the order `{ top left, bottom left, bottom right, top right }`.</param>
+        /// <returns>The size of the bounding box on each axis. Y here maps to the Z axis.</returns>
         public static Vector2 OrientedMinimumBoundingBox2D(List<Vector3> convexHull, Vector3[] boundingBox)
         {
             // Caliper lines start axis-aligned as shown before we orient
@@ -898,10 +922,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Given a 2D bounding box's vertices, find the rotation of the box
+        /// Given a 2D bounding box's vertices, find the rotation of the box.
         /// </summary>
         /// <param name="vertices">The 4 vertices of the bounding box, in the order
-        /// { top left, bottom left, bottom right, top right }</param>
+        /// `{ top left, bottom left, bottom right, top right }`.</param>
         /// <returns>The rotation of the box, with the horizontal side aligned to the x axis and the
         /// vertical side aligned to the z axis</returns>
         public static Quaternion RotationForBox(Vector3[] vertices)
@@ -913,11 +937,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Finds the area of a convex polygon
+        /// Finds the area of a convex polygon.
         /// </summary>
-        /// <param name="vertices">The vertices that make up the bounds of the polygon.
-        /// These must be convex but can be in either winding order.</param>
-        /// <returns>The area of the polygon</returns>
+        /// <param name="vertices">Vertices defining the outline of a polygon.
+        /// The polygon must be convex, but can be in either winding order.</param>
+        /// <returns>The area of the polygon.</returns>
         public static float ConvexPolygonArea(List<Vector3> vertices)
         {
             var count = vertices.Count;
@@ -940,12 +964,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Determines if one polygon lies completely inside a coplanar polygon
+        /// Determines if one polygon lies completely inside another coplanar polygon.
         /// </summary>
-        /// <param name="polygonA">The polygon to test for lying inside <paramref name="polygonB"/></param>
+        /// <param name="polygonA">The polygon to test for lying inside <paramref name="polygonB"/>.</param>
         /// <param name="polygonB">The polygon to test for containing <paramref name="polygonA"/>.
-        /// Must be convex and coplanar with <paramref name="polygonA"/></param>
-        /// <returns>True if <paramref name="polygonA"/> lies completely inside <paramref name="polygonB"/>, false otherwise</returns>
+        /// Must be convex and coplanar with <paramref name="polygonA"/>.</param>
+        /// <returns>True if <paramref name="polygonA"/> lies completely inside <paramref name="polygonB"/>, false otherwise.</returns>
         public static bool PolygonInPolygon(List<Vector3> polygonA, List<Vector3> polygonB)
         {
             if (polygonA.Count < 1)
@@ -964,23 +988,22 @@ namespace Unity.XR.CoreUtils
         /// Determines if two convex coplanar polygons are within a certain distance from each other.
         /// This includes the polygon perimeters as well as their interiors.
         /// </summary>
-        /// <param name="polygonA">The first polygon to test. Must be convex and coplanar with <paramref name="polygonB"/></param>
-        /// <param name="polygonB">The second polygon to test. Must be convex and coplanar with <paramref name="polygonA"/></param>
-        /// <param name="maxDistance">The maximum distance allowed between the two polygons</param>
-        /// <returns>True if the polygons are within the specified distance from each other, false otherwise</returns>
+        /// <param name="polygonA">The first polygon to test. Must be convex and coplanar with <paramref name="polygonB"/>.</param>
+        /// <param name="polygonB">The second polygon to test. Must be convex and coplanar with <paramref name="polygonA"/>.</param>
+        /// <param name="maxDistance">The maximum distance allowed between the two polygons.</param>
+        /// <returns>True if the polygons are within the specified distance from each other, false otherwise.</returns>
         public static bool PolygonsWithinRange(List<Vector3> polygonA, List<Vector3> polygonB, float maxDistance)
         {
             return PolygonsWithinSqRange(polygonA, polygonB, maxDistance * maxDistance);
         }
 
         /// <summary>
-        /// Determines if two convex coplanar polygons are within a certain distance from each other.
-        /// This includes the polygon perimeters as well as their interiors.
+        /// Determines if two convex coplanar polygons are within a specified distance from each other.
         /// </summary>
-        /// <param name="polygonA">The first polygon to test. Must be convex and coplanar with <paramref name="polygonB"/></param>
-        /// <param name="polygonB">The second polygon to test. Must be convex and coplanar with <paramref name="polygonA"/></param>
-        /// <param name="maxSqDistance">The square of the maximum distance allowed between the two polygons</param>
-        /// <returns>True if the polygons are within the specified distance from each other, false otherwise</returns>
+        /// <param name="polygonA">The first polygon to test. Must be convex and coplanar with <paramref name="polygonB"/>.</param>
+        /// <param name="polygonB">The second polygon to test. Must be convex and coplanar with <paramref name="polygonA"/>.</param>
+        /// <param name="maxSqDistance">The square of the maximum distance allowed between the two polygons.</param>
+        /// <returns>True if the polygons are within the specified distance from each other, false otherwise.</returns>
         public static bool PolygonsWithinSqRange(List<Vector3> polygonA, List<Vector3> polygonB, float maxSqDistance)
         {
             ClosestPolygonApproach(polygonA, polygonB, out var pointA, out var pointB);
@@ -989,12 +1012,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Determines if a point lies on the bounds of a polygon, ignoring the y components
+        /// Determines if a point lies on the bounds of a polygon, ignoring the y components.
         /// </summary>
-        /// <param name="testPoint">The point to test</param>
-        /// <param name="vertices">The vertices that make up the bounds of the polygon</param>
-        /// <param name="epsilon">Custom epsilon value used when testing if the point lies on an edge</param>
-        /// <returns>True if the point lies on any edge of the polygon, false otherwise</returns>
+        /// <param name="testPoint">The point to test.</param>
+        /// <param name="vertices">Vertices defining the outline of a polygon.</param>
+        /// <param name="epsilon">Custom epsilon value used when testing if the point lies on an edge.</param>
+        /// <returns>True if the point lies on any edge of the polygon, false otherwise.</returns>
         public static bool PointOnPolygonBoundsXZ(Vector3 testPoint, List<Vector3> vertices, float epsilon = float.Epsilon)
         {
             var verticesCount = vertices.Count;
@@ -1016,13 +1039,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Determines if a point lies on a line segment, ignoring the y components
+        /// Determines if a point lies on a line segment, ignoring the y components.
         /// </summary>
-        /// <param name="testPoint">The point to test</param>
-        /// <param name="lineStart">Starting point of the line segment</param>
-        /// <param name="lineEnd">Ending point of the line segment</param>
-        /// <param name="epsilon">Custom epsilon value used for comparison checks</param>
-        /// <returns>True if the point lies on the line segment, false otherwise</returns>
+        /// <param name="testPoint">The point to test.</param>
+        /// <param name="lineStart">Starting point of the line segment.</param>
+        /// <param name="lineEnd">Ending point of the line segment.</param>
+        /// <param name="epsilon">Custom epsilon value used for comparison checks.</param>
+        /// <returns>True if the point lies on the line segment, false otherwise.</returns>
         public static bool PointOnLineSegmentXZ(Vector3 testPoint, Vector3 lineStart, Vector3 lineEnd, float epsilon = float.Epsilon)
         {
             var startToEnd = lineEnd - lineStart;
@@ -1061,18 +1084,18 @@ namespace Unity.XR.CoreUtils
         /// Gets a corrected polygon uv pose from a given plane pose.
         /// </summary>
         /// <param name="pose">The source plane pose.</param>
-        /// <returns>The rotation-corrected pose for calculating UVs</returns>
+        /// <returns>The rotation-corrected pose for calculating UVs.</returns>
         public static Pose PolygonUVPoseFromPlanePose(Pose pose)
         {
             return new Pose(k_Zero, NormalizeRotationKeepingUp(pose.rotation));
         }
 
         /// <summary>
-        /// Takes a Polygon UV coordinate, and produces a pose-corrected UV coordinate.
+        /// Takes a polygon UV coordinate, and produces a pose-corrected UV coordinate.
         /// </summary>
-        /// <param name="vertexPos">Vertex to transform</param>
-        /// <param name="planePose">Polygon pose</param>
-        /// <param name="uvPose">UV-correction Pose</param>
+        /// <param name="vertexPos">Vertex to transform.</param>
+        /// <param name="planePose">Polygon pose.</param>
+        /// <param name="uvPose">UV-correction Pose.</param>
         /// <returns>The corrected UV coordinate.</returns>
         public static Vector2 PolygonVertexToUV(Vector3 vertexPos, Pose planePose, Pose uvPose)
         {

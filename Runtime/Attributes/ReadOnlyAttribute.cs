@@ -3,7 +3,8 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Serialized fields marked with the ReadOnly attribute will use a CustomPropertyDrawer to disable UI on the property
+    /// Serialized fields marked with this ReadOnly attribute use a CustomPropertyDrawer that
+    /// makes the property non-editable.
     /// </summary>
     public class ReadOnlyAttribute : PropertyAttribute
     {}

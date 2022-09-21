@@ -33,5 +33,35 @@ namespace Unity.XR.CoreUtils.EditorTests
             var expected = new Vector3(-.1f, -.25f, -.5f);
             Assert.That(vec3.Inverse(), Is.EqualTo(expected).Within(k_Delta));
         }
+
+        [Test]
+        public void MultiplyTest()
+        {
+            var initial = new Vector3(2f, 2f, 2f);
+            var scale = new Vector3(3f, 3f, 3f);
+            var result = initial.Multiply(scale);
+            var expected = new Vector3(6f, 6f, 6f);
+            Assert.That(result, Is.EqualTo(expected).Within(k_Delta));
+        }
+
+        [Test]
+        public void DivisionTest()
+        {
+            var initial = new Vector3(6f, 6f, 6f);
+            var scale = new Vector3(3f, 3f, 3f);
+            var result = initial.Divide(scale);
+            var expected = new Vector3(2f, 2f, 2f);
+            Assert.That(result, Is.EqualTo(expected).Within(k_Delta));
+        }
+
+        [Test]
+        public void SafeDivisionTest()
+        {
+            var initial = new Vector3(6f, 6f, 6f);
+            var scale = new Vector3(3f, 0, 3f);
+            var result = initial.SafeDivide(scale);
+            var expected = new Vector3(2f, 0f, 2f);
+            Assert.That(result, Is.EqualTo(expected).Within(k_Delta));
+        }
     }
 }

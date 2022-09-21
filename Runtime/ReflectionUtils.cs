@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility methods for common reflection-based operations
+    /// Utility methods for common reflection-based operations.
     /// </summary>
     public static class ReflectionUtils
     {
@@ -69,15 +69,18 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Capture type information from current assemblies into a cache
+        /// Caches type information from all currently loaded assemblies.
         /// </summary>
         public static void PreWarmTypeCache() { GetCachedAssemblyTypeMaps(); }
 
         /// <summary>
-        /// Iterate through all assemblies and execute a method on each one
-        /// Catches ReflectionTypeLoadExceptions in each iteration of the loop
+        /// Executes a delegate function for every assembly that can be loaded.
         /// </summary>
-        /// <param name="callback">The callback method to execute for each assembly</param>
+        /// <remarks>
+        /// `ForEachAssembly` iterates through all assemblies and executes a method on each one.
+        /// If an <see cref="ReflectionTypeLoadException"/> is thrown, it is caught and ignored.
+        /// </remarks>
+        /// <param name="callback">The callback method to execute for each assembly.</param>
         public static void ForEachAssembly(Action<Assembly> callback)
         {
             var assemblies = GetCachedAssemblies();
@@ -95,9 +98,9 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Execute a callback for each type in every assembly
+        /// Executes a delegate function for each type in every assembly.
         /// </summary>
-        /// <param name="callback">The callback to execute</param>
+        /// <param name="callback">The callback to execute.</param>
         public static void ForEachType(Action<Type> callback)
         {
             var typesPerAssembly = GetCachedTypesPerAssembly();
@@ -111,10 +114,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Search all assemblies for a type that matches a given predicate delegate
+        /// Search all assemblies for a type that matches a given predicate delegate.
         /// </summary>
-        /// <param name="predicate">The predicate; Returns true for the type that matches the search</param>
-        /// <returns>The type found, or null if no matching type exists</returns>
+        /// <param name="predicate">The predicate function. Must return <see langword="true"/> for the type that matches the search.</param>
+        /// <returns>The first type for which <paramref name="predicate"/> returns <see langword="true"/>, or `null` if no matching type exists.</returns>
         public static Type FindType(Func<Type, bool> predicate)
         {
             var typesPerAssembly = GetCachedTypesPerAssembly();
@@ -131,10 +134,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Find a type in any assembly by its full name
+        /// Find a type in any assembly by its full name.
         /// </summary>
-        /// <param name="fullName">The name of the type as returned by Type.FullName</param>
-        /// <returns>The type found, or null if no matching type exists</returns>
+        /// <param name="fullName">The name of the type as returned by <see cref="Type.FullName"/>.</param>
+        /// <returns>The type found, or null if no matching type exists.</returns>
         public static Type FindTypeByFullName(string fullName)
         {
             var typesPerAssembly = GetCachedAssemblyTypeMaps();
@@ -148,10 +151,19 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Search all assemblies for a set of types that matches a set of predicates
+        /// Search all assemblies for a set of types that matches any one of a set of predicates.
         /// </summary>
-        /// <param name="predicates">The predicates; Returns true for the type that matches each search</param>
-        /// <param name="resultList">The list to which found types will be added</param>
+        /// <remarks>
+        /// This function tests each predicate against each type in each assembly. If the predicate returns
+        /// <see langword="true"/> for a type, then that <see cref="Type"/> object is assigned to the corresponding index of
+        /// the <paramref name="resultList"/>. If a predicate returns <see langword="true"/> for more than one type, then the
+        /// last matching result is used. If no type matches the predicate, then that index of <paramref name="resultList"/>
+        /// is left unchanged.
+        /// </remarks>
+        /// <param name="predicates">The predicate functions. A predicate function must return <see langword="true"/>
+        /// for the type that matches the search and should only match one type.</param>
+        /// <param name="resultList">The list to which found types will be added. The list must have
+        /// the same number of elements as the <paramref name="predicates"/> list.</param>
         public static void FindTypesBatch(List<Func<Type, bool>> predicates, List<Type> resultList)
         {
             var typesPerAssembly = GetCachedTypesPerAssembly();
@@ -170,10 +182,15 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Search all assemblies for types that match a set of full names
+        /// Searches all assemblies for a set of types by their <see cref="Type.FullName"/> strings.
         /// </summary>
-        /// <param name="typeNames">A list containing the names of the types to find</param>
-        /// <param name="resultList">An empty list which will be used to collect matching types</param>
+        /// <remarks>
+        /// If a type name in <paramref name="typeNames"/> is not found, then the corresponding index of <paramref name="resultList"/>
+        /// is set to `null`.
+        /// </remarks>
+        /// <param name="typeNames">A list containing the <see cref="Type.FullName"/> strings of the types to find.</param>
+        /// <param name="resultList">An empty list to which any matching <see cref="Type"/> objects are added. A
+        /// reuslt in <paramref name="resultList"/> has the same index as corresponding name in <paramref name="typeNames"/>.</param>
         public static void FindTypesByFullNameBatch(List<string> typeNames, List<Type> resultList)
         {
             var assemblyTypeMap = GetCachedAssemblyTypeMaps();
@@ -197,10 +214,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Searches for an assembly with the given simple name and returns the type with the given full name in that assembly
+        /// Searches for a type by assembly simple name and its <see cref="Type.FullName"/>.
+        /// an assembly with the given simple name and returns the type with the given full name in that assembly
         /// </summary>
-        /// <param name="assemblyName">Simple name of the assembly</param>
-        /// <param name="typeName">Full name of the type to find</param>
+        /// <param name="assemblyName">Simple name of the assembly (<see cref="Assembly.GetName()"/>).</param>
+        /// <param name="typeName">Full name of the type to find (<see cref="Type.FullName"/>).</param>
         /// <returns>The type if found, otherwise null</returns>
         public static Type FindTypeInAssemblyByFullName(string assemblyName, string typeName)
         {
@@ -218,10 +236,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Clean up a variable name for display in UI
+        /// Cleans up a variable name for display in UI.
         /// </summary>
-        /// <param name="name">The variable name to clean up</param>
-        /// <returns>The display name for the variable</returns>
+        /// <param name="name">The variable name to clean up.</param>
+        /// <returns>The display name for the variable.</returns>
         public static string NicifyVariableName(string name)
         {
             if (name.StartsWith("m_"))

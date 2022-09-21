@@ -11,8 +11,8 @@ using UnityEditor;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility methods for creating GameObjects
-    /// Allows systems to subscribe to <see cref="GameObjectInstantiated"/>
+    /// Utility methods for creating GameObjects.
+    /// Allows systems to subscribe to <see cref="GameObjectInstantiated"/>.
     /// </summary>
     public static class GameObjectUtils
     {
@@ -21,7 +21,8 @@ namespace Unity.XR.CoreUtils
         static readonly List<Transform> k_Transforms = new List<Transform>();
 
         /// <summary>
-        /// Called when a GameObject has been instantiated through GameObjectUtils.Instantiate
+        /// Called when a GameObject has been instantiated through the <see cref="GameObjectUtils"/> versions of
+        /// `Instantiate`.
         /// </summary>
         public static event Action<GameObject> GameObjectInstantiated;
 
@@ -29,7 +30,7 @@ namespace Unity.XR.CoreUtils
         /// Creates a new GameObject and returns it.
         /// This method also calls <see cref="GameObjectInstantiated"/>.
         /// </summary>
-        /// <returns>The new GameObject</returns>
+        /// <returns>The new GameObject.</returns>
         public static GameObject Create()
         {
             var gameObject = new GameObject();
@@ -41,8 +42,8 @@ namespace Unity.XR.CoreUtils
         /// Creates a new GameObject and returns it.
         /// This method also calls <see cref="GameObjectInstantiated"/>.
         /// </summary>
-        /// <param name="name">The name to be given to the new GameObject</param>
-        /// <returns>The new GameObject</returns>
+        /// <param name="name">The name to be given to the new GameObject.</param>
+        /// <returns>The new GameObject.</returns>
         public static GameObject Create(string name)
         {
             var gameObject = new GameObject(name);
@@ -51,13 +52,15 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Clones the GameObject <paramref name="original"/> and returns the clone.
+        /// Clones the GameObject, <paramref name="original"/>, and returns the clone.
         /// This method also calls <see cref="GameObjectInstantiated"/>.
         /// </summary>
-        /// <param name="original">An existing GameObject that you want to make a copy of</param>
-        /// <param name="parent">Parent that will be assigned to the new object</param>
-        /// <param name="worldPositionStays">Whether the new object will stay at its original position, or use it as an offset from its parent</param>
-        /// <returns>The instantiated clone</returns>
+        /// <seealso cref="UnityObject.Instantiate(UnityObject, Transform, bool)"/>
+        /// <param name="original">An existing GameObject that you want to make a copy of.</param>
+        /// <param name="parent">Parent <see cref="Transform"/> to assign to the new object.</param>
+        /// <param name="worldPositionStays">Set <see langword="true"/> to instantiate the new object in world space, which places it in the
+        /// same position as the cloned GameObject, or to offset the new object from <paramref name="parent"/>.</param>
+        /// <returns>The instantiated clone.</returns>
         public static GameObject Instantiate(GameObject original, Transform parent = null, bool worldPositionStays = true)
         {
             var gameObject = UnityObject.Instantiate(original, parent, worldPositionStays);
@@ -68,22 +71,24 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Clones the GameObject <paramref name="original"/> and returns the clone.
+        /// Clones the GameObject, <paramref name="original"/>, and returns the clone.
         /// This method also calls <see cref="GameObjectInstantiated"/>.
         /// </summary>
-        /// <param name="original">An existing GameObject that you want to make a copy of</param>
+        /// <seealso cref="UnityObject.Instantiate(UnityObject, Vector3, Quaternion)"/>
+        /// <param name="original">An existing GameObject that you want to make a copy of.</param>
         /// <param name="position">Position for the new object.</param>
         /// <param name="rotation">Orientation of the new object.</param>
-        /// <returns>The instantiated clone</returns>
+        /// <returns>The instantiated clone.</returns>
         public static GameObject Instantiate(GameObject original, Vector3 position, Quaternion rotation)
         {
             return Instantiate(original, null, position, rotation);
         }
 
         /// <summary>
-        /// Clones the GameObject <paramref name="original"/> and returns the clone.
+        /// Clones the GameObject, <paramref name="original"/>, and returns the clone.
         /// This method also calls <see cref="GameObjectInstantiated"/>.
         /// </summary>
+        /// <seealso cref="UnityObject.Instantiate(UnityObject, Vector3, Quaternion, Transform)"/>
         /// <param name="original">An existing GameObject that you want to make a copy of</param>
         /// <param name="position">Position for the new object.</param>
         /// <param name="rotation">Orientation of the new object.</param>
@@ -102,6 +107,7 @@ namespace Unity.XR.CoreUtils
         /// Clones the Game Object <paramref name="original"/> and copies the hide flags of each Game Object
         /// in its hierarchy to the corresponding Game Object in the copy's hierarchy.
         /// </summary>
+        /// <seealso cref="UnityObject.Instantiate(UnityObject, Transform)"/>
         /// <param name="original">The Game Object to make a copy of</param>
         /// <param name="parent">Optional parent that will be assigned to the clone of the original Game Object</param>
         /// <returns>The clone of the original Game Object</returns>
@@ -117,6 +123,7 @@ namespace Unity.XR.CoreUtils
         /// Clones the Prefab Game Object <paramref name="prefab"/> and copies the hide flags of each Game Object
         /// in its hierarchy to the corresponding Game Object in the copy's hierarchy.
         /// </summary>
+        /// <seealso cref="PrefabUtility.InstantiatePrefab(UnityObject, Transform)"/>
         /// <param name="prefab">The Prefab Game Object to make a copy of</param>
         /// <param name="parent">Optional parent that will be assigned to the clone of the original Game Object</param>
         /// <returns>The clone of the original Game Object</returns>

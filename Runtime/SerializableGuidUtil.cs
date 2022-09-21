@@ -3,9 +3,8 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility for creating a <c>Unity.XR.CoreUtils.SerializableGuid</c>.
-    /// A <c>SerializableGuid</c> can be serialized by Unity, while a <c>System.Guid</c>
-    /// cannot.
+    /// Utility for creating a <see cref="SerializableGuid"/>.
+    /// Unity can serialize a <c>SerializableGuid</c>, but not a <c>System.Guid</c>.
     /// </summary>
     public static class SerializableGuidUtil
     {

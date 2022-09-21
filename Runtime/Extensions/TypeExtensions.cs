@@ -7,7 +7,7 @@ using UnityEngine.Assertions;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for Type objects
+    /// Extension methods for <see cref="Type"/> objects.
     /// </summary>
     public static class TypeExtensions
     {
@@ -16,12 +16,12 @@ namespace Unity.XR.CoreUtils
         static readonly List<string> k_TypeNames = new List<string>();
 
         /// <summary>
-        /// Add all types assignable to this one to a list, using an optional predicate test
+        /// Adds all types assignable to this one to a list, using an optional predicate test.
         /// </summary>
-        /// <param name="type">The type to which assignable types will be matched</param>
-        /// <param name="list">The list to which assignable types will be appended</param>
-        /// <param name="predicate">Custom delegate to allow user filtering of type list.
-        /// Return false to ignore given type</param>
+        /// <param name="type">The type against which assignable types are matched.</param>
+        /// <param name="list">The list to which assignable types are appended.</param>
+        /// <param name="predicate">Custom delegate to filter the type list.
+        /// Return false to ignore given type.</param>
         public static void GetAssignableTypes(this Type type, List<Type> list, Func<Type, bool> predicate = null)
         {
             ReflectionUtils.ForEachType(t =>
@@ -32,11 +32,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Find all types that implement the given interface type, and append them to a list
+        /// Finds all types that implement the given interface type and appends them to a list.
         /// If the input type is not an interface type, no action is taken.
         /// </summary>
-        /// <param name="type">The interface type whose implementors will be found</param>
-        /// <param name="list">The list to which implementors will be appended</param>
+        /// <param name="type">The interface type whose implementors are to be found.</param>
+        /// <param name="list">The list to which implementors are to be appended.</param>
         public static void GetImplementationsOfInterface(this Type type, List<Type> list)
         {
             if (type.IsInterface)
@@ -44,11 +44,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Find all types that extend the given class type, and append them to a list
+        /// Finds all types that extend the given class type and appends them to a list
         /// If the input type is not an class type, no action is taken.
         /// </summary>
-        /// <param name="type">The class type of whom list will be found</param>
-        /// <param name="list">The list to which extension types will be appended</param>
+        /// <param name="type">The class type of whom list will be found.</param>
+        /// <param name="list">The list to which extension types will be appended.</param>
         public static void GetExtensionsOfClass(this Type type, List<Type> list)
         {
             if (type.IsClass)
@@ -56,12 +56,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Search through all interfaces implemented by this type and, if any of them match the given generic interface
-        /// append them to a list
+        /// Searches through all interfaces implemented by this type and, if any of them match the given generic interface,
+        /// appends them to a list.
         /// </summary>
-        /// <param name="type">The type whose interfaces will be searched</param>
-        /// <param name="genericInterface">The generic interface used to match implemented interfaces</param>
-        /// <param name="interfaces">The list to which generic interfaces will be appended</param>
+        /// <param name="type">The type whose interfaces will be searched.</param>
+        /// <param name="genericInterface">The generic interface used to match implemented interfaces.</param>
+        /// <param name="interfaces">The list to which generic interfaces will be appended.</param>
         public static void GetGenericInterfaces(this Type type, Type genericInterface, List<Type> interfaces)
         {
             foreach (var typeInterface in type.GetInterfaces())
@@ -76,12 +76,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Gets a specific property of the Type or any of its base Types
+        /// Gets a specific property of the Type or any of its base Types.
         /// </summary>
-        /// <param name="type">The type which will be searched for fields</param>
-        /// <param name="name">Name of the property to get</param>
-        /// <param name="bindingAttr">A bitmask specifying how the search is conducted</param>
-        /// <returns>An object representing the field that matches the specified requirements, if found; otherwise, null</returns>
+        /// <param name="type">The type which will be searched for fields.</param>
+        /// <param name="name">Name of the property to get.</param>
+        /// <param name="bindingAttr">A bitmask specifying how the search is conducted.</param>
+        /// <returns>An object representing the field that matches the specified requirements, if found; otherwise, `null`.</returns>
         public static PropertyInfo GetPropertyRecursively(this Type type, string name, BindingFlags bindingAttr)
         {
             var property = type.GetProperty(name, bindingAttr);
@@ -96,12 +96,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Gets a specific field of the Type or any of its base Types
+        /// Gets a specific field of the Type or any of its base Types.
         /// </summary>
-        /// <param name="type">The type which will be searched for fields</param>
-        /// <param name="name">Name of the field to get</param>
-        /// <param name="bindingAttr">A bitmask specifying how the search is conducted</param>
-        /// <returns>An object representing the field that matches the specified requirements, if found; otherwise, null</returns>
+        /// <param name="type">The type which will be searched for fields.</param>
+        /// <param name="name">Name of the field to get.</param>
+        /// <param name="bindingAttr">A bitmask specifying how the search is conducted.</param>
+        /// <returns>An object representing the field that matches the specified requirements, if found; otherwise, `null`.</returns>
         public static FieldInfo GetFieldRecursively(this Type type, string name, BindingFlags bindingAttr)
         {
             var field = type.GetField(name, bindingAttr);
@@ -116,11 +116,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Gets all fields of the Type or any of its base Types
+        /// Gets all fields of the Type or any of its base Types.
         /// </summary>
-        /// <param name="type">Type we are going to get fields on</param>
-        /// <param name="fields">A list to which all fields of this type will be added</param>
-        /// <param name="bindingAttr">A bitmask specifying how the search is conducted</param>
+        /// <param name="type">Type we are going to get fields on.</param>
+        /// <param name="fields">A list to which all fields of this type will be added.</param>
+        /// <param name="bindingAttr">A bitmask specifying how the search is conducted.</param>
         public static void GetFieldsRecursively(this Type type, List<FieldInfo> fields,
             BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
         {
@@ -143,11 +143,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Gets all properties of the Type or any of its base Types
+        /// Gets all properties of the Type or any of its base Types.
         /// </summary>
-        /// <param name="type">Type we are going to get properties on</param>
-        /// <param name="fields">A list to which all properties of this type will be added</param>
-        /// <param name="bindingAttr">A bitmask specifying how the search is conducted</param>
+        /// <param name="type">Type we are going to get properties on.</param>
+        /// <param name="fields">A list to which all properties of this type will be added.</param>
+        /// <param name="bindingAttr">A bitmask specifying how the search is conducted.</param>
         public static void GetPropertiesRecursively(this Type type, List<PropertyInfo> fields,
             BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
         {
@@ -173,7 +173,7 @@ namespace Unity.XR.CoreUtils
         /// Gets the field info on a collection of classes that are from a collection of interfaces.
         /// </summary>
         /// <param name="classes">Collection of classes to get fields from.</param>
-        /// <param name="fields">A list to which matching fields will be added</param>
+        /// <param name="fields">A list to which matching fields will be added.</param>
         /// <param name="interfaceTypes">Collection of interfaceTypes to check if field type implements any interface type.</param>
         /// <param name="bindingAttr">Binding flags of fields.</param>
         public static void GetInterfaceFieldsFromClasses(this IEnumerable<Type> classes, List<FieldInfo> fields,
@@ -210,10 +210,10 @@ namespace Unity.XR.CoreUtils
         /// <summary>
         /// Gets the first attribute of a given type.
         /// </summary>
-        /// <typeparam name="TAttribute">Attribute type to return</typeparam>
-        /// <param name="type">The type whose attribute will be returned</param>
-        /// <param name="inherit">Whether to search this type's inheritance chain to find the attribute</param>
-        /// <returns>The first <typeparamref name="TAttribute"/> found</returns>
+        /// <typeparam name="TAttribute">Attribute type to return.</typeparam>
+        /// <param name="type">The type whose attribute will be returned.</param>
+        /// <param name="inherit">Whether to search this type's inheritance chain to find the attribute.</param>
+        /// <returns>The first <typeparamref name="TAttribute"/> found.</returns>
         public static TAttribute GetAttribute<TAttribute>(this Type type, bool inherit = false) where TAttribute : Attribute
         {
             Assert.IsTrue(type.IsDefined(typeof(TAttribute), inherit), "Attribute not found");
@@ -225,7 +225,7 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <typeparam name="TAttribute">Type of attribute we are checking if is defined.</typeparam>
         /// <param name="type">Type that has the attribute or inherits the attribute.</param>
-        /// <param name="types">A list to which matching types will be added</param>
+        /// <param name="types">A list to which matching types will be added.</param>
         public static void IsDefinedGetInheritedTypes<TAttribute>(this Type type, List<Type> types) where TAttribute : Attribute
         {
             while (type != null)
@@ -239,11 +239,11 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Search by name through a fields of a type and its base types and return the field if one is found
+        /// Search by name through a fields of a type and its base types and return the field if one is found.
         /// </summary>
-        /// <param name="type">The type to search</param>
-        /// <param name="fieldName">The name of the field to search for</param>
-        /// <returns>The field, if found</returns>
+        /// <param name="type">The type to search.</param>
+        /// <param name="fieldName">The name of the field to search for.</param>
+        /// <returns>The field, if found.</returns>
         public static FieldInfo GetFieldInTypeOrBaseType(this Type type, string fieldName)
         {
             while (true)
@@ -260,10 +260,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns a human-readable name for a class with its generic arguments filled in
+        /// Returns a human-readable name for a class with its generic arguments filled in.
         /// </summary>
-        /// <param name="type">The type to get a name for</param>
-        /// <returns>The human-readable name</returns>
+        /// <param name="type">The type to get a name for.</param>
+        /// <returns>The human-readable name.</returns>
         public static string GetNameWithGenericArguments(this Type type)
         {
             var name = type.Name;
@@ -289,10 +289,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns a human-readable name for a class with its assembly qualified generic arguments filled in
+        /// Returns a human-readable name for a class with its assembly qualified generic arguments filled in.
         /// </summary>
-        /// <param name="type">The type to get a name for</param>
-        /// <returns>The human-readable name</returns>
+        /// <param name="type">The type to get a name for.</param>
+        /// <returns>The human-readable name.</returns>
         public static string GetNameWithFullGenericArguments(this Type type)
         {
             var name = type.Name;
@@ -318,10 +318,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Returns a human-readable, assembly qualified name for a class with its assembly qualified generic arguments filled in
+        /// Returns a human-readable, assembly qualified name for a class with its assembly qualified generic arguments filled in.
         /// </summary>
-        /// <param name="type">The type to get a name for</param>
-        /// <returns>The human-readable name</returns>
+        /// <param name="type">The type to get a name for.</param>
+        /// <returns>The human-readable name.</returns>
         public static string GetFullNameWithGenericArguments(this Type type)
         {
             // Handle sub-classes
@@ -374,23 +374,23 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Tests if class type IsAssignableFrom or IsSubclassOf another type
+        /// Tests if class type IsAssignableFrom or IsSubclassOf another type.
         /// </summary>
-        /// <param name="checkType">type wanting to check</param>
-        /// <param name="baseType">type wanting to check against</param>
-        /// <returns>True if IsAssignableFrom or IsSubclassOf</returns>
+        /// <param name="checkType">type wanting to check.</param>
+        /// <param name="baseType">type wanting to check against.</param>
+        /// <returns>True if IsAssignableFrom or IsSubclassOf.</returns>
         public static bool IsAssignableFromOrSubclassOf(this Type checkType, Type baseType)
         {
             return checkType.IsAssignableFrom(baseType) || checkType.IsSubclassOf(baseType);
         }
 
         /// <summary>
-        /// Searches this type and all base types for a method by name
+        /// Searches this type and all base types for a method by name.
         /// </summary>
-        /// <param name="type">The type being searched</param>
-        /// <param name="name">The name of the method for which to search</param>
-        /// <param name="bindingAttr">BindingFlags passed to Type.GetMethod</param>
-        /// <returns>MethodInfo for the first matching method found. Null if no method is found</returns>
+        /// <param name="type">The type being searched.</param>
+        /// <param name="name">The name of the method for which to search.</param>
+        /// <param name="bindingAttr">BindingFlags passed to Type.GetMethod.</param>
+        /// <returns>MethodInfo for the first matching method found. Null if no method is found.</returns>
         public static MethodInfo GetMethodRecursively(this Type type, string name, BindingFlags bindingAttr)
         {
             var method = type.GetMethod(name, bindingAttr);

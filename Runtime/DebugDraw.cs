@@ -10,10 +10,10 @@ namespace Unity.XR.CoreUtils
     public static class DebugDraw
     {
         /// <summary>
-        /// Draws a line around a polygonal shape
+        /// Draws a line around a polygonal shape.
         /// </summary>
-        /// <param name="vertices">Polygon made of a series of adjacent points in world space</param>
-        /// <param name="color">Color of the line</param>
+        /// <param name="vertices">Polygon made of a series of adjacent points in world space.</param>
+        /// <param name="color">Color of the line.</param>
         /// <param name="duration">How long the line should be visible for.</param>
         public static void Polygon(List<Vector3> vertices, Color color, float duration = 10f)
         {
@@ -35,10 +35,12 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Draws a line around a polygonal shape
+        /// Draws a line following a set of points.
         /// </summary>
-        /// <param name="vertices">Polygon made of a series of adjacent points in world space</param>
-        /// <param name="color">Color of the line</param>
+        /// <remarks>Connects the points in <paramref name="vertices"/> in order and closes the polygon
+        /// by connecting the last point to the first.</remarks>
+        /// <param name="vertices">Polygon made of a series of adjacent points in world space.</param>
+        /// <param name="color">Color of the line.</param>
         /// <param name="duration">How long the line should be visible for.</param>
         public static void Polygon(Vector3[] vertices, Color color, float duration = 10f)
         {

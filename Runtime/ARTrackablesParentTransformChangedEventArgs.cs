@@ -16,8 +16,8 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// (Read Only) The parent transform for all
-        /// [ARTrackable](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest?subfolder=/api/UnityEngine.XR.ARFoundation.ARTrackable)s
-        /// under a <see cref="XROrigin"/>.
+        /// [ARTrackables](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest?subfolder=/api/UnityEngine.XR.ARFoundation.ARTrackable)
+        /// under an <see cref="XROrigin"/>.
         /// </summary>
         public Transform TrackablesParent { get; }
 
@@ -47,8 +47,8 @@ namespace Unity.XR.CoreUtils
         /// Compares for equality.
         /// </summary>
         /// <param name="other">The other <see cref="ARTrackablesParentTransformChangedEventArgs"/> to compare against.</param>
-        /// <returns>Returns `true` if each property in <paramref name="other"/> is equal (using `==`) to the
-        ///     corresponding property in this one. Returns `false` otherwise.</returns>
+        /// <returns>Returns <see langword="true"/> if each property in <paramref name="other"/> is equal (using `==`) to the
+        ///     corresponding property in this one. Returns <see langword="false"/> otherwise.</returns>
         public bool Equals(ARTrackablesParentTransformChangedEventArgs other) =>
             Origin == other.Origin &&
             TrackablesParent == other.TrackablesParent;
@@ -57,10 +57,10 @@ namespace Unity.XR.CoreUtils
         /// Compares for equality.
         /// </summary>
         /// <param name="obj">The <see cref="System.Object"/> to compare against.</param>
-        /// <returns>Returns `true` if <paramref name="obj"/> is an
+        /// <returns>Returns <see langword="true"/> if <paramref name="obj"/> is an
         ///     <see cref="ARTrackablesParentTransformChangedEventArgs"/> and it compares equal using
         ///     <see cref="Equals(ARTrackablesParentTransformChangedEventArgs)"/>. Returns
-        ///     `false` otherwise.</returns>
+        ///     <see langword="false"/> otherwise.</returns>
         public override bool Equals(object obj) =>
             obj is ARTrackablesParentTransformChangedEventArgs other && Equals(other);
 
@@ -78,9 +78,9 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <param name="lhs">The <see cref="ARTrackablesParentTransformChangedEventArgs"/> to compare with <paramref name="rhs"/>.</param>
         /// <param name="rhs">The <see cref="ARTrackablesParentTransformChangedEventArgs"/> to compare with <paramref name="lhs"/>.</param>
-        /// <returns>Returns `true` if <paramref name="lhs"/> is equal to <paramref name="rhs"/> using
+        /// <returns>Returns <see langword="true"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/> using
         ///     <see cref="Equals(ARTrackablesParentTransformChangedEventArgs)"/>. Returns
-        ///     `false` otherwise.</returns>
+        ///     <see langword="false"/> otherwise.</returns>
         public static bool operator ==(ARTrackablesParentTransformChangedEventArgs lhs, ARTrackablesParentTransformChangedEventArgs rhs)
             => lhs.Equals(rhs);
 
@@ -89,9 +89,9 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <param name="lhs">The <see cref="ARTrackablesParentTransformChangedEventArgs"/> to compare with <paramref name="rhs"/>.</param>
         /// <param name="rhs">The <see cref="ARTrackablesParentTransformChangedEventArgs"/> to compare with <paramref name="lhs"/>.</param>
-        /// <returns>Returns `false` if <paramref name="lhs"/> is equal to <paramref name="rhs"/> using
+        /// <returns>Returns <see langword="false"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/> using
         ///     <see cref="Equals(ARTrackablesParentTransformChangedEventArgs)"/>. Returns
-        ///     `true` otherwise.</returns>
+        ///     <see langword="true"/> otherwise.</returns>
         public static bool operator !=(ARTrackablesParentTransformChangedEventArgs lhs, ARTrackablesParentTransformChangedEventArgs rhs)
             => !lhs.Equals(rhs);
     }

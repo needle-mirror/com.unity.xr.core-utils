@@ -4,14 +4,14 @@ using System.Diagnostics;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for Stopwatch objects
+    /// Extension methods for `System.Diagnostics.Stopwatch` objects.
     /// </summary>
     public static class StopwatchExtensions
     {
         /// <summary>
-        /// Restarts the stopwatch by stopping, resetting, and then starting it
+        /// Restarts the stopwatch by stopping, resetting, and then starting it.
         /// </summary>
-        /// <param name="stopwatch">The stopwatch to restart</param>
+        /// <param name="stopwatch">The stopwatch to restart.</param>
         public static void Restart(this Stopwatch stopwatch)
         {
             stopwatch.Stop();

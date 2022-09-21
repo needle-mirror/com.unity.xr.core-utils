@@ -10,15 +10,15 @@ using UnityObject = UnityEngine.Object;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Utility methods for use in the Editor
+    /// Utility methods for use in Editor code.
     /// </summary>
     public static class EditorUtils
     {
         /// <summary>
-        /// Get attributes from the field which represents a property
+        /// Gets the attributes of a <see cref="SerializedProperty"/>.
         /// </summary>
-        /// <param name="property">The property from which to get attributes</param>
-        /// <returns>Array of attributes from property</returns>
+        /// <param name="property">The property with attributes to enumerate.</param>
+        /// <returns>An array of attributes.</returns>
         public static Attribute[] GetMemberAttributes(SerializedProperty property)
         {
             var fi = GetFieldInfoFromProperty(property);
@@ -26,10 +26,10 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Get the FieldInfo which backs a property
+        /// Gets the <see cref="FieldInfo"/> of a <see cref="SerializedProperty"/>.
         /// </summary>
-        /// <param name="property">The property from which to get FieldInfo</param>
-        /// <returns>The FieldInfo which backs the property</returns>
+        /// <param name="property">The property to get information about.</param>
+        /// <returns>Attributes and metadata about the field.</returns>
         public static FieldInfo GetFieldInfoFromProperty(SerializedProperty property)
         {
             var memberInfo = GetMemberInfoFromPropertyPath(property.serializedObject.targetObject.GetType(), property.propertyPath, out _);
@@ -40,12 +40,14 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Get MemberInfo for a property by path
+        /// Gets <see cref="MemberInfo"/> for a property by path.
         /// </summary>
-        /// <param name="host">The type of the container object</param>
-        /// <param name="path">The property path to search for</param>
-        /// <param name="type">The type of the property at path</param>
-        /// <returns>The MemberInfo found on the host type at the given path</returns>
+        /// <param name="host">The declaring type.</param>
+        /// <param name="path">The property path relative to the declaring type. See
+        /// <seealso cref="SerializedProperty.propertyPath"/>.</param>
+        /// <param name="type">Assigned the Type of the property.</param>
+        /// <returns>Attributes and metadata about the member identified by <paramref name="host"/>
+        /// and <paramref name="path"/>.</returns>
         public static MemberInfo GetMemberInfoFromPropertyPath(Type host, string path, out Type type)
         {
             type = host;
@@ -127,13 +129,16 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Guess the type of a <c>SerializedProperty</c> and return a <c>System.Type</c>, if one exists.
-        /// The guess is done by checking the type of the target object and iterating through its fields looking for
-        /// one that matches the property name. This may return null if you give it a <c>SerializedProperty</c> that
-        /// represents a native type with no managed equivalent
+        /// Gets the <see cref="Type"/> of a <see cref="SerializedProperty"/> object, if possible.
         /// </summary>
-        /// <param name="property">The <c>SerializedProperty</c> to examine</param>
-        /// <returns>The best guess type</returns>
+        /// <remarks>
+        /// Guesses the type of a <c>SerializedProperty</c> and returns a <c>System.Type</c>, if one exists.
+        /// This function checks the type of the target object by iterating through its fields looking for
+        /// one that matches the property name. This may return null if <paramref name="property"/> is a
+        /// <c>SerializedProperty</c> that represents a native type with no managed equivalent.
+        /// </remarks>
+        /// <param name="property">The <c>SerializedProperty</c> to examine.</param>
+        /// <returns>The best guess type.</returns>
         public static Type SerializedPropertyToType(SerializedProperty property)
         {
             var field = SerializedPropertyToField(property);
@@ -141,10 +146,10 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Get the FieldInfo for a given property
+        /// Gets the <see cref="FieldInfo"/> for a given property.
         /// </summary>
-        /// <param name="property">The property for which to get the FieldInfo</param>
-        /// <returns>The FieldInfo for the property</returns>
+        /// <param name="property">The property to get information about.</param>
+        /// <returns>The <see cref="FieldInfo"/>.</returns>
         public static FieldInfo SerializedPropertyToField(SerializedProperty property)
         {
             var parts = property.propertyPath.Split('.');
@@ -172,9 +177,13 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Special version of EditorGUI.MaskField which ensures that only the chosen bits are set. We need this version of the
-        /// function to check explicitly whether only a single bit was set.
+        /// Makes an Editor GUI control for mask properties.
         /// </summary>
+        /// <remarks>
+        /// This function is similar to <see cref="EditorGUI"/>.<see cref="EditorGUI.MaskField(Rect, string, int, string[])"/>,
+        /// but ensures that only the chosen bits are set. We need this version of the
+        /// function to check explicitly whether only a single bit was set.
+        /// </remarks>
         /// <param name="position">Rectangle on the screen to use for this control.</param>
         /// <param name="label">Label for the field.</param>
         /// <param name="mask">The current mask to display.</param>
@@ -188,11 +197,14 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Return a value with only bits that can be set with values in the enum to prevent multiple representations of the same state
+        /// Normalizes the value of a flag using the specified Enum type.
         /// </summary>
-        /// <param name="value">The flags value</param>
-        /// <param name="t">The type of enum to use</param>
-        /// <returns>The transformed flags value</returns>
+        /// <remarks>
+        /// This function masks the flag so that only the bits corresponding to values declared in the specified Enum are set.
+        /// </remarks>
+        /// <param name="value">The flag value.</param>
+        /// <param name="t">The <see cref="Type"/> of the Enum.</param>
+        /// <returns>The masked flag value.</returns>
         static int ActualEnumFlags(int value, Type t)
         {
             if (value < 0)
@@ -210,21 +222,28 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Strip PPtr&lt;&gt; and $ from a string for getting a System.Type from SerializedProperty.type
+        /// Cleans up a string received from <see cref="SerializedProperty"/>.<see cref="SerializedProperty.type"/>. 
         /// </summary>
-        /// <param name="type">Type string</param>
-        /// <returns>Nicified type string</returns>
+        /// <remarks>
+        /// Strips `PPtr&lt;&gt;` and `$` from a string. Use this function when getting a `System.Type` using `SerializedProperty.type`.
+        /// </remarks>
+        /// <param name="type">Type string.</param>
+        /// <returns>Nicified type string.</returns>
         public static string NicifySerializedPropertyType(string type)
         {
             return type.Replace("PPtr<", "").Replace(">", "").Replace("$", "");
         }
 
         /// <summary>
-        /// Search through all assemblies in the current AppDomain for a class that is assignable to UnityObject and matches the given weak name
-        /// TODO: expose internal SerializedProperty.ValidateObjectReferenceValue to remove his hack
+        /// Gets the <see cref="Type"/> corresponding to the specified name string.
         /// </summary>
+        /// <remarks>
+        /// Searches through all assemblies in the current AppDomain for a class that is assignable to UnityObject
+        /// and matches the given weak name.
+        /// </remarks>
         /// <param name="name">Weak type name</param>
-        /// <returns>Best guess System.Type</returns>
+        /// <returns>The best guess for the `System.Type` of <paramref name="name"/>.</returns>
+        // TODO: expose internal SerializedProperty.ValidateObjectReferenceValue to remove this hack
         public static Type TypeNameToType(string name)
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -248,12 +267,17 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Tries to get an asset preview. If one is not available, waits until IsLoadingAssetPreview is false, and if
-        /// preview is still not loaded, returns the result of AssetPreview.GetMiniThumbnail
+        /// Tries to get an <see cref="AssetPreview"/> for an asset.
         /// </summary>
-        /// <param name="asset">The asset for which to get a preview</param>
-        /// <param name="callback">Called with the preview texture as an argument, when it is available</param>
-        /// <returns>An enumerator used to tick the coroutine</returns>
+        /// <remarks>
+        /// If a preview is not immediately available, this function waits until
+        /// <see cref="AssetPreview.IsLoadingAssetPreview(int)"/> changes to <see langword="false"/>. If the
+        /// preview has still not loaded, the function uses <see cref="AssetPreview.GetMiniThumbnail(UnityObject)"/>
+        /// instead.
+        /// </remarks>
+        /// <param name="asset">The asset for which to get a preview.</param>
+        /// <param name="callback">Called with the preview texture as an argument, when it becomes available.</param>
+        /// <returns>An enumerator used to tick the coroutine.</returns>
         public static IEnumerator GetAssetPreview(UnityObject asset, Action<Texture> callback)
         {
             // GetAssetPreview will start loading the preview, or return one if available

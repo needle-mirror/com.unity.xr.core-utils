@@ -13,10 +13,10 @@ namespace Unity.XR.CoreUtils
         static readonly List<Transform> k_Transforms = new List<Transform>();
 
         /// <summary>
-        /// Get the aggregated bounds of a list of GameObjects and their children
+        /// Get the aggregated bounds of a list of GameObjects and their children.
         /// </summary>
-        /// <param name="gameObjects">The list of GameObjects</param>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="gameObjects">The list of GameObjects.</param>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds(List<GameObject> gameObjects)
         {
             Bounds? bounds = null;
@@ -38,10 +38,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Get the aggregated bounds of an array of transforms and their children
+        /// Get the aggregated bounds of an array of transforms and their children.
         /// </summary>
-        /// <param name="transforms">The array of transforms</param>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="transforms">The array of transforms.</param>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds(Transform[] transforms)
         {
             Bounds? bounds = null;
@@ -62,10 +62,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Get the aggregated bounds of a transform and its children
+        /// Get the aggregated bounds of a transform and its children.
         /// </summary>
-        /// <param name="transform">The transform</param>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="transform">The transform.</param>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds(Transform transform)
         {
             // Static collections used below are cleared by the methods that use them
@@ -90,10 +90,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Get the aggregated bounds of a list of renderers
+        /// Get the aggregated bounds of a list of renderers.
         /// </summary>
-        /// <param name="renderers">The list of renderers</param>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="renderers">The list of renderers.</param>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds(List<Renderer> renderers)
         {
             if (renderers.Count > 0)
@@ -114,11 +114,11 @@ namespace Unity.XR.CoreUtils
 
 #if INCLUDE_PHYSICS_MODULE
         /// <summary>
-        /// Get the aggregated bounds of a list of colliders
+        /// Get the aggregated bounds of a list of colliders.
         /// </summary>
-        /// <param name="colliders">The list of colliders</param>
-        /// <typeparam name="T">The type of object in the list of colliders</typeparam>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="colliders">The list of colliders.</param>
+        /// <typeparam name="T">The type of object in the list of colliders.</typeparam>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds<T>(List<T> colliders) where T : Collider
         {
             if (colliders.Count > 0)
@@ -139,10 +139,10 @@ namespace Unity.XR.CoreUtils
 #endif
 
         /// <summary>
-        /// Gets the bounds that encapsulate a list of points
+        /// Gets the bounds that encapsulate a list of points.
         /// </summary>
-        /// <param name="points">The list of points to encapsulate</param>
-        /// <returns>The aggregated bounds</returns>
+        /// <param name="points">The list of points to encapsulate.</param>
+        /// <returns>The aggregated bounds.</returns>
         public static Bounds GetBounds(List<Vector3> points)
         {
             var bounds = default(Bounds);

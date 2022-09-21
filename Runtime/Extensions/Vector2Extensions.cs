@@ -3,46 +3,45 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for the Vector2 type
+    /// Extension methods for the <see cref="Vector2"/> type.
     /// </summary>
     public static class Vector2Extensions
     {
         /// <summary>
-        /// Returns a vector where each component is inverted (1/x)
+        ///  Returns the component-wise inverse of this vector [1/x, 1/y].
         /// </summary>
-        /// <param name="vector">The vector which will be inverted</param>
-        /// <returns>The inverted vector</returns>
+        /// <param name="vector">The vector to invert.</param>
+        /// <returns>The inverted vector.</returns>
         public static Vector2 Inverse(this Vector2 vector)
         {
             return new Vector2(1.0f / vector.x, 1.0f / vector.y);
         }
 
         /// <summary>
-        /// Returns the minimum of all vector components
+        /// Returns the smallest component of this vector.
         /// </summary>
-        /// <param name="vector">The vector whose minimum component will be returned</param>
-        /// <returns>The minimum value</returns>
+        /// <param name="vector">The vector whose minimum component will be returned.</param>
+        /// <returns>The minimum value.</returns>
         public static float MinComponent(this Vector2 vector)
         {
             return Mathf.Min(vector.x, vector.y);
         }
 
         /// <summary>
-        /// Returns the maximum of all vector components
+        /// Returns the largest component of this vector.
         /// </summary>
-        /// <param name="vector">The vector whose maximum component will be returned</param>
-        /// <returns>The maximum value</returns>
+        /// <param name="vector">The vector whose maximum component will be returned.</param>
+        /// <returns>The maximum value.</returns>
         public static float MaxComponent(this Vector2 vector)
         {
             return Mathf.Max(vector.x, vector.y);
         }
 
         /// <summary>
-        /// Returns a vector where each component is the absolute value of the original (abs(x))
+        /// Returns the component-wise absolute value of this vector [abs(x), abs(y)].
         /// </summary>
-        /// <returns>The absolute value vector</returns>
-        /// <param name="vector">The vector whose absolute value will be returned</param>
-        /// <returns>The absolute value of this vector</returns>
+        /// <param name="vector">The vector whose absolute value will be returned.</param>
+        /// <returns>The component-wise absolute value of this vector.</returns>
         public static Vector2 Abs(this Vector2 vector)
         {
             vector.x = Mathf.Abs(vector.x);

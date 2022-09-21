@@ -4,7 +4,7 @@ using System.Text;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for ICollection objects
+    /// Extension methods for <see cref="ICollection{T}"/> objects.
     /// </summary>
     public static class CollectionExtensions
     {
@@ -14,8 +14,8 @@ namespace Unity.XR.CoreUtils
         /// Creates a comma separated string of all elements in the collection. Each collection element is implicitly converted
         /// to a string and added to the list.
         /// </summary>
-        /// <param name="collection">The collection to create a string from</param>
-        /// <typeparam name="T">The type of objects in the collection</typeparam>
+        /// <param name="collection">The collection to create a string from.</param>
+        /// <typeparam name="T">The type of objects in the collection.</typeparam>
         /// <returns>A string with all elements in the collection converted to strings and separated by commas.</returns>
         public static string Stringify<T>(this ICollection<T> collection)
         {

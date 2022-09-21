@@ -300,7 +300,7 @@ namespace Unity.XR.CoreUtils.Editor
                 EditorGUILayout.BeginHorizontal(styles.ListLabel);
                 if (isRuleEnabled)
                 {
-                    if(!rulePassed && result.Error)
+                    if (!rulePassed && result.Error)
                         GUILayout.Space(Styles.ErrorIconPadding);
 
                     GUILayout.Label(rulePassed ? styles.TestPassedIcon

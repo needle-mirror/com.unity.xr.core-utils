@@ -3,15 +3,19 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Extension methods for MonoBehaviour objects
+    /// Extension methods for <see cref="MonoBehaviour"/> objects.
     /// </summary>
     public static class MonoBehaviourExtensions
     {
 #if UNITY_EDITOR
         /// <summary>
-        /// Start this behaviour running in edit mode
-        /// This sets runInEditMode to true, which, if the behaviour is enabled will call OnDisable and then OnEnable
+        /// Starts running this <see cref="MonoBehaviour"/> while in edit mode.
         /// </summary>
+        /// <remarks>
+        /// This function sets <see cref="MonoBehaviour.runInEditMode"/> to <see langword="true"/>, which, if the behaviour is
+        /// currently enabled, calls [OnDisable](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDisable.html)
+        /// and then [OnEnable](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnEnable.html).
+        /// </remarks>
         /// <param name="behaviour">The behaviour</param>
         public static void StartRunInEditMode(this MonoBehaviour behaviour)
         {
@@ -19,9 +23,16 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Stop this behaviour running in edit mode
-        /// If the behaviour is enabled, we first disable it so that OnDisable is called. Then we set runInEditMode to false. Then, if the behaviour was enabled, we re-enable it
+        /// Stops this <see cref="MonoBehaviour"/> from running in edit mode.
         /// </summary>
+        /// <remarks>
+        /// If this <see cref="MonoBehaviour"/> is currently enabled, this function disables it,
+        /// sets <see cref="MonoBehaviour.runInEditMode"/> to <see langword="false"/>, and the re-enables it.
+        /// [OnDisable](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnDisable.html) and
+        /// [OnEnable](https://docs.unity3d.com/ScriptReference/MonoBehaviour.OnEnable.html) are called.
+        ///
+        /// If this <see cref="MonoBehaviour"/> is currently disabled, this function only sets  <see cref="MonoBehaviour.runInEditMode"/> to <see langword="false"/>.
+        /// </remarks>
         /// <param name="behaviour">The behaviour</param>
         public static void StopRunInEditMode(this MonoBehaviour behaviour)
         {

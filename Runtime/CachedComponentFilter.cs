@@ -5,42 +5,45 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Use this interface if you have a component that contains many instances of something you want discoverable
-    /// by the cached component filter.  Make sure the THostType matches up with the TFilterType in the CachedComponent filter
+    /// Implement this interface for <see cref="Component"/> classes you want discoverable
+    /// by the cached component filter. Make sure the `THostType` matches the `TFilterType` in the
+    /// <see cref="CachedComponentFilter{TFilterType, TRootType}"/> filter.
     /// </summary>
     /// <typeparam name="THostType">The type of object the host component contains.</typeparam>
     public interface IComponentHost<THostType> where THostType : class
     {
         /// <summary>
-        /// The list of hosted components
+        /// The list of hosted components.
         /// </summary>
         THostType[] HostedComponents { get; }
     }
 
     /// <summary>
-    /// Describes where the initial list of components should be built from
+    /// Describes where the initial list of components should be built from.
     /// </summary>
     [Flags]
     public enum CachedSearchType
     {
         /// <summary>
-        /// Search in children
+        /// Search in children.
         /// </summary>
         Children = 1,
 
         /// <summary>
-        /// Search on self
+        /// Search on self.
         /// </summary>
         Self = 2,
 
         /// <summary>
-        /// Search in parents
+        /// Search in parents.
         /// </summary>
         Parents = 4
     }
 
     /// <summary>
-    /// Class that allows for cached retrieval/filtering of multiple types of components into lists
+    /// Provides utlity functions to retrieve filtered lists of components. The lists created are automatically cached.
+    /// </summary>
+    /// <remarks>
     /// Proper usage of this class is:
     /// <code>
     /// using (var componentFilter = new CachedComponentFilter&lt;typeToFind,componentTypeThatContains&gt;(instanceOfComponent))
@@ -48,9 +51,9 @@ namespace Unity.XR.CoreUtils
     ///
     /// }
     /// </code>
-    /// </summary>
-    /// <typeparam name="TFilterType">The type of component to find</typeparam>
-    /// <typeparam name="TRootType">The type of component at the root of the hierarchy</typeparam>
+    /// </remarks>
+    /// <typeparam name="TFilterType">The type of component to find.</typeparam>
+    /// <typeparam name="TRootType">The type of component at the root of the hierarchy.</typeparam>
     public class CachedComponentFilter<TFilterType, TRootType> : IDisposable where TRootType : Component where TFilterType : class
     {
         readonly List<TFilterType> m_MasterComponentStorage;
@@ -62,11 +65,11 @@ namespace Unity.XR.CoreUtils
         bool m_DisposedValue; // To detect redundant calls
 
         /// <summary>
-        /// Initialize a new cached component filter
+        /// Initializes a new cached component filter.
         /// </summary>
-        /// <param name="componentRoot">The component at the root of the hierarchy</param>
-        /// <param name="cachedSearchType">What type of hierarchy traversal to perform</param>
-        /// <param name="includeDisabled">Whether to include components on disabled objects</param>
+        /// <param name="componentRoot">The component at the root of the hierarchy.</param>
+        /// <param name="cachedSearchType">What type of hierarchy traversal to perform.</param>
+        /// <param name="includeDisabled">Whether to include components on disabled objects.</param>
         public CachedComponentFilter(TRootType componentRoot, CachedSearchType cachedSearchType = CachedSearchType.Self | CachedSearchType.Children, bool includeDisabled = true)
         {
             m_MasterComponentStorage = CollectionPool<List<TFilterType>, TFilterType>.GetCollection();
@@ -113,10 +116,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Initialize a new cached component filter
+        /// Initializes a new cached component filter.
         /// </summary>
-        /// <param name="componentList">The array of objects to use</param>
-        /// <param name="includeDisabled">Whether to include components on disabled objects</param>
+        /// <param name="componentList">The array of objects to use.</param>
+        /// <param name="includeDisabled">Whether to include components on disabled objects.</param>
         public CachedComponentFilter(TFilterType[] componentList, bool includeDisabled = true)
         {
             if (componentList == null)
@@ -130,10 +133,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Store components which match TChildType
+        /// Store components that match TChildType.
         /// </summary>
-        /// <param name="outputList">The list to which matching components will be added</param>
-        /// <typeparam name="TChildType">The type for which to search. Must inherit from or be TFilterType</typeparam>
+        /// <param name="outputList">The list to which to add matching components.</param>
+        /// <typeparam name="TChildType">The type for which to search. Must inherit from or be TFilterType.</typeparam>
         public void StoreMatchingComponents<TChildType>(List<TChildType> outputList) where TChildType : class, TFilterType
         {
             foreach (var currentComponent in m_MasterComponentStorage)
@@ -144,10 +147,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Get an array of matching components
+        /// Get an array of matching components.
         /// </summary>
-        /// <typeparam name="TChildType">The type for which to search. Must inherit from or be TFilterType</typeparam>
-        /// <returns>The array of matching components</returns>
+        /// <typeparam name="TChildType">The type for which to search. Must inherit from or be TFilterType.</typeparam>
+        /// <returns>The array of matching components.</returns>
         public TChildType[] GetMatchingComponents<TChildType>() where TChildType : class, TFilterType
         {
             var componentCount = 0;
@@ -274,9 +277,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Dispose of the cached component filter
+        /// Disposes of the cached component filter.
         /// </summary>
-        /// <param name="disposing">Whether or not to dispose the contents of this object</param>
+        /// <seealso href="https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/implementing-dispose">Implement a Dispose method</seealso>
+        /// <param name="disposing">Whether or not to dispose the contents of this object.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (m_DisposedValue)
@@ -289,7 +293,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Part of the IDisposable pattern
+        /// Part of the IDisposable pattern.
         /// </summary>
         public void Dispose()
         {

@@ -14,10 +14,13 @@ using UnityEngine.XR;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
+    /// The XR Origin represents the session-space origin (0, 0, 0) in an XR scene.
+    /// </summary>
+    /// <remarks>
     /// The XR Origin component is typically attached to the base object of the XR Origin,
     /// and stores the <see cref="GameObject"/> that will be manipulated via locomotion.
     /// It is also used for offsetting the camera.
-    /// </summary>
+    /// </remarks>
     [AddComponentMenu("XR/XR Origin")]
     [DisallowMultipleComponent]
     [HelpURL("https://docs.unity3d.com/Packages/com.unity.xr.core-utils@2.0/api/Unity.XR.CoreUtils.XROrigin.html")]
@@ -28,12 +31,13 @@ namespace Unity.XR.CoreUtils
         Camera m_Camera;
 
         /// <summary>
-        /// The <c>Camera</c> to associate with the XR device. It must be a child of this <c>XROrigin</c>.
+        /// The <see cref="Camera"/> used to render the scene from the point of view of the XR device. Must be a child of
+        /// the <see cref="GameObject"/> containing this <c>XROrigin</c> component.
         /// </summary>
         /// <remarks>
-        /// The <c>Camera</c> should update its position and rotation according to the XR device.
-        /// This is typically accomplished by adding a <c>TrackedPoseDriver</c> component to the
-        /// <c>Camera</c>.
+        /// You can add a <see cref="UnityEngine.InputSystem.XR.TrackedPoseDriver"/> component to the <see cref="Camera"/> 
+        /// GameObject to update its position and rotation using tracking data from the XR device.
+        /// You must update the <see cref="Camera"/> position and rotation using tracking data from the XR device.
         /// </remarks>
         public Camera Camera
         {
@@ -44,6 +48,9 @@ namespace Unity.XR.CoreUtils
         /// <summary>
         /// The parent <c>Transform</c> for all "trackables" (for example, planes and feature points).
         /// </summary>
+        /// <remarks>
+        /// See [Trackables](xref:arfoundation-managers) for more information.
+        /// </remarks>
         public Transform TrackablesParent { get; private set; }
 
         /// <summary>
@@ -97,7 +104,7 @@ namespace Unity.XR.CoreUtils
             Floor,
         }
 
-        //This is the average seated height, which is 44 inches.
+        //This is the average seated height in meters (which equals 44 inches).
         const float k_DefaultCameraYOffset = 1.1176f;
 
         [SerializeField, FormerlySerializedAs("m_RigBaseGameObject")]

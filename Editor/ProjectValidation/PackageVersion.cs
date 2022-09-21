@@ -4,16 +4,17 @@ using System.Text.RegularExpressions;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Structure for storing the package version in a logically comparable format.
-    ///
+    /// Stores a package version in a logically comparable format.
+    /// </summary>
+    /// <remarks>
     /// The version information stored in the <see cref="PackageVersion"/> follows the Semantic Versioning Specification
-    /// (SemVer) https://semver.org/ The version consists of a <see cref="MajorVersion"/>.<see cref="MinorVersion"/>.<see cref="PatchVersion"/>
+    /// (SemVer) https://semver.org/. The version consists of a <see cref="MajorVersion"/>.<see cref="MinorVersion"/>.<see cref="PatchVersion"/>
     /// numerical value followed by optional -<see cref="Prerelease"/>+<see cref="BuildMetaData"/> version information.
     ///
-    /// <remarks><see cref="PackageVersion"/> follows all the standard for valid and invalid formatting of a version
+    /// <see cref="PackageVersion"/> follows all the standard for valid and invalid formatting of a version
     /// except for limiting the <see cref="MajorVersion"/>, <see cref="MinorVersion"/>, and <see cref="PatchVersion"/>
-    /// to the <c>ulong.MaxValue</c>. Their is no such restriction for the values of <see cref="Prerelease"/> or <see cref="BuildMetaData"/>.</remarks>
-    /// </summary>
+    /// to the <c>ulong.MaxValue</c>. Their is no such restriction for the values of <see cref="Prerelease"/> or <see cref="BuildMetaData"/>.
+    /// </remarks>
     public readonly struct PackageVersion : IEquatable<PackageVersion>, IComparable<PackageVersion>
     {
         const string k_Major = "major";
@@ -37,32 +38,32 @@ namespace Unity.XR.CoreUtils.Editor
         readonly string m_BuildMetaData;
 
         /// <summary>
-        /// Major version number
+        /// Major version number.
         /// </summary>
         public ulong MajorVersion => m_MajorVersion;
         
         /// <summary>
-        /// Minor version number
+        /// Minor version number.
         /// </summary>
         public ulong MinorVersion => m_MinorVersion;
         
         /// <summary>
-        /// Patch version number
+        /// Patch version number.
         /// </summary>
         public ulong PatchVersion => m_PatchVersion;
         
         /// <summary>
-        /// Is the package pre release
+        /// Reports whether the package is a prerelease.
         /// </summary>
         public bool IsPrerelease => !string.IsNullOrEmpty(m_Prerelease);
         
         /// <summary>
-        /// The prerelease version information
+        /// The prerelease version information.
         /// </summary>
         public string Prerelease => m_Prerelease;
         
         /// <summary>
-        /// The build metadata version information
+        /// The build metadata version information.
         /// </summary>
         public string BuildMetaData => m_BuildMetaData;
 

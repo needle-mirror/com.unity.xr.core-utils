@@ -3,18 +3,20 @@
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Utility for dealing with <c>Guid</c>s.
+    /// Utility for dealing with <see cref="System.Guid"/> objects.
     /// </summary>
     public static class GuidUtil
     {
         /// <summary>
-        /// Reconstructs a <c>Guid</c> from two <c>ulong</c>s representing the low and high bytes.
-        /// Use <c>UnityEditor.XR.ARSubsystems.GuidExtensions.Decompose</c> to decompose the guid
-        /// into its low and high components.
+        /// Reconstructs a <see cref="Guid"/> from two <see cref="ulong"/> values representing the low and high bytes.
         /// </summary>
-        /// <param name="low">The low 8 bytes of the guid</param>
-        /// <param name="high">The high 8 bytes of the guid.</param>
-        /// <returns>The Guid composed of <paramref name="low"/> and <paramref name="high"/>.</returns>
+        /// <remarks>
+        /// Use <see cref="GuidExtensions.Decompose(Guid, out ulong, out ulong)"/> to separate the `Guid`
+        /// into its low and high components.
+        /// </remarks>
+        /// <param name="low">The low 8 bytes of the `Guid`.</param>
+        /// <param name="high">The high 8 bytes of the `Guid`.</param>
+        /// <returns>The `Guid` composed of <paramref name="low"/> and <paramref name="high"/>.</returns>
         public static Guid Compose(ulong low, ulong high)
         {
             return new Guid(

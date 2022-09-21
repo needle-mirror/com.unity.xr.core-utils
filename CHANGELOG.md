@@ -6,6 +6,18 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+<!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.2.0-pre.1] - 2022-09-21
+
+### Added
+
+- Added `SwapAtIndices<T>()` function to `ListExtensions` that performs an index-based element swap on any `List<T>`.
+- Added bindable variable classes which allow a typed variable to be observed for value changes.
+- Added value datum classes, which store data in a `ScriptableObject` or directly within a serializable class. These can be utilized to share common configuration across multiple objects and are used by the affordance system.
+- Added common primitive types of `UnityEvent<T>` to allow serialized typed Unity Editor events.
+- Added `HashSetList`, which is basically a wrapper for both a `HashSet` and `List` that allows the benefits of O(1) `Contains` checks, while allowing deterministic iteration without allocation.
+- Added Multiply, Divide, and SafeDivide Vector3 extensions.
+
 ## [2.1.0] - 2022-08-22
 
 ### Fixed
@@ -43,7 +55,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Changed
 
-- Stopped firing warnings when users attach the [TrackedPoseDriver](https://docs.unity3d.com/Packages/com.unity.xr.legacyinputhelpers@2.1/api/UnityEngine.SpatialTracking.TrackedPoseDriver.html) from `com.unity.xr.legacyinputhelpers`, but strongly recommend that users attach the [TrackedPoseDriver](https://docs.unity.cn/Packages/com.unity.inputsystem@1.2/api/UnityEngine.InputSystem.XR.TrackedPoseDriver.html) from `com.unity.inputsystem` to the `camera` property of [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) instead. ([1388617](https://issuetracker.unity3d.com/product/unity/issues/guid/1388617))
+- Stopped firing warnings when users attach the [TrackedPoseDriver](https://docs.unity3d.com/Packages/com.unity.xr.legacyinputhelpers@2.1/api/UnityEngine.SpatialTracking.TrackedPoseDriver.html) from `com.unity.xr.legacyinputhelpers`, but strongly recommend that users attach the [TrackedPoseDriver](https://docs.unity3d.com/Packages/com.unity.inputsystem@latest?subfolder=/api/UnityEngine.InputSystem.XR.TrackedPoseDriver.html) from `com.unity.inputsystem` to the `camera` property of [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) instead. ([1388617](https://issuetracker.unity3d.com/product/unity/issues/guid/1388617))
 
 ## [2.0.0-pre.5] - 2021-11-16
 

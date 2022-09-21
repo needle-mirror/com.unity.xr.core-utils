@@ -3,18 +3,18 @@ using System.Collections.Generic;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Instance pool for objects
+    /// Provides a generic object pool implementation.
     /// </summary>
-    /// <typeparam name="T">The type of object to manage instances of</typeparam>
+    /// <typeparam name="T">The <see cref="System.Type"/> of objects in this pool.</typeparam>
     public class ObjectPool<T> where T: class, new()
     {
         /// <summary>
-        /// All objects in the pool
+        /// All objects currently in this pool.
         /// </summary>
         protected readonly Queue<T> PooledQueue = new Queue<T>();
 
         /// <summary>
-        /// Get an instance of the object type
+        /// Gets an object instance from the pool. Creates a new instance if the pool is empty. 
         /// </summary>
         /// <returns>The object instance</returns>
         public virtual T Get()
@@ -23,9 +23,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Return an object instance to the pool
+        /// Returns an object instance to the pool.
         /// </summary>
-        /// <param name="instance">The instance to return</param>
+        /// <remarks>
+        /// Object values can be cleared automatically if <see cref="ClearInstance(T)"/> is implemented.
+        /// The base `ObjectPool` class does not clear objects to the pool.
+        /// </remarks>
+        /// <param name="instance">The instance to return.</param>
         public void Recycle(T instance)
         {
             ClearInstance(instance);
@@ -33,10 +37,10 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Implement a clearing function in this in a derived class to
-        /// have the <seealso cref="Recycle"/> method automatically clear the item.
+        /// Implement this function in a derived class to
+        /// automatically clear an instance when <seealso cref="Recycle"/> is called.
         /// </summary>
-        /// <param name="instance">The object to return to the pool</param>
+        /// <param name="instance">The object to clear.</param>
         protected virtual void ClearInstance(T instance) { }
     }
 }

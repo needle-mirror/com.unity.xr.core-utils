@@ -11,16 +11,22 @@ using UnityEditor.SceneManagement;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// Class that automatically groups a series of object actions together as a single undo-operation
-    /// And works in both the editor and player (with player support simply turning off undo-operations)
-    /// Mirrors the normal functions you find in the Undo class and collapses them into one operation
-    /// when the block is complete
+    /// Represents a series of object actions as a single undo-operation.
+    /// </summary>
+    /// <remarks>
+    /// UndoBlock methods work in both Edit mode and Play mode. In Play mode undo-operations are disabled.
+    /// This class mirrors the normal functions you find in the <see cref="Undo"/> class and collapses them into one operation
+    /// when the block is complete.
+    /// 
     /// Proper usage of this class is:
+    ///
+    /// <example><code>
     /// using (var undoBlock = new UndoBlock("Desired Undo Message"))
     /// {
     ///     undoBlock.yourCodeToUndo()
     /// }
-    /// </summary>
+    /// </code></example>
+    /// </remarks>
     public class UndoBlock : IDisposable
     {
         int m_UndoGroup;
@@ -33,10 +39,10 @@ namespace Unity.XR.CoreUtils
 #endif
 
         /// <summary>
-        /// Initialize a new UndoBlock
+        /// Initialize a new UndoBlock.
         /// </summary>
-        /// <param name="undoLabel">The label to apply to the undo group created within this undo block</param>
-        /// <param name="testMode">Whether this is part of a test run</param>
+        /// <param name="undoLabel">The label to apply to the undo group created within this undo block.</param>
+        /// <param name="testMode">Whether this is part of a test run.</param>
         public UndoBlock(string undoLabel, bool testMode = false)
         {
 #if UNITY_EDITOR
@@ -84,7 +90,7 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Sets the parent of transform to the new parent and records an undo operation.
+        /// Sets the parent transform of an object and records an undo operation.
         /// </summary>
         /// <param name="transform">The Transform component whose parent is to be changed.</param>
         /// <param name="newParent">The parent Transform to be assigned.</param>
@@ -105,7 +111,7 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <param name="gameObject">The game object you want to add the component to.</param>
         /// <typeparam name="T">The type of component you want to add.</typeparam>
-        /// <returns>The new component</returns>
+        /// <returns>The new component.</returns>
         public T AddComponent<T>(GameObject gameObject) where T : Component
         {
 #if UNITY_EDITOR
@@ -120,9 +126,9 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Dispose of this object
+        /// Dispose of this object.
         /// </summary>
-        /// <param name="disposing">Whether to dispose this object</param>
+        /// <param name="disposing">Whether to cleanup this object's state.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!m_DisposedValue)

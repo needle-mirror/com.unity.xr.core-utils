@@ -4,16 +4,16 @@ using UnityEngine.UIElements;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Expose a ScriptableSettings of type T as a settings provider
+    /// Expose a <see cref="ScriptableSettings{T}"/> object as a settings provider.
     /// </summary>
-    /// <typeparam name="T">The ScriptableSettings type which will be exposed</typeparam>
+    /// <typeparam name="T">The ScriptableSettings type to be exposed.</typeparam>
     public abstract class ScriptableSettingsProvider<T> : SettingsProvider where T : ScriptableSettingsBase<T>
     {
         T m_Target;
         SerializedObject m_SerializedObject;
 
         /// <summary>
-        /// The ScriptableSettings being provided
+        /// The ScriptableSettings being provided.
         /// </summary>
         protected T Target
         {
@@ -27,7 +27,7 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// A SerializedObject representing the ScriptableSettings being provided
+        /// A SerializedObject representing the ScriptableSettings being provided.
         /// </summary>
         protected SerializedObject SerializedObject
         {
@@ -41,10 +41,10 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Initialize a new ScriptableSettingsProvider
+        /// Initialize a new ScriptableSettingsProvider.
         /// </summary>
-        /// <param name="path">The path to this settings view within the Preferences or Project Settings window</param>
-        /// <param name="scope">The scope of these settings</param>
+        /// <param name="path">The path to this settings view within the Preferences or Project Settings window.</param>
+        /// <param name="scope">The scope of these settings.</param>
         protected ScriptableSettingsProvider(string path, SettingsScope scope = SettingsScope.User)
             : base(path, scope) {}
 
@@ -66,9 +66,9 @@ namespace Unity.XR.CoreUtils.Editor
         public abstract override void OnGUI(string searchContext);
 
         /// <summary>
-        /// Initialize this settings object and return a SerializedObject wrapping it
+        /// Initialize this settings object and return a SerializedObject wrapping it.
         /// </summary>
-        /// <returns>The SerializedObject wrapper</returns>
+        /// <returns>The SerializedObject wrapper.</returns>
         SerializedObject GetSerializedSettings()
         {
             if (typeof(EditorScriptableSettings<T>).IsAssignableFrom(typeof(T)))
