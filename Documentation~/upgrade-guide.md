@@ -1,9 +1,9 @@
 ---
 uid: xr-core-utils-upgrade-guide
 ---
-# Upgrading to XR Core Utilities version 2.0
+# Upgrading to XR Core Utilities version 2.x
 
-This package is replacing XR Tools Utilities package which is now deprecated. To upgrade to XR Core Utilities package version 2.0, you need to do the following:
+This package is replacing XR Tools Utilities package which is now deprecated. To upgrade to XR Core Utilities package version 2.x, you need to do the following:
 
 - Change dependency on XR Tools Utilities (`com.unity.xrtools.utils`) package with XR Core Utilities (`com.unity.xr.core-utils`) package.
 - Use Unity 2019.4 or newer.

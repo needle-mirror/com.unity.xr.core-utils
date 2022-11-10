@@ -16,7 +16,7 @@ namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
     /// Manages <see cref="BuildValidationRule"/> rules for verifying that project settings are compatible
-    /// with the features of an installed XR package. 
+    /// with the features of an installed XR package.
     /// </summary>
     /// <remarks>
     /// XR packages can implement a set of <see cref="BuildValidationRule"/> objects and call
@@ -29,6 +29,9 @@ namespace Unity.XR.CoreUtils.Editor
     [InitializeOnLoad]
     public static class BuildValidator
     {
+        const string k_FixIssuesProgressBarTitle = "Fix Project Issues";
+        const string k_FixIssuesProgressBarInfo = "{0} ({1}/{2})";
+
         static Dictionary<BuildTargetGroup, List<BuildValidationRule>> s_PlatformRules =
             new Dictionary<BuildTargetGroup, List<BuildValidationRule>>();
 
@@ -85,7 +88,7 @@ namespace Unity.XR.CoreUtils.Editor
         {
             if (Application.isPlaying)
                 return false;
-            
+
             foreach (var sceneSetup in EditorSceneManager.GetSceneManagerSetup())
             {
                 if (!sceneSetup.isLoaded)
@@ -106,6 +109,42 @@ namespace Unity.XR.CoreUtils.Editor
         internal static bool HasRulesForPlatform(BuildTargetGroup buildTarget)
         {
             return s_PlatformRules.TryGetValue(buildTarget, out _);
+        }
+
+        /// <summary>
+        /// Fix all issues in the given <paramref name="issues"/> list.
+        /// </summary>
+        /// <param name="issues">The list of issues to fix.</param>
+        /// <param name="progressBarTitle">The progress bar title.</param>
+        public static void FixIssues(IList<BuildValidationRule> issues, string progressBarTitle = k_FixIssuesProgressBarTitle)
+        {
+            var issuesFixed = 0;
+            foreach (var issue in issues)
+            {
+                var progressBarInfo = string.Format(k_FixIssuesProgressBarInfo, issue.GetDisplayString(), issuesFixed + 1, issues.Count);
+                EditorUtility.DisplayProgressBar(progressBarTitle, progressBarInfo, issuesFixed / (float)(issues.Count - 1));
+
+                var fixIt = issue.FixIt;
+                fixIt?.Invoke();
+
+                issuesFixed++;
+            }
+
+            if (issuesFixed > 0)
+                EditorUtility.ClearProgressBar();
+        }
+
+        /// <summary>
+        /// If your issue has a Unity object associated with it, you can use this method to select the object when users
+        /// click in the issue in the validator window.
+        /// </summary>
+        /// <param name="instanceID"></param>
+        /// <seealso cref="BuildValidationRule.OnClick"/>
+        public static void SelectObject(int instanceID)
+        {
+            var objToSelect = EditorUtility.InstanceIDToObject(instanceID);
+            if (objToSelect != null)
+                Selection.activeObject = objToSelect;
         }
     }
 }

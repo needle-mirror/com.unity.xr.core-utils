@@ -15,9 +15,9 @@ namespace Unity.XR.CoreUtils.Bindings
         public Action BindAction { get; set; }
 
         /// <summary>
-        /// Action to unbind from callback
+        /// Action to unbind from callback.
         /// </summary>
-        public Action UnBindAction { get; set; }
+        public Action UnbindAction { get; set; }
 
         /// <inheritdoc/>
         public bool IsBound => m_IsBound;
@@ -27,12 +27,12 @@ namespace Unity.XR.CoreUtils.Bindings
         /// <summary>
         /// Create an event binding container.
         /// </summary>
-        /// <param name="bindAction">Action to initiate <see cref="Bind"/> (subscribe)</param>
-        /// <param name="unBindAction">Action to initiate <see cref="Unbind"/> (unsubscribe)</param>
+        /// <param name="bindAction">Action to initiate <see cref="Bind"/> (subscribe).</param>
+        /// <param name="unBindAction">Action to initiate <see cref="Unbind"/> (unsubscribe).</param>
         public EventBinding(Action bindAction, Action unBindAction)
         {
             BindAction = bindAction;
-            UnBindAction = unBindAction;
+            UnbindAction = unBindAction;
             m_IsBound = false;
         }
 
@@ -49,7 +49,7 @@ namespace Unity.XR.CoreUtils.Bindings
         public void Unbind()
         {
             if (m_IsBound)
-                UnBindAction?.Invoke();
+                UnbindAction?.Invoke();
 
             m_IsBound = false;
         }
@@ -59,7 +59,7 @@ namespace Unity.XR.CoreUtils.Bindings
         {
             Unbind();
             BindAction = null;
-            UnBindAction = null;
+            UnbindAction = null;
         }
     }
 }

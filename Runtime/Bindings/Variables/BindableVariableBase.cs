@@ -1,19 +1,22 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Unity.XR.CoreUtils.Bindings;
 using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Bindings.Variables
 {
     /// <summary>
-    /// Generic class which contains a member variable of type <c>T</c> and provides a binding API to data changes.
+    /// Abstract class which contains a member variable of type <typeparamref name="T"/> and provides a binding API to data changes.
     /// </summary>
-    /// <typeparam name="T">BindableVariableBase type</typeparam>
+    /// <typeparam name="T">The type of the variable value.</typeparam>
+    /// <seealso cref="BindableVariable{T}"/>
+    /// <seealso cref="BindableVariableAlloc{T}"/>
+    /// <seealso cref="BindableEnum{T}"/>
     [Serializable]
-    public class BindableVariableBase<T> : IReadOnlyBindableVariable<T>
+    public abstract class BindableVariableBase<T> : IReadOnlyBindableVariable<T>
     {
+        event Action<T> valueUpdated;
+
         T m_InternalValue;
         readonly bool m_CheckEquality;
         bool m_IsInitialized;
@@ -25,17 +28,14 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// The subscribers will not be notified if this variable is initialized, is configured to check for equality,
         /// and the new value is equivalent.
         /// </summary>
+        /// <seealso cref="SetValueWithoutNotify"/>
         public T Value
         {
             get => m_InternalValue;
             set
             {
-                if (m_IsInitialized && (m_CheckEquality && (m_EqualityMethod?.Invoke(m_InternalValue, value) ?? ValueEquals(value))))
-                    return;
-
-                m_IsInitialized = true;
-                m_InternalValue = value;
-                BroadcastValue();
+                if (SetValueWithoutNotify(value))
+                    BroadcastValue();
             }
         }
 
@@ -47,28 +47,37 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         public int BindingCount => m_BindingCount;
 
         /// <summary>
-        /// Update the value of the internal bindable variable.
+        /// Sets the internal variable value and, even if different, doesn't notify of the change to subscribed listeners.
+        /// This is intended to be used by developers to allow for setting multiple bindable variables before broadcasting any of them individually.
         /// </summary>
-        /// <param name="value">New Value to set.</param>
-        public void SetValue(T value) => Value = value;
+        /// <param name="value">The new value.</param>
+        /// <returns>Returns <see langword="true"/> if a broadcast would have normally occurred if the property setter was used instead.</returns>
+        /// <seealso cref="Value"/>
+        public bool SetValueWithoutNotify(T value)
+        {
+            if (m_IsInitialized && m_CheckEquality && (m_EqualityMethod?.Invoke(m_InternalValue, value) ?? ValueEquals(value)))
+                return false;
 
-        event Action<T> ValueUpdated;
+            m_IsInitialized = true;
+            m_InternalValue = value;
+            return true;
+        }
 
         /// <inheritdoc />
         public IEventBinding Subscribe(Action<T> callback)
         {
-            EventBinding newBinding = new EventBinding();
+            var newBinding = new EventBinding();
             if (callback != null)
             {
-                Action<T> callbackReference = callback;
+                var callbackReference = callback;
                 newBinding.BindAction = () =>
                 {
-                    ValueUpdated += callbackReference;
+                    valueUpdated += callbackReference;
                     IncrementReferenceCount();
                 };
-                newBinding.UnBindAction = () =>
+                newBinding.UnbindAction = () =>
                 {
-                    ValueUpdated -= callbackReference;
+                    valueUpdated -= callbackReference;
                     DecrementReferenceCount();
                 };
                 newBinding.Bind();
@@ -80,10 +89,7 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// <inheritdoc />
         public IEventBinding SubscribeAndUpdate(Action<T> callback)
         {
-            if (callback != null)
-            {
-                callback(m_InternalValue);
-            }
+            callback?.Invoke(m_InternalValue);
 
             return Subscribe(callback);
         }
@@ -93,7 +99,7 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         {
             if (callback != null)
             {
-                ValueUpdated -= callback;
+                valueUpdated -= callback;
                 DecrementReferenceCount();
             }
         }
@@ -111,11 +117,11 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// <summary>
         /// Constructor for bindable variable, which is a variable that notifies listeners when the internal value changes.
         /// </summary>
-        /// <param name="initialValue">Value to initialize variable with. Uses type default if field empty.</param>
-        /// <param name="checkEquality">Setting true checks whether to compare new value to old before triggering callback. Default false.</param>
-        /// <param name="equalityMethod">Func used to provide custom equality checking behavior. Default is Equatable check.</param>
-        /// <param name="startInitialized">Setting false results in initial value setting will trigger registered callbacks, regardless of whether the value is the same as the initial one.</param>
-        public BindableVariableBase(T initialValue = default, bool checkEquality = true, Func<T, T, bool> equalityMethod = null, bool startInitialized = false)
+        /// <param name="initialValue">Value to initialize variable with. Defaults to type default.</param>
+        /// <param name="checkEquality">Setting true checks whether to compare new value to old before triggering callback. Defaults to <see langword="true"/>.</param>
+        /// <param name="equalityMethod">Func used to provide custom equality checking behavior. Defaults to <c>Equals</c> check.</param>
+        /// <param name="startInitialized">Setting false results in initial value setting will trigger registered callbacks, regardless of whether the value is the same as the initial one. Defaults to <see langword="false"/>.</param>
+        protected BindableVariableBase(T initialValue = default, bool checkEquality = true, Func<T, T, bool> equalityMethod = null, bool startInitialized = false)
         {
             m_IsInitialized = startInitialized;
             m_InternalValue = initialValue;
@@ -129,7 +135,7 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// </summary>
         public void BroadcastValue()
         {
-            ValueUpdated?.Invoke(m_InternalValue);
+            valueUpdated?.Invoke(m_InternalValue);
         }
 
         /// <inheritdoc />
@@ -150,7 +156,6 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
             return new BindableVariableTaskState<T>(this, awaitState, token).task;
         }
 
-        // IEquatable API
         /// <inheritdoc />
         public virtual bool ValueEquals(T other) => m_InternalValue.Equals(other);
     }

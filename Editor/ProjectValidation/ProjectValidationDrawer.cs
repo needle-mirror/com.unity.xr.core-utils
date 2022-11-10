@@ -9,6 +9,11 @@ namespace Unity.XR.CoreUtils.Editor
     {
         class Styles
         {
+            static readonly RectOffset k_LineBorder = new RectOffset(0, 0, 0, 0);
+            static readonly RectOffset k_LinePadding = new RectOffset(5, 5, 5, 5);
+            static readonly RectOffset k_LineMargin = new RectOffset(0, 0, 0, 0);
+
+
             internal static readonly Vector2 IconSize = new Vector2(16.0f, 16.0f);
             internal static readonly float DisabledRulePadding = IconSize.x + 5;
 
@@ -37,7 +42,9 @@ namespace Unity.XR.CoreUtils.Editor
             internal readonly GUIContent TestPassedIcon;
 
             internal GUIStyle IssuesBackground;
-            internal GUIStyle ListLabel;
+            internal GUIStyle ListLine;
+            internal GUIStyle ListLineBackgroundOdd;
+            internal GUIStyle ListLineBackgroundEven;
             internal GUIStyle IssuesTitleLabel;
             internal GUIStyle FixAllStyle;
             internal GUIStyle IconStyle;
@@ -58,11 +65,25 @@ namespace Unity.XR.CoreUtils.Editor
 
                 IssuesBackground = "ScrollViewAlt";
 
-                ListLabel = new GUIStyle("TV Selection")
+                ListLine = new GUIStyle("TV Line")
                 {
-                    border = new RectOffset(0, 0, 0, 0),
-                    padding = new RectOffset(5, 5, 0, 3),
-                    margin = new RectOffset(5, 5, 5, 5)
+                    border = k_LineBorder,
+                    padding = k_LinePadding,
+                    margin = k_LineMargin
+                };
+
+                ListLineBackgroundOdd = new GUIStyle("CN EntryBackOdd")
+                {
+                    border = k_LineBorder,
+                    padding = k_LinePadding,
+                    margin = k_LineMargin
+                };
+
+                ListLineBackgroundEven = new GUIStyle("CN EntryBackEven")
+                {
+                    border = k_LineBorder,
+                    padding = k_LinePadding,
+                    margin = k_LineMargin
                 };
 
                 IssuesTitleLabel = new GUIStyle(EditorStyles.label)
@@ -89,7 +110,7 @@ namespace Unity.XR.CoreUtils.Editor
                 {
                     stretchWidth = false,
                     fixedWidth = 80,
-                    margin = new RectOffset(0, 10, 2, 2)
+                    margin = new RectOffset(0, 5, 2, 2)
                 };
             }
         }
@@ -137,6 +158,22 @@ namespace Unity.XR.CoreUtils.Editor
             }
         }
 
+        static void DrawListLineBox(Rect position, GUIContent content, bool selected, GUIStyle lineStyle, GUIStyle lineSelectionStyle)
+        {
+            if (Event.current.type != EventType.Repaint)
+                return;
+
+            if (selected)
+                lineSelectionStyle.Draw(position, content, false, false, true, true);
+            else
+                lineStyle.Draw(position, content, position.Contains(Event.current.mousePosition), false, false, false);
+        }
+
+        static string GetIssueDisplayString(BuildValidationRule issue)
+        {
+            return string.IsNullOrEmpty(issue.Category) ? issue.Message : $"[{issue.Category}] {issue.Message}";
+        }
+
         /// <summary>
         /// Last time the issues in the window were updated
         /// </summary>
@@ -148,11 +185,12 @@ namespace Unity.XR.CoreUtils.Editor
         List<BuildValidationRule> m_BuildRules = new List<BuildValidationRule>();
 
         // Fix all state
-        Queue<BuildValidationRule> m_FixAllQueue = new Queue<BuildValidationRule>();
+        List<BuildValidationRule> m_FixAllList = new List<BuildValidationRule>();
 
         HashSet<BuildValidationRule> m_RuleFailures = new HashSet<BuildValidationRule>();
 
         BuildTargetGroup m_SelectedBuildTargetGroup;
+        BuildValidationRule m_SelectedRule;
 
         bool CheckInPlayMode
         {
@@ -263,14 +301,14 @@ namespace Unity.XR.CoreUtils.Editor
                     // FixAll button
                     if (hasAutoFix)
                     {
-                        using (new EditorGUI.DisabledScope(m_FixAllQueue.Count > 0))
+                        using (new EditorGUI.DisabledScope(m_FixAllList.Count > 0))
                         {
                             if (GUILayout.Button("Fix All", styles.FixAllStyle, GUILayout.Width(Styles.FixButtonWidth)))
                             {
                                 foreach (var ruleFailure in m_RuleFailures)
                                 {
                                     if (ruleFailure.FixIt != null && ruleFailure.FixItAutomatic)
-                                        m_FixAllQueue.Enqueue(ruleFailure);
+                                        m_FixAllList.Add(ruleFailure);
                                 }
                             }
                         }
@@ -279,25 +317,32 @@ namespace Unity.XR.CoreUtils.Editor
 
                 m_ScrollViewPos = EditorGUILayout.BeginScrollView(m_ScrollViewPos, styles.IssuesBackground,
                     GUILayout.ExpandHeight(true));
-                
+
+                var index = 0;
                 m_BuildRules = SortRulesByEnabledCondition(m_BuildRules);
                 foreach (var result in m_BuildRules)
                 {
                     var rulePassed = !m_RuleFailures.Contains(result);
                     if (BuildValidationShowAll || !rulePassed)
-                        DrawIssue(result, rulePassed, hasFix);
+                    {
+                        DrawIssue(result, rulePassed, hasFix, index);
+                        index++;
+                    }
                 }
 
                 EditorGUILayout.EndScrollView();
             }
         }
 
-        void DrawIssue(BuildValidationRule result, bool rulePassed, bool hasFix)
+        void DrawIssue(BuildValidationRule result, bool rulePassed, bool hasFix, int index)
         {
             bool isRuleEnabled = result.IsRuleEnabled();
             using (new EditorGUI.DisabledScope(!isRuleEnabled))
             {
-                EditorGUILayout.BeginHorizontal(styles.ListLabel);
+                var lineBackgroundGUIStyle = index % 2 == 0 ? styles.ListLineBackgroundOdd : styles.ListLineBackgroundEven;
+                var listItemRect = EditorGUILayout.BeginHorizontal(lineBackgroundGUIStyle);
+                DrawListLineBox(listItemRect, GUIContent.none, m_SelectedRule == result, styles.ListLine, lineBackgroundGUIStyle);
+
                 if (isRuleEnabled)
                 {
                     if (!rulePassed && result.Error)
@@ -312,11 +357,10 @@ namespace Unity.XR.CoreUtils.Editor
                 {
                     GUILayout.Space(Styles.DisabledRulePadding);
                 }
-                
-                var message = string.IsNullOrEmpty(result.Category) ? result.Message : $"[{result.Category}] {result.Message}";
-                
+
+                var message = GetIssueDisplayString(result);
+
                 GUILayout.Label(new GUIContent(message, isRuleEnabled ? string.Empty : Styles.DisabledRuleTooltip), styles.Wrap);
-                GUILayout.FlexibleSpace();
 
                 if (!string.IsNullOrEmpty(result.HelpText) || !string.IsNullOrEmpty(result.HelpLink))
                 {
@@ -338,14 +382,14 @@ namespace Unity.XR.CoreUtils.Editor
                 {
                     if (result.FixIt != null)
                     {
-                        using (new EditorGUI.DisabledScope(m_FixAllQueue.Count != 0))
+                        using (new EditorGUI.DisabledScope(m_FixAllList.Count != 0))
                         {
                             var button = result.FixItAutomatic ? styles.FixButton : styles.EditButton;
                             button.tooltip = result.FixItMessage;
                             if (GUILayout.Button(button, GUILayout.Width(Styles.FixButtonWidth)))
                             {
                                 if (result.FixItAutomatic)
-                                    m_FixAllQueue.Enqueue(result);
+                                    m_FixAllList.Add(result);
                                 else
                                     result.FixIt();
                             }
@@ -358,6 +402,14 @@ namespace Unity.XR.CoreUtils.Editor
                 }
 
                 EditorGUILayout.EndHorizontal();
+
+                var currentEvt = Event.current;
+                if (currentEvt.type == EventType.MouseDown && currentEvt.button == 0 && listItemRect.Contains(currentEvt.mousePosition))
+                {
+                    currentEvt.Use();
+                    m_SelectedRule = result;
+                    result.OnClick?.Invoke();
+                }
             }
         }
 
@@ -372,12 +424,10 @@ namespace Unity.XR.CoreUtils.Editor
             if (!force && EditorApplication.timeSinceStartup - m_LastUpdate < interval)
                 return false;
 
-            if (m_FixAllQueue.Count > 0)
+            if (m_FixAllList.Count > 0)
             {
-                // Fixit actions can popup dialogs that may cause the action to be called
-                // again from `UpdateIssues` if it is not removed before invoking.
-                var fixIt = m_FixAllQueue.Dequeue().FixIt;
-                fixIt?.Invoke();
+                BuildValidator.FixIssues(m_FixAllList);
+                m_FixAllList.Clear();
             }
 
             var activeBuildTargetGroup = m_SelectedBuildTargetGroup;
@@ -397,7 +447,7 @@ namespace Unity.XR.CoreUtils.Editor
             m_LastUpdate = EditorApplication.timeSinceStartup;
             return needsRepaint;
         }
-        
+
         List<BuildValidationRule> SortRulesByEnabledCondition(List<BuildValidationRule> rulesToSort)
         {
             var sortedRules = new List<BuildValidationRule>();

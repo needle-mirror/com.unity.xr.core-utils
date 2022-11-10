@@ -27,6 +27,10 @@ The status icons to the left of an individual build validation rule provide more
 | ![warning](images/ProjectValidation/project-validation-warning.png) | Build validation rule failed, but will not block the building of the project. These rules are safe to ignore if you have set up your project differently than recommended. |
 | ![error](images/ProjectValidation/project-validation-error.png)   | Build validation rule failed and will block building of the project. These rules cannot be ignored and you must fix these issues. |
 
+### Click in the Issue Message
+
+If the issue has objects associated with it, click on the message to select or highlight these objects in the Unity Editor.
+
 ### Fix or Edit button
 
 The **Fix** button automatically fixes the issue in your project or Scene. The **Edit** button takes you to the appropriate place in the Unity Editor where you can correct the issue in your project. Both the **Fix** and **Edit** buttons provide a tooltip explaining the steps to manually correct the issue.

@@ -50,6 +50,29 @@ namespace Unity.XR.CoreUtils.Tests
         }
 
         [Test]
+        public void TestEventBindingCanBeSkipped()
+        {
+            var callbackVar = 0;
+
+            var intVar = new BindableVariable<int>(callbackVar);
+            intVar.Subscribe(newValue => callbackVar = newValue);
+
+            // Both callback value and bindable variable value are synchronized
+            Assert.That(intVar.Value, Is.EqualTo(0));
+            Assert.That(callbackVar, Is.EqualTo(0));
+
+            // Test to ensure the callback is skipped but the value is still updated.
+            var wouldHaveBroadcast = intVar.SetValueWithoutNotify(5);
+            Assert.That(intVar.Value, Is.EqualTo(5));
+            Assert.That(callbackVar, Is.EqualTo(0));
+            Assert.That(wouldHaveBroadcast, Is.True);
+
+            intVar.BroadcastValue();
+            Assert.That(intVar.Value, Is.EqualTo(5));
+            Assert.That(callbackVar, Is.EqualTo(5));
+        }
+
+        [Test]
         public void TestBindingsGroup()
         {
             var callbackVarA = 0;

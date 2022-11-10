@@ -3,7 +3,7 @@ using System;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// Defines a validation rule used for assessing package setup correctness. 
+    /// Defines a validation rule used for assessing package setup correctness.
     /// </summary>
     /// <remarks>
     /// Use <see cref="CheckPredicate"/> to define the validation logic. Use <see cref="FixIt"/> to
@@ -19,7 +19,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// By default all rules are shown.
         /// </summary>
         public Func<bool> IsRuleEnabled { get; set; } = () => true;
-        
+
         /// <summary>
         /// Name of the rule that will be shown to the developer in the build validation drawer.
         /// </summary>
@@ -79,5 +79,19 @@ namespace Unity.XR.CoreUtils.Editor
         /// fails in the special Editor Prefab mode. Set this property to <see langword="false"/> for other, general purpose rules.
         /// </remarks>
         public bool SceneOnlyValidation { get; set; }
+
+        /// <summary>
+        /// Lambda function that is invoked when the item is clicked in the validator.
+        /// </summary>
+        public Action OnClick { get; set; }
+
+        /// <summary>
+        /// Gets a string with the issue <see cref="Category"/> and <see cref="Message"/>.
+        /// </summary>
+        /// <returns>Returns a string with the issue <see cref="Category"/> and <see cref="Message"/>.</returns>
+        public string GetDisplayString()
+        {
+            return string.IsNullOrEmpty(Category) ? Message : $"[{Category}] {Message}";
+        }
     }
 }

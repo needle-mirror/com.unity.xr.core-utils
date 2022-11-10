@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Unity.XR.CoreUtils.Bindings;
 
 namespace Unity.XR.CoreUtils.Bindings.Variables
 {
@@ -13,17 +12,17 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
     public interface IReadOnlyBindableVariable<T>
     {
         /// <summary>
-        /// Register callback to BindableVariable ValueUpdated event.
+        /// Register callback to the event that is invoked when the value is updated.
         /// </summary>
         /// <param name="callback">Callback to register.</param>
-        /// <returns>IEventBinding which allows for safe and easy bind, unbind, and clear functions.</returns>
+        /// <returns><see cref="IEventBinding"/> which allows for safe and easy bind, unbind, and clear functions.</returns>
         IEventBinding Subscribe(Action<T> callback);
 
         /// <summary>
-        /// Triggers the callback inline, followed by the Subscribe function.
+        /// Triggers the callback inline, followed by the <see cref="Subscribe"/> function.
         /// </summary>
-        /// <param name="callback">Callback to register</param>
-        /// <returns>IEventBinding which allows for safe and easy bind, unbind and clear functions.</returns>
+        /// <param name="callback">Callback to register.</param>
+        /// <returns><see cref="IEventBinding"/> which allows for safe and easy bind, unbind, and clear functions.</returns>
         IEventBinding SubscribeAndUpdate(Action<T> callback);
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         void Unsubscribe(Action<T> callback);
 
         /// <summary>
-        /// Get internal variable value
+        /// Get internal variable value.
         /// </summary>
         T Value { get; }
 
