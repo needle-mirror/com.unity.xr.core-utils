@@ -313,11 +313,12 @@ namespace Unity.XR.CoreUtils
         /// <param name="includeInactive">Should Components on inactive GameObjects be included in the found set?</param>
         public static void GetComponentsInAllScenes<T>(List<T> components, bool includeInactive = false) where T : Component
         {
-            var loadedSceneCount = SceneManager.sceneCount;
-            for (var i = 0; i < loadedSceneCount; i++)
+            var sceneCount = SceneManager.sceneCount;
+            for (var i = 0; i < sceneCount; i++)
             {
                 var scene = SceneManager.GetSceneAt(i);
-                GetComponentsInScene(scene, components, includeInactive);
+                if (scene.isLoaded)
+                    GetComponentsInScene(scene, components, includeInactive);
             }
         }
 
