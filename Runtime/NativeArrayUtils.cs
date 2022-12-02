@@ -19,7 +19,11 @@ namespace Unity.XR.CoreUtils
         {
             if (array.Length < capacity)
             {
-                array.Dispose();
+                if (array.IsCreated)
+                {
+                    array.Dispose();
+                }
+
                 array = new NativeArray<T>(capacity, allocator, options);
             }
         }

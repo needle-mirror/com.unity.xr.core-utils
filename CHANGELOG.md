@@ -6,6 +6,13 @@ All notable changes to this package will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2022-12-02
+
+### Fixed
+
+- [NativeArrayUtils.EnsureCapacity](xref:Unity.XR.CoreUtils.NativeArrayUtils.EnsureCapacity*) checks for unallocated array before disposing it and reallocating for a larger capacity.
+- Fixed error when calling `GameObjectUtils.GetComponentsInAllScenes<T>` with unloaded scenes in the Hierarchy window.
+
 ## [2.0.0] - 2022-02-16
 
 ### Added
