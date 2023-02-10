@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
-    /// A helper class for accesing settings stored in <see cref="ScriptableObject"/> instances from `UnityEditor` code.
+    /// A helper class for accessing settings stored in <see cref="ScriptableObject"/> instances from `UnityEditor` code.
     /// </summary>
     /// <typeparam name="T">A class derived from <see cref="ScriptableObject"/>.</typeparam>
     public abstract class EditorScriptableSettings<T> : ScriptableSettingsBase<T> where T : ScriptableObject

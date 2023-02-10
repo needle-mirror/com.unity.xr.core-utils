@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Unity.XR.CoreUtils
 {
     /// <summary>
-    /// A helper class for accesing settings stored in <see cref="ScriptableObject"/> instances.
+    /// A helper class for accessing settings stored in <see cref="ScriptableObject"/> instances.
     /// </summary>
     /// <typeparam name="T">A class derived from <see cref="ScriptableObject"/>.</typeparam>
     public abstract class ScriptableSettings<T> : ScriptableSettingsBase<T> where T : ScriptableObject

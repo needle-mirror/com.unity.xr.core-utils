@@ -34,7 +34,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="defaultValue">Value to be used as default if a preference value has not been stored.</param>
         /// <param name="propertyName">Name of calling method. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         /// <returns>The bool value stored in the Editor preferences for the calling property.</returns>
         public static bool GetBool(string typeName, bool defaultValue = false,
             [CallerMemberName] string propertyName = null)
@@ -49,7 +49,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type which declares the property.</param>
         /// <param name="value">Value to set in Editor preferences.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         public static void SetBool(string typeName, bool value,
             [CallerMemberName] string propertyName = null)
         {
@@ -63,7 +63,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property</param>
         /// <param name="defaultValue">Value to be used as default if a preference value has not been stored.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         /// <returns>The float value stored in the Editor preferences for the calling property.</returns>
         public static float GetFloat(string typeName, float defaultValue = 0f,
             [CallerMemberName] string propertyName = null)
@@ -78,7 +78,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="value">Value to set in Editor preferences.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         public static void SetFloat(string typeName, float value,
             [CallerMemberName] string propertyName = null)
         {
@@ -92,7 +92,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="defaultValue">Value to be used as default if a preference value has not been stored.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         /// <returns>The int value stored in the Editor preferences for the calling property.</returns>
         public static int GetInt(string typeName, int defaultValue = 0,
             [CallerMemberName] string propertyName = null)
@@ -107,7 +107,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type which declares the property.</param>
         /// <param name="value">Value to set in Editor preferences.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         public static void SetInt(string typeName, int value,
             [CallerMemberName] string propertyName = null)
         {
@@ -121,7 +121,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="defaultValue">Value to be used as default if a preference value has not been stored.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         /// <returns>The string value stored in the Editor preferences for the calling property.</returns>
         public static string GetString(string typeName, string defaultValue = "",
             [CallerMemberName] string propertyName = null)
@@ -136,7 +136,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="value">Value to set in Editor preferences.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         public static void SetString(string typeName, string value,
             [CallerMemberName] string propertyName = null)
         {
@@ -150,7 +150,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="defaultValue">Value to be used as default if a preference value has not been stored.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         /// <returns>The color value stored in the Editor preferences for the calling property.</returns>
         public static Color GetColor(string typeName, Color defaultValue,
             [CallerMemberName] string propertyName = null)
@@ -165,7 +165,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="typeName">The name of the type that declares the property.</param>
         /// <param name="value">Value to set in Editor preferences.</param>
         /// <param name="propertyName">Name of calling property. When invoking this function from a property getter
-        /// or setter, you can leave this paramter blank and it will be filled in by the property name.</param>
+        /// or setter, you can leave this parameter blank and it will be filled in by the property name.</param>
         public static void SetColor(string typeName, Color value,
             [CallerMemberName] string propertyName = null)
         {

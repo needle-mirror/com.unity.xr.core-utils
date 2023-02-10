@@ -7,18 +7,24 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.2.0] - 2023-02-10
+
+### Changed
+
+- Promoted package from prerelease to verified.
+
 ## [2.2.0-pre.2] - 2022-11-10
 
 ### Added
 
 - Added `SetValueWithoutNotify` method to `BindableVariableBase<T>` to let users set the value without broadcasting to subscribers.
 - Added `BuildValidationRule.OnClick` lambda function that is invoked when the rule is clicked in the validator. Also added the `BuildValidator.SelectObject` method to perform the object select logic for rules.
-- Added `BuildValidatior.FixIssues` method to process and fix a batch of validation rules.
+- Added `BuildValidator.FixIssues` method to process and fix a batch of validation rules.
 
 ### Changed
 
 - Renamed `UnBindAction` to `UnbindAction` in [EventBinding](xref:Unity.XR.CoreUtils.Bindings.EventBinding).
-- The `Fix All` button, in the `Project Validation`, now processes and fixes all issues in a single frame. Set `BuildValiationRule.FixItAutomatic` to `false` if the issue cannot be processed with others in the same frame (Ex. if the fix requires a Unity Editor restart).
+- The `Fix All` button, in the `Project Validation`, now processes and fixes all issues in a single frame. Set `BuildValidationRule.FixItAutomatic` to `false` if the issue cannot be processed with others in the same frame (Ex. if the fix requires a Unity Editor restart).
 
 ### Removed
 

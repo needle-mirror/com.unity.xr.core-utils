@@ -190,7 +190,7 @@ namespace Unity.XR.CoreUtils
         /// </remarks>
         /// <param name="typeNames">A list containing the <see cref="Type.FullName"/> strings of the types to find.</param>
         /// <param name="resultList">An empty list to which any matching <see cref="Type"/> objects are added. A
-        /// reuslt in <paramref name="resultList"/> has the same index as corresponding name in <paramref name="typeNames"/>.</param>
+        /// result in <paramref name="resultList"/> has the same index as corresponding name in <paramref name="typeNames"/>.</param>
         public static void FindTypesByFullNameBatch(List<string> typeNames, List<Type> resultList)
         {
             var assemblyTypeMap = GetCachedAssemblyTypeMaps();

@@ -17,9 +17,9 @@ The main updates in this release include:
 - Added Multiply, Divide, and SafeDivide Vector3 extensions.
 - Added `SetValueWithoutNotify` method to `BindableVariableBase<T>` to let users set the value without broadcasting to subscribers.
 - Added `BuildValidationRule.OnClick` lambda function that is invoked when the rule is clicked in the validator. Also added the `BuildValidator.SelectObject` method to perform the object select logic for rules.
-- Added `BuildValidatior.FixIssues` method to process and fix a batch of validation rules.
+- Added `BuildValidator.FixIssues` method to process and fix a batch of validation rules.
 
 **Updated**
 
 - Renamed `UnBindAction` to `UnbindAction` in [EventBinding](xref:Unity.XR.CoreUtils.Bindings.EventBinding).
-- The `Fix All` button, in the `Project Validation`, now processes and fixes all issues in a single frame. Set `BuildValiationRule.FixItAutomatic` to `false` if the issue cannot be processed with others in the same frame (Ex. if the fix requires a Unity Editor restart).
+- The `Fix All` button, in the `Project Validation`, now processes and fixes all issues in a single frame. Set `BuildValidationRule.FixItAutomatic` to `false` if the issue cannot be processed with others in the same frame (Ex. if the fix requires a Unity Editor restart).

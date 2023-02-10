@@ -48,7 +48,7 @@ namespace Unity.XR.CoreUtils.Editor
 
         /// <summary>
         /// Returns <see langword="true"/> if the <see cref="FixIt"/> Lambda function performs a function that is automatic and does not require user input.
-        /// If your `FixIt` function requires user input, set `FixitAutomatic` to <see langword="false"/> to prevent the `FixIt` method from
+        /// If your `FixIt` function requires user input, set `FixItAutomatic` to <see langword="false"/> to prevent the `FixIt` method from
         /// being executed when the user clicks the **Fix All** button in the **Project Validation** category of **Project Settings**.
         /// </summary>
         public bool FixItAutomatic { get; set; } = true;

@@ -135,13 +135,13 @@ namespace Unity.XR.CoreUtils.Editor
             var lhSplit = lh.Split('.');
             var rhSplit = rh.Split('.');
             var lhSplitLength = lhSplit.Length;
-            var rhSplitLenght = rhSplit.Length;
+            var rhSplitLength = rhSplit.Length;
 
             var compare = 0;
             for (var i = 0; i < lhSplit.Length + 1; i++)
             {
                 var lhSub = i < lhSplitLength ? lhSplit[i] : string.Empty;
-                var rhSub = i < rhSplitLenght ? rhSplit[i] : string.Empty;
+                var rhSub = i < rhSplitLength ? rhSplit[i] : string.Empty;
 
                 // first compare to check if on side has a value and the other does not.
                 // Sub version strings that are empty or null are considered > those that have a value.

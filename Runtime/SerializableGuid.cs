@@ -25,7 +25,7 @@ namespace Unity.XR.CoreUtils
         ulong m_GuidHigh;
 
         /// <summary>
-        /// Rrepresents <c>System.Guid.Empty</c>, a GUID whose value is all zeros.
+        /// Represents <c>System.Guid.Empty</c>, a GUID whose value is all zeros.
         /// </summary>
         public static SerializableGuid Empty => k_Empty;
 

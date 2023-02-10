@@ -41,7 +41,7 @@ namespace Unity.XR.CoreUtils
     }
 
     /// <summary>
-    /// Provides utlity functions to retrieve filtered lists of components. The lists created are automatically cached.
+    /// Provides utility functions to retrieve filtered lists of components. The lists created are automatically cached.
     /// </summary>
     /// <remarks>
     /// Proper usage of this class is:
