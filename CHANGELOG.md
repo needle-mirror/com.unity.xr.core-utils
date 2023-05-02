@@ -7,6 +7,14 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.2.1] - 2023-05-02
+
+### Changed
+
+- Renamed the following display names of the properties in `XROrigin` inspector:
+  - **Camera GameObject** to **Camera** for `Camera` property
+  - **Camera Floor Offset Object** to **Camera Floor Offset GameObject** for `CameraFloorOffsetObject` property
+
 ## [2.2.0] - 2023-02-10
 
 ### Changed

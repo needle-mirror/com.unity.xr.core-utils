@@ -14,15 +14,15 @@ The purpose of the XR Origin is to transform objects and trackable features to t
    <td>The GameObject whose Transform serves as the origin for trackables or device-relative elements in an XR scene.</td>
   </tr>
   <tr>
-   <td colspan="2" ><strong>Camera Floor Offset Object</strong></td>
+   <td colspan="2" ><strong>Camera Floor Offset GameObject</strong></td>
    <td>GameObject that offsets the [Camera](xref:UnityEngine.Camera) position from the XR Origin. The XR Origin component controls the Y coordinate of the [Transform](xref:UnityEngine.Transform) of this GameObject according to the chosen <strong>Tracking Origin Mode</strong> option:
    <ul>
       <li><strong>Device</strong>: initialized to the value specified by <strong>Camera Y Offset</strong>. Reset when the user resets the view.</li>
       <li><strong>Floor</strong>: initialized to zero.</li>
   </ul></td></tr>
   <tr>
-   <td colspan="2" ><strong>Camera GameObject</strong></td>
-   <td>The Camera for the XR Origin. The GameObject containing this Camera must be underneath the <strong>Origin Base GameObject</strong> in the Scene hierarchy. It should be a child of the <strong>Camera Floor Offset Object</strong>. 
+   <td colspan="2" ><strong>Camera</strong></td>
+   <td>The Camera for the XR Origin. The GameObject containing this Camera must be underneath the <strong>Origin Base GameObject</strong> in the Scene hierarchy. It should be a child of the <strong>Camera Floor Offset GameObject</strong>. 
    <p>This [Camera](xref:UnityEngine.Camera) is used to render the XR scene.</p>
    </td>
   </tr>

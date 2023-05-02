@@ -54,9 +54,9 @@ namespace Unity.XR.CoreUtils.Editor
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.Origin"/>.</summary>
             public static readonly GUIContent Origin = EditorGUIUtility.TrTextContent("Origin Base GameObject", "The \"Origin\" GameObject is used to refer to the base of the XR Origin, by default it is this GameObject. This is the GameObject that will be manipulated via locomotion.");
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.CameraFloorOffsetObject"/>.</summary>
-            public static readonly GUIContent CameraFloorOffsetObject = EditorGUIUtility.TrTextContent("Camera Floor Offset Object", "The GameObject to move to desired height off the floor (defaults to this object if none provided).");
+            public static readonly GUIContent CameraFloorOffsetObject = EditorGUIUtility.TrTextContent("Camera Floor Offset GameObject", "The GameObject to move to desired height off the floor (defaults to this object if none provided).");
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.Camera"/>.</summary>
-            public static readonly GUIContent Camera = EditorGUIUtility.TrTextContent("Camera GameObject", "The GameObject that contains the camera, this is usually the \"Head\" of XR Origins.");
+            public static readonly GUIContent Camera = EditorGUIUtility.TrTextContent("Camera", "The GameObject that contains the camera, this is usually the \"Head\" of XR Origins.");
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.RequestedTrackingOriginMode"/>.</summary>
             public static readonly GUIContent TrackingOriginMode = EditorGUIUtility.TrTextContent("Tracking Origin Mode", "The type of tracking origin to use for this Origin. Tracking origins identify where (0, 0, 0) is in the world of tracking.");
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.CurrentTrackingOriginMode"/>.</summary>

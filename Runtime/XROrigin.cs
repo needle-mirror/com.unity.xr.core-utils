@@ -507,7 +507,7 @@ namespace Unity.XR.CoreUtils
         {
             if (m_CameraFloorOffsetObject == null)
             {
-                Debug.LogWarning("No Camera Floor Offset Object specified for XR Origin, using attached GameObject.", this);
+                Debug.LogWarning("No Camera Floor Offset GameObject specified for XR Origin, using attached GameObject.", this);
                 m_CameraFloorOffsetObject = gameObject;
             }
 
