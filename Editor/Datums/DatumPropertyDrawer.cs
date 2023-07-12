@@ -25,7 +25,7 @@ namespace Unity.XR.CoreUtils.Datums.Editor
             SerializedProperty selectedValue = GetSelectedProperty(property);
             if (selectedValue.hasVisibleChildren)
             {
-                return EditorGUIUtility.singleLineHeight * (selectedValue.CountInProperty() + 1);
+                return EditorGUI.GetPropertyHeight(selectedValue, true); 
             }
 
             return base.GetPropertyHeight(property, label);

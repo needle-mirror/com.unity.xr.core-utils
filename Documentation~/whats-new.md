@@ -3,7 +3,7 @@ uid: xr-core-utila-whats-new
 ---
 # What's new in version 2.2
 
-This package is replacing XR Tools Utilities package. Summary of changes in XR Core Utilities package version 2.2.
+Summary of changes in XR Core Utilities package version 2.2.
 
 The main updates in this release include:
 
