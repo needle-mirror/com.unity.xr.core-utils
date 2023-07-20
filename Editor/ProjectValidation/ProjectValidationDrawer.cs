@@ -97,7 +97,8 @@ namespace Unity.XR.CoreUtils.Editor
                 {
                     wordWrap = true,
                     alignment = TextAnchor.MiddleLeft,
-                    padding = new RectOffset(0, 5, 1, 1)
+                    padding = new RectOffset(0, 5, 1, 1),
+                    richText = true
                 };
 
                 IconStyle = new GUIStyle(EditorStyles.label)

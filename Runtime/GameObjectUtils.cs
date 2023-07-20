@@ -166,7 +166,13 @@ namespace Unity.XR.CoreUtils
                 foundObject = desiredSource.GetComponentInChildren<T>(true);
 
             if (foundObject == null)
+            {
+#if UNITY_2023_1_OR_NEWER
+                foundObject = UnityObject.FindAnyObjectByType<T>();
+#else
                 foundObject = UnityObject.FindObjectOfType<T>();
+#endif
+            }
 
             if (foundObject != null)
                 return foundObject;
@@ -232,7 +238,13 @@ namespace Unity.XR.CoreUtils
             }
 
             if (foundObject == null)
+            {
+#if UNITY_2023_1_OR_NEWER
+                foundObject = UnityObject.FindAnyObjectByType<T>();
+#else
                 foundObject = UnityObject.FindObjectOfType<T>();
+#endif
+            }
 
 #if UNITY_EDITOR
             if (foundObject == null && !Application.isPlaying)

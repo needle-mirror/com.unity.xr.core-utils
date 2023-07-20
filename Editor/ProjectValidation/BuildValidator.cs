@@ -12,6 +12,10 @@ using PrefabStageUtility = UnityEditor.SceneManagement.PrefabStageUtility;
 using PrefabStageUtility = UnityEditor.Experimental.SceneManagement.PrefabStageUtility;
 #endif
 
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+using Unity.XR.CoreUtils.Editor.Analytics;
+#endif
+
 namespace Unity.XR.CoreUtils.Editor
 {
     /// <summary>
@@ -31,6 +35,21 @@ namespace Unity.XR.CoreUtils.Editor
     {
         const string k_FixIssuesProgressBarTitle = "Fix Project Issues";
         const string k_FixIssuesProgressBarInfo = "{0} ({1}/{2})";
+
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+        static Dictionary<string, ProjectValidationUsageEvent.IssuesStatus> s_IssuesStatusByCategory =
+            new Dictionary<string, ProjectValidationUsageEvent.IssuesStatus>();
+
+        static ProjectValidationUsageEvent.IssuesStatus GetCategoryIssuesStatus(string category)
+        {
+            if (string.IsNullOrEmpty(category))
+                category = ProjectValidationUsageEvent.NoneCategoryName;
+
+            return s_IssuesStatusByCategory.TryGetValue(category, out var status) ?
+                status :
+                new ProjectValidationUsageEvent.IssuesStatus {Category = category};
+        }
+#endif
 
         static Dictionary<BuildTargetGroup, List<BuildValidationRule>> s_PlatformRules =
             new Dictionary<BuildTargetGroup, List<BuildValidationRule>>();
@@ -118,20 +137,54 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="progressBarTitle">The progress bar title.</param>
         public static void FixIssues(IList<BuildValidationRule> issues, string progressBarTitle = k_FixIssuesProgressBarTitle)
         {
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+            s_IssuesStatusByCategory.Clear();
+#endif
             var issuesFixed = 0;
-            foreach (var issue in issues)
+            BuildValidationRule targetIssue = null;
+            try
             {
-                var progressBarInfo = string.Format(k_FixIssuesProgressBarInfo, issue.GetDisplayString(), issuesFixed + 1, issues.Count);
-                EditorUtility.DisplayProgressBar(progressBarTitle, progressBarInfo, issuesFixed / (float)(issues.Count - 1));
+                foreach (var issue in issues)
+                {
+                    targetIssue = issue;
+                    var progressBarInfo = string.Format(k_FixIssuesProgressBarInfo, issue.GetDisplayString(), issuesFixed + 1, issues.Count);
+                    EditorUtility.DisplayProgressBar(progressBarTitle, progressBarInfo, issuesFixed / (float)(issues.Count - 1));
 
-                var fixIt = issue.FixIt;
-                fixIt?.Invoke();
+                    var fixIt = issue.FixIt;
+                    fixIt?.Invoke();
 
-                issuesFixed++;
+                    issuesFixed++;
+
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+                    var issuesStatus = GetCategoryIssuesStatus(targetIssue.Category);
+                    issuesStatus.SuccessfullyFixed++;
+                    s_IssuesStatusByCategory[targetIssue.Category] = issuesStatus;
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+                if (targetIssue != null)
+                {
+                    var issuesStatus = GetCategoryIssuesStatus(targetIssue.Category);
+                    issuesStatus.FailedToFix++;
+                    s_IssuesStatusByCategory[targetIssue.Category] = issuesStatus;
+                }
+#endif
             }
 
-            if (issuesFixed > 0)
-                EditorUtility.ClearProgressBar();
+#if ENABLE_CLOUD_SERVICES_ANALYTICS
+            if (s_IssuesStatusByCategory.Count > 0)
+                CoreUtilsAnalytics.ProjectValidationUsageEvent.SendFixIssues(s_IssuesStatusByCategory.Values.ToArray());
+#endif
+
+            if (issuesFixed <= 0)
+                return;
+
+            EditorUtility.ClearProgressBar();
         }
 
         /// <summary>

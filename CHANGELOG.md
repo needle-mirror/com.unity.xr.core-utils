@@ -7,6 +7,25 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [Unreleased]
+
+### Added
+- Added the [Building Blocks system](xref:xr-core-utils-building-blocks), an overlay window in the scene view with quick access to commonly used items in the project.
+- Added the [Capability Profile system](xref:xr-core-utils-capability-profile) that allows the creation of assets with key-value pairs to abstract the capabilities of a platform, device, OS, or a combination of them.
+- Added `EditorAnalyticsEvent` class that can be extended to create editor analytics events.
+
+### Changed
+- Fixed bug with Datum property editor incorrectly reporting the height of datum properties in the inspector.
+- Added rich text support for Project Validator issues message.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [2.2.2] - 2023-07-12
 
 ### Changed

@@ -403,5 +403,31 @@ namespace Unity.XR.CoreUtils
 
             return method;
         }
+
+#if !UNITY_2020_1_OR_NEWER
+        public static void GetFieldsWithAttribute(this Type type, Type attributeType, List<FieldInfo> fields,
+            BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+        {
+            while (true)
+            {
+                foreach (var field in type.GetFields(bindingAttr))
+                {
+                    if (field.GetCustomAttributes(attributeType, true).Length == 0)
+                        continue;
+
+                    fields.Add(field);
+                }
+
+                var baseType = type.BaseType;
+                if (baseType != null)
+                {
+                    type = baseType;
+                    continue;
+                }
+
+                break;
+            }
+        }
+#endif
     }
 }

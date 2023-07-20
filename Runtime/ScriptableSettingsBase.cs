@@ -171,7 +171,7 @@ namespace Unity.XR.CoreUtils
         {
             if (BaseInstance != null)
             {
-                XRLoggingUtils.LogError($"ScriptableSingleton {typeof(T)} already exists. This can happen if " +
+                XRLoggingUtils.LogWarning($"ScriptableSingleton {typeof(T)} already exists. This can happen if " +
                     $"there are two copies of the asset or if you query the singleton in a constructor.", BaseInstance);
             }
         }
