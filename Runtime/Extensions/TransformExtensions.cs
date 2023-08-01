@@ -15,7 +15,12 @@ namespace Unity.XR.CoreUtils
         /// <returns>The local pose.</returns>
         public static Pose GetLocalPose(this Transform transform)
         {
+#if HAS_GET_POSITION_AND_ROTATION
+            transform.GetLocalPositionAndRotation(out var localPosition, out var localRotation);
+            return new Pose(localPosition, localRotation);
+#else
             return new Pose(transform.localPosition, transform.localRotation);
+#endif
         }
 
         /// <summary>
@@ -25,7 +30,12 @@ namespace Unity.XR.CoreUtils
         /// <returns>The world pose.</returns>
         public static Pose GetWorldPose(this Transform transform)
         {
+#if HAS_GET_POSITION_AND_ROTATION
+            transform.GetPositionAndRotation(out var position, out var rotation);
+            return new Pose(position, rotation);
+#else
             return new Pose(transform.position, transform.rotation);
+#endif
         }
 
         /// <summary>
@@ -35,8 +45,12 @@ namespace Unity.XR.CoreUtils
         /// <param name="pose">Pose specifying the new position and rotation.</param>
         public static void SetLocalPose(this Transform transform, Pose pose)
         {
+#if HAS_SET_LOCAL_POSITION_AND_ROTATION
+            transform.SetLocalPositionAndRotation(pose.position, pose.rotation);
+#else
             transform.localPosition = pose.position;
             transform.localRotation = pose.rotation;
+#endif
         }
 
         /// <summary>
@@ -46,8 +60,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="pose">Pose specifying the new position and rotation.</param>
         public static void SetWorldPose(this Transform transform, Pose pose)
         {
-            transform.position = pose.position;
-            transform.rotation = pose.rotation;
+            transform.SetPositionAndRotation(pose.position, pose.rotation);
         }
 
         /// <summary>
