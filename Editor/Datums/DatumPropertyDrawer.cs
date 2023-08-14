@@ -14,6 +14,8 @@ namespace Unity.XR.CoreUtils.Datums.Editor
 
         GUIStyle m_PopupStyle;
 
+        static readonly GUIContent s_TempContent = new GUIContent();
+
         /// <summary>
         /// Calculates the height of the property based on the number of children of the property.
         /// </summary>
@@ -22,7 +24,7 @@ namespace Unity.XR.CoreUtils.Datums.Editor
         /// <returns>The height in pixels.</returns>
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            SerializedProperty selectedValue = GetSelectedProperty(property);
+            var selectedValue = GetSelectedProperty(property);
             if (selectedValue.hasVisibleChildren)
             {
                 return EditorGUI.GetPropertyHeight(selectedValue, true); 
@@ -40,41 +42,51 @@ namespace Unity.XR.CoreUtils.Datums.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             if (m_PopupStyle == null)
-            {
-                m_PopupStyle = new GUIStyle(UnityEngine.GUI.skin.GetStyle("PaneOptions")) { imagePosition = ImagePosition.ImageOnly };
-            }
+                m_PopupStyle = new GUIStyle("PaneOptions") { imagePosition = ImagePosition.ImageOnly };
 
+            // Using BeginProperty / EndProperty on the parent property means that
+            // prefab override logic works on the entire property.
             label = EditorGUI.BeginProperty(position, label, property);
+
             position = EditorGUI.PrefixLabel(position, label);
 
-            EditorGUI.BeginChangeCheck();
-
-            SerializedProperty useConstant = property.FindPropertyRelative("m_UseConstant");
-            SerializedProperty selectedValue = GetSelectedProperty(property);
+            var useConstant = property.FindPropertyRelative("m_UseConstant");
+            var selectedValue = GetSelectedProperty(property);
 
             // Calculate rect for configuration button
-            Rect buttonRect = new Rect(position);
-            buttonRect.yMin += m_PopupStyle.margin.top;
+            var buttonRect = position;
+            buttonRect.yMin += m_PopupStyle.margin.top + 1f;
             buttonRect.width = m_PopupStyle.fixedWidth + m_PopupStyle.margin.right;
+            buttonRect.height = EditorGUIUtility.singleLineHeight;
             position.xMin = buttonRect.xMax;
 
-            // nudge foldout arrow to right a little more
-            if (selectedValue.hasVisibleChildren) position.xMin += 12;
+            // Nudge foldout arrow to right a little more
+            if (selectedValue.hasVisibleChildren)
+                position.xMin += 12;
 
             // Store old indent level and set it to 0, the PrefixLabel takes care of it
-            int indent = EditorGUI.indentLevel;
+            var indent = EditorGUI.indentLevel;
             EditorGUI.indentLevel = 0;
 
-            int result = EditorGUI.Popup(buttonRect, useConstant.boolValue ? 1 : 0, m_PopupOptions, m_PopupStyle);
+            // Using BeginProperty / EndProperty on the popup button allows the user to
+            // revert prefab overrides to Use Reference by right-clicking the configuration button.
+            EditorGUI.BeginProperty(buttonRect, GUIContent.none, useConstant);
+            using (var check = new EditorGUI.ChangeCheckScope())
+            {
+                var result = EditorGUI.Popup(buttonRect, useConstant.boolValue ? 1 : 0, m_PopupOptions, m_PopupStyle);
+                if (check.changed)
+                    useConstant.boolValue = result == 1;
+            }
+            EditorGUI.EndProperty();
 
-            useConstant.boolValue = result == 1;
+            // When there are multiple serialized values in the constant value, it will be drawn under a foldout.
+            // Create a label for it to make it easier to click and to give context about the type, similar to an asset reference.
+            var valueLabel = selectedValue.hasVisibleChildren ? GetFoldoutLabel(selectedValue.type) : GUIContent.none;
+            EditorGUI.PropertyField(position, selectedValue, valueLabel, true);
 
-            EditorGUI.PropertyField(position, selectedValue, GUIContent.none, true);
-
-            if (EditorGUI.EndChangeCheck())
-                property.serializedObject.ApplyModifiedProperties();
-
+            // Set indent back to what it was
             EditorGUI.indentLevel = indent;
+
             EditorGUI.EndProperty();
         }
 
@@ -87,10 +99,16 @@ namespace Unity.XR.CoreUtils.Datums.Editor
         /// <seealso cref="DatumProperty{TValue,TDatum}"/>
         protected SerializedProperty GetSelectedProperty(SerializedProperty property)
         {
-            SerializedProperty useConstant = property.FindPropertyRelative("m_UseConstant");
-            SerializedProperty constantValue = property.FindPropertyRelative("m_ConstantValue");
-            SerializedProperty variable = property.FindPropertyRelative("m_Variable");
+            var useConstant = property.FindPropertyRelative("m_UseConstant");
+            var constantValue = property.FindPropertyRelative("m_ConstantValue");
+            var variable = property.FindPropertyRelative("m_Variable");
             return useConstant.boolValue ? constantValue : variable;
+        }
+
+        static GUIContent GetFoldoutLabel(string type)
+        {
+            s_TempContent.text = "Value (" + ObjectNames.NicifyVariableName(type) + ")";
+            return s_TempContent;
         }
     }
 }

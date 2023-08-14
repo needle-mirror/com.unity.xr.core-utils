@@ -129,6 +129,13 @@ namespace Unity.XR.CoreUtils.Editor
         /// </summary>
         const double k_BackgroundUpdateInterval = 3.0d;
 
+        /// <summary>
+        /// Highlight animation Duration in Seconds
+        /// Start time of the highlight animation
+        /// </summary>
+        const float k_HighlightDuration = 3f;
+        static float s_HighlightStartTime;
+
         static Styles s_Styles;
         // Delay creation of Styles till first access
         static Styles styles => s_Styles ?? (s_Styles = new Styles());
@@ -172,6 +179,22 @@ namespace Unity.XR.CoreUtils.Editor
         static string GetIssueDisplayString(BuildValidationRule issue)
         {
             return string.IsNullOrEmpty(issue.Category) ? issue.Message : $"[{issue.Category}] {issue.Message}";
+        }
+
+        static void HighlightIssues(string windowTitle, string searchText)
+        {
+            s_HighlightStartTime = (float)EditorApplication.timeSinceStartup;
+            EditorApplication.update += HandleHighlightUpdate;
+            Highlighter.Highlight(windowTitle, searchText);
+        }
+
+        static void HandleHighlightUpdate()
+        {
+            if (EditorApplication.timeSinceStartup - s_HighlightStartTime > k_HighlightDuration)
+            {
+                Highlighter.Stop();
+                EditorApplication.update -= HandleHighlightUpdate;
+            }
         }
 
         /// <summary>
@@ -391,7 +414,16 @@ namespace Unity.XR.CoreUtils.Editor
                                 if (result.FixItAutomatic)
                                     m_FixAllList.Add(result);
                                 else
+                                {
                                     result.FixIt();
+                                    if (result.HighlighterFocus.WindowTitle != null & result.HighlighterFocus.SearchText != null)
+                                    {
+                                        EditorApplication.delayCall += () =>
+                                        {
+                                            HighlightIssues(result.HighlighterFocus.WindowTitle, result.HighlighterFocus.SearchText);
+                                        };
+                                    }
+                                }
                             }
                         }
                     }

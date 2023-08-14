@@ -7,6 +7,17 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.3.0-pre.1] - 2023-08-14
+
+### Added
+
+- Added `BuildValidationRule.HighlighterFocus` property in project validation rules to allow for the searching and highlighting of text in the editor.
+- Added ability to the Datum property drawer to allow the Use Asset/Use Value property to be reverted separately from the parent property when right-clicking the More menu (`⋮`) button.
+
+### Fixed
+
+- Fixed Datum property drawer so the Use Asset/Use Value dropdown appears directly under the button instead of under the multiline value.
+
 ## [2.2.3] - 2023-08-01
 
 ### Fixed
