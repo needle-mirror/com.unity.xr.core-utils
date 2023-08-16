@@ -71,6 +71,27 @@ namespace Unity.XR.CoreUtils.Editor
         public string HelpLink { get; set; }
 
         /// <summary>
+        /// Optional highlighting data used to highlight a text in a window if the Fix it button is clicked.
+        /// </summary>
+        public HighlighterFocusData HighlighterFocus { get; set; }
+
+        /// <summary>
+        /// Defines parameters to highlight text in the editor from Project Validation.
+        /// </summary>
+        public struct HighlighterFocusData
+        {
+            /// <summary>
+            /// Name of the window tab to highlight in.
+            /// </summary>
+            public string WindowTitle { get; set; }
+            
+            /// <summary>
+            /// Text to highlight.
+            /// </summary>
+            public string SearchText { get; set; }
+        }
+
+        /// <summary>
         /// Whether to prevent this build rule from running when the Editor is in the
         /// [Prefab mode](xref:EditingInPrefabMode)).
         /// </summary>

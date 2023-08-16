@@ -526,10 +526,9 @@ namespace Unity.XR.CoreUtils
 
             // This will be the parent GameObject for any trackables (such as planes) for which
             // we want a corresponding GameObject.
-            TrackablesParent = (new GameObject("Trackables")).transform;
+            TrackablesParent = new GameObject("Trackables").transform;
             TrackablesParent.SetParent(transform, false);
-            TrackablesParent.localPosition = Vector3.zero;
-            TrackablesParent.localRotation = Quaternion.identity;
+            TrackablesParent.SetLocalPose(Pose.identity);
             TrackablesParent.localScale = Vector3.one;
 
             if (m_Camera)

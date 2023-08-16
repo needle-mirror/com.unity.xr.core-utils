@@ -38,17 +38,24 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
 
             m_Root.AddToClassList(k_OverlayClass);
 
-            var list = new ScrollView(ScrollViewMode.Vertical);
-            list.verticalScrollerVisibility = ScrollerVisibility.Hidden;
-            var hasElement = CreateSections(list);
-            if (hasElement)
+            // We do this on a delay call since there could be PrefabCreator Building blocks and when projects are opened
+            // for the first time the assets will not be found
+            EditorApplication.delayCall += () =>
             {
-                m_Root.Add(list);
-            }
-            else
-            {
-                m_Root.Add(new Label(k_NoBuildingBlockMessage));
-            }
+                var list = new ScrollView(ScrollViewMode.Vertical);
+                list.verticalScrollerVisibility = ScrollerVisibility.Hidden;
+                
+                var hasElement = CreateSections(list);
+                if (hasElement)
+                {
+                    m_Root.Add(list);
+                }
+                else
+                {
+                    m_Root.Add(new Label(k_NoBuildingBlockMessage));
+                }
+            };
+
             return m_Root;
         }
 
