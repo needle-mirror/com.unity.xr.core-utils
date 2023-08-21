@@ -1,7 +1,8 @@
-#if UNITY_2022_3_OR_NEWER
+#if UNITY_2022_1_OR_NEWER
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Unity.XR.CoreUtils.Capabilities.Editor;
 using UnityEditor;
 using UnityEditor.Overlays;
 using UnityEditor.Toolbars;
@@ -17,10 +18,11 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
     /// <summary>
     /// This overlay present the Building Block elements in the Scene View.
     /// The different sections are presented as dropdowns (toolbar mode) or foldouts (panel mode) containing all
-    /// the associated Building Blocks options. The orphans Building Blocks are presented separately.
+    /// the associated Building Blocks options. The unsectioned (blocks that dont belong to any section) Building Blocks
+    /// are presented separately.
     /// </summary>
     [Overlay(typeof(SceneView), "XR Building Blocks")]
-    class BuildingBlocksOverlay : Overlay, ICreateToolbar
+    internal class BuildingBlocksOverlay : Overlay, ICreateToolbar
     {
         internal static readonly string k_OverlayStyleSheet = "BuildingBlockOverlay";
         static readonly string k_OverlayClass = "building-block-overlay";
@@ -33,18 +35,19 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         public override VisualElement CreatePanelContent()
         {
             m_Root = new VisualElement();
-            var styleSheet = Resources.Load(k_OverlayStyleSheet) as StyleSheet;
-            m_Root.styleSheets.Add(styleSheet);
-
-            m_Root.AddToClassList(k_OverlayClass);
 
             // We do this on a delay call since there could be PrefabCreator Building blocks and when projects are opened
             // for the first time the assets will not be found
             EditorApplication.delayCall += () =>
             {
+                var styleSheet = Resources.Load(k_OverlayStyleSheet) as StyleSheet;
+                m_Root.styleSheets.Add(styleSheet);
+
+                m_Root.AddToClassList(k_OverlayClass);
+
                 var list = new ScrollView(ScrollViewMode.Vertical);
                 list.verticalScrollerVisibility = ScrollerVisibility.Hidden;
-                
+
                 var hasElement = CreateSections(list);
                 if (hasElement)
                 {
@@ -59,19 +62,47 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             return m_Root;
         }
 
-        static bool CreateSections(VisualElement root)
+        /// <inheritdoc />
+        public override void OnCreated()
         {
-            //Build orphans Building Blocks first
-            var orphans = new List<IBuildingBlock>();
-            BuildingBlockManager.GetOrphanBuildingBlocks(orphans);
-            foreach (var bblock in orphans)
+            EditorApplication.delayCall += RefreshBuildingBlocksEnabledState;
+        }
+
+        void RefreshBuildingBlocksEnabledState()
+        {
+            // No need to refresh the building blocks state if the overlay is docked in a toolbar or not created yet
+            if (isInToolbar || m_Root == null)
+                return;
+
+            var stack = new Stack<VisualElement>();
+            stack.Push(m_Root);
+
+            // Go through all the elements under the root overlay and refresh the enabled state of the Building Block buttons
+            while (stack.Count > 0)
+            {
+                VisualElement currentElement = stack.Pop();
+
+                if (currentElement is BuildingBlockButton)
+                    ((BuildingBlockButton) currentElement).RefreshEnabled();
+
+                foreach (VisualElement child in currentElement.Children())
+                    stack.Push(child);
+            }
+        }
+
+        bool CreateSections(VisualElement root)
+        {
+            //Build unsectioned Building Blocks first
+            var unsectionedBblocks = new List<IBuildingBlock>();
+            BuildingBlockManager.GetUnsectionedBuildingBlocks(unsectionedBblocks);
+            foreach (var bblock in unsectionedBblocks)
                 CreateBuildingBlockButton(root, bblock, "");
 
             var sections = new List<IBuildingBlockSection>();
             BuildingBlockManager.GetSections(sections);
 
             if (sections.Count == 0)
-                return orphans.Count > 0;
+                return unsectionedBblocks.Count > 0;
 
             var sectionsWithSameIDDict = new Dictionary<string, List<IBuildingBlockSection>>();
             foreach (var section in sections)
@@ -113,6 +144,8 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                 AssetDatabase.LoadAssetAtPath<Texture2D>(buildingBlock.IconPath),
                 buildingBlock);
 
+            button.SetEnabled(buildingBlock.IsEnabled);
+            button.tooltip = buildingBlock.Tooltip;
 #if ENABLE_CLOUD_SERVICES_ANALYTICS
             button.clicked += () => CoreUtilsAnalytics.BuildingBlocksUsageEvent.SendOverlayButtonClicked(sectionId, buildingBlock.Id);
 #endif
@@ -168,9 +201,15 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         static readonly string k_ImageClass = k_ClassName + "_image";
         static readonly string k_TextClass = k_ClassName + "_text";
 
-        internal BuildingBlockButton(string text, Texture2D icon, IBuildingBlock buildingBlock)
+        IBuildingBlock m_Block;
+
+        internal BuildingBlockButton(string text, Texture2D icon, IBuildingBlock bblock)
         {
-            clicked += buildingBlock.ExecuteBuildingBlock;
+            m_Block = bblock;
+            // Update the enabled state depending on the capability profile selected.
+            CapabilityProfileSelection.SelectionSaved += RefreshEnabled;
+
+            clicked += m_Block.ExecuteBuildingBlock;
 
             AddToClassList(k_ClassName);
 
@@ -189,12 +228,14 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             Add(textElem);
             name = text;
         }
+
+        internal void RefreshEnabled() => SetEnabled(m_Block.IsEnabled);
     }
 
     /// <summary>
     /// From here to the end are the 3 elements used to display the overlay in toolbar mode :
     /// The BuildingBlocksToolbar build the different elements and arrange the flex Direction to fit the parent.
-    /// First the orphans Building Blocks (with no sections) are displayed as a button strip.
+    /// First the unsectioned Building Blocks (with no sections) are displayed as a button strip.
     /// Then the sections are displayed, each section is in a dropdown.
     /// </summary>
     [EditorToolbarElement(id)]
@@ -214,17 +255,17 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             var styleSheet = Resources.Load(BuildingBlocksOverlay.k_OverlayStyleSheet) as StyleSheet;
             styleSheets.Add(styleSheet);
 
-            var orphans = new List<IBuildingBlock>();
-            BuildingBlockManager.GetOrphanBuildingBlocks(orphans);
-            if (orphans.Count > 0)
-                Add(new OrphansBuildingBlocksToolbar(orphans));
+            var unsectionedBblocks = new List<IBuildingBlock>();
+            BuildingBlockManager.GetUnsectionedBuildingBlocks(unsectionedBblocks);
+            if (unsectionedBblocks.Count > 0)
+                Add(new UnsectionedBuildingBlocksToolbar(unsectionedBblocks));
 
             var sections = new List<IBuildingBlockSection>();
             BuildingBlockManager.GetSections(sections);
 
             if (sections.Count == 0)
             {
-                if (orphans.Count == 0)
+                if (unsectionedBblocks.Count == 0)
                 {
                     var message = new Label(k_NoBuildingBlockMessageShort);
                     message.AddToClassList(k_LabelClassName);
@@ -331,6 +372,12 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             foreach (var block in blocks)
             {
                 var content = new GUIContent(block.Id);
+                if (!block.IsEnabled)
+                {
+                    menu.AddDisabledItem(content);
+                    continue;
+                }
+
                 menu.AddItem(content,
                     false,
                     () =>
@@ -349,26 +396,25 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
     }
 
     /// <summary>
-    /// Displaying the Orphans Building Blocks as a Button strip in toolbar mode
+    /// Displaying the Unsectioned Building Blocks as a Button strip in toolbar mode
     /// </summary>
-    class OrphansBuildingBlocksToolbar : OverlayToolbar
+    class UnsectionedBuildingBlocksToolbar : OverlayToolbar
     {
-        public OrphansBuildingBlocksToolbar(List<IBuildingBlock> orphansBuildingBlocks)
+        public UnsectionedBuildingBlocksToolbar(List<IBuildingBlock> unsectionedBuildingBlocks)
         {
-            foreach (var buildingBlock in orphansBuildingBlocks)
+            foreach (var bblock in unsectionedBuildingBlocks)
             {
-                var button = new EditorToolbarButton(BuildingBlocksToolbar.GetSignificantLettersForName(buildingBlock.Id),
-                    AssetDatabase.LoadAssetAtPath<Texture2D>(buildingBlock.IconPath),
+                var button = new EditorToolbarButton(BuildingBlocksToolbar.GetSignificantLettersForName(bblock.Id),
+                    AssetDatabase.LoadAssetAtPath<Texture2D>(bblock.IconPath),
                     () =>
                     {
-                        buildingBlock.ExecuteBuildingBlock();
+                        bblock.ExecuteBuildingBlock();
 
 #if ENABLE_CLOUD_SERVICES_ANALYTICS
-                        CoreUtilsAnalytics.BuildingBlocksUsageEvent.SendToolbarButtonClicked("", buildingBlock.Id);
+                        CoreUtilsAnalytics.BuildingBlocksUsageEvent.SendToolbarButtonClicked("", bblock.Id);
 #endif
                     });
-
-                button.tooltip = buildingBlock.Id;
+                button.tooltip = bblock.Id;
 
                 BuildingBlocksToolbar.UpdateTextElementClasses(button);
                 Add(button);

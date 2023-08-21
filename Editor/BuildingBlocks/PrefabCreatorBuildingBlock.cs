@@ -15,6 +15,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         bool m_IsEnabled;
         string m_Tooltip;
         GameObject m_Prefab = null;
+        string m_PrefabPath;
 
         /// </inheritdoc>
         public string Id => m_Id;
@@ -28,9 +29,9 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         /// </inheritdoc>
         public bool IsEnabled => m_IsEnabled;
 
-        public PrefabCreatorBuildingBlock(GameObject prefab, string buildingBlockId = "Prefab Creator", string buildingBlockIconPath = null, bool isEnabled = true, string tooltip = "")
+        public PrefabCreatorBuildingBlock(string prefabPath, string buildingBlockId = "Prefab Creator", string buildingBlockIconPath = null, bool isEnabled = true, string tooltip = "")
         {
-            m_Prefab = prefab;
+            m_PrefabPath = prefabPath;
             m_Id = buildingBlockId;
             m_IconPath = buildingBlockIconPath;
             m_IsEnabled = isEnabled;
@@ -39,9 +40,17 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
 
         public void ExecuteBuildingBlock()
         {
+            // Do lazy loading of the asset since AssetDatabase is non deterministic and can cause false positives when starting a new project
             if (m_Prefab == null)
-                return;
-
+            {
+                m_Prefab = AssetDatabase.LoadAssetAtPath<GameObject>(m_PrefabPath);
+                if (m_Prefab == null)
+                {
+                    Debug.LogError("Building block cannot find prefab at path: " + m_PrefabPath + "\nDid it get moved?");
+                    return;
+                }
+            }
+            
             var objName = GameObjectUtility.GetUniqueNameForSibling(null,m_Prefab.name);
             var createdObj = Object.Instantiate(m_Prefab);
             createdObj.name = objName;

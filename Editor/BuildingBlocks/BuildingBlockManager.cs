@@ -9,30 +9,30 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
     /// <summary>
     /// This static class handles the management if the building blocks defined by the users.
     /// All classes using the <see cref="BuildingBlockItemAttribute"/> are retrieved. Then, all sections are created here
-    /// and stored for later use. Orphans building blocks (building blocks with no section) are also identified here and
+    /// and stored for later use. Unsectioned building blocks (building blocks with no section) are also identified here and
     /// added to a special section.
     /// The internal user can retrieve these 2 sets of building blocks using the following utility methods :
-    /// <see cref="BuildingBlockManager.GetOrphanBuildingBlocks"/> and <see cref="BuildingBlockManager.GetSections"/>.
+    /// <see cref="BuildingBlockManager.GetUnsectionedBuildingBlocks"/> and <see cref="BuildingBlockManager.GetSections"/>.
     /// These methods are internal as only the Overlay creator needs to access to this information for now.
     /// </summary>
     public static class BuildingBlockManager
     {
         /// <summary>
-        /// Internal class created for a special Section containing all the Building BLocks without any sections (Orphans).
+        /// Internal class created for a special Section containing all the Building BLocks without any sections (Unsectioned).
         /// This building blocks are referenced in the user code by using the <see cref="BuildingBlockItemAttribute"/> on
         /// the Building Block class definition.
         /// </summary>
-        class OrphanBuildingBlocksSection : IBuildingBlockSection
+        class UnsectionedBuildingBlocksSection : IBuildingBlockSection
         {
             public string SectionId => null;
             public string SectionIconPath => null;
 
-            internal List<IBuildingBlock> m_OrphanBuildingBlocks = new List<IBuildingBlock>();
-            public IEnumerable<IBuildingBlock> GetBuildingBlocks() => m_OrphanBuildingBlocks;
+            internal List<IBuildingBlock> m_UnsectionedBuildingBlocks = new List<IBuildingBlock>();
+            public IEnumerable<IBuildingBlock> GetBuildingBlocks() => m_UnsectionedBuildingBlocks;
         }
 
         static List<IBuildingBlockSection> s_Sections;
-        static OrphanBuildingBlocksSection s_OrphansSection;
+        static UnsectionedBuildingBlocksSection s_UnsectionedSection;
 
         /// <summary>
         /// Constructor; here we create all the data structures and fill them with existing building blocks.
@@ -40,13 +40,13 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         static BuildingBlockManager()
         {
             s_Sections = new List<IBuildingBlockSection>();
-            s_OrphansSection = null;
+            s_UnsectionedSection = null;
             var sectionsIds = new List<string>();
             var attributesToSections = new List<(BuildingBlockItemAttribute attribute, IBuildingBlockSection section)>();
 
             var buildingBlocksItemTypes = TypeCache.GetTypesWithAttribute<BuildingBlockItemAttribute>();
 
-            var orphansTypesAndAttributes = new List<(Type type, BuildingBlockItemAttribute attribute)>();
+            var unsectionedTypesAndAttributes = new List<(Type type, BuildingBlockItemAttribute attribute)>();
             for (int i = 0; i < buildingBlocksItemTypes.Count; ++i)
             {
                 var itemType = buildingBlocksItemTypes[i];
@@ -60,8 +60,8 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                     var id = section.SectionId;
                     if (string.IsNullOrEmpty(id))
                     {
-                        // Skipping the Orphans Section as this is not a regular section
-                        if (itemType != typeof(OrphanBuildingBlocksSection))
+                        // Skipping the unsectioned Section as this is not a regular section
+                        if (itemType != typeof(UnsectionedBuildingBlocksSection))
                             Debug.LogWarning(
                                 $"Building Blocks Section with null or empty id are not valid. " +
                                 $"The section type {itemType} will be skipped.");
@@ -77,7 +77,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                     }
                 }
                 else if (typeof(IBuildingBlock).IsAssignableFrom(itemType))
-                    orphansTypesAndAttributes.Add((itemType, GetAttribute(itemType)));
+                    unsectionedTypesAndAttributes.Add((itemType, GetAttribute(itemType)));
             }
 
             attributesToSections.Sort((el1, el2) => el1.attribute.Priority.CompareTo(el2.attribute.Priority));
@@ -85,15 +85,15 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                 s_Sections.Add(section);
 
             //Adding building blocks without section
-            if (orphansTypesAndAttributes.Count > 0)
+            if (unsectionedTypesAndAttributes.Count > 0)
             {
-                orphansTypesAndAttributes.Sort((el1, el2) => el1.attribute.Priority.CompareTo(el2.attribute.Priority));
+                unsectionedTypesAndAttributes.Sort((el1, el2) => el1.attribute.Priority.CompareTo(el2.attribute.Priority));
 
-                s_OrphansSection = new OrphanBuildingBlocksSection();
-                foreach (var bblockType in orphansTypesAndAttributes)
+                s_UnsectionedSection = new UnsectionedBuildingBlocksSection();
+                foreach (var bblockType in unsectionedTypesAndAttributes)
                 {
                     var bblockInstance = (IBuildingBlock)Activator.CreateInstance(bblockType.type);
-                    s_OrphansSection.m_OrphanBuildingBlocks.Add(bblockInstance);
+                    s_UnsectionedSection.m_UnsectionedBuildingBlocks.Add(bblockInstance);
                 }
             }
         }
@@ -104,21 +104,21 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         }
 
         /// <summary>
-        /// Method to get the orphans building blocks from the internal section <see cref="OrphanBuildingBlocksSection"/>.
+        /// Method to get the unsectioned building blocks from the internal section <see cref="UnsectionedBuildingBlocksSection"/>.
         /// </summary>
-        /// <param name="orphansBuildingBlocks">A list of orphans building blocks to populate.</param>
-        internal static void GetOrphanBuildingBlocks(List<IBuildingBlock> orphansBuildingBlocks)
+        /// <param name="unsectionedBuildingBlocks">A list of unsectioned building blocks to populate.</param>
+        internal static void GetUnsectionedBuildingBlocks(List<IBuildingBlock> unsectionedBuildingBlocks)
         {
-            if (orphansBuildingBlocks == null)
+            if (unsectionedBuildingBlocks == null)
                 return;
 
-            orphansBuildingBlocks.Clear();
-            if (s_OrphansSection == null)
+            unsectionedBuildingBlocks.Clear();
+            if (s_UnsectionedSection == null)
                 return;
 
-            var orphansBlocks = s_OrphansSection.GetBuildingBlocks();
-            foreach (var orphanBlock in orphansBlocks)
-                orphansBuildingBlocks.Add(orphanBlock);
+            var unsectionedBlocks = s_UnsectionedSection.GetBuildingBlocks();
+            foreach (var unsectionedBlock in unsectionedBlocks)
+                unsectionedBuildingBlocks.Add(unsectionedBlock);
         }
 
         /// <summary>

@@ -7,6 +7,13 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+
+## [2.4.0-exp.3] - 2023-8-21
+
+### Fixed
+- Made prefabs for the [Building Blocks system](xref:xr-core-utils-building-blocks) load on a lazy-load approach to avoid non deterministic loading issues from the Asset Database.
+- Fixed a bug in `ScriptableSettingsBase` that would attempt to create a new instance of the settings asset even when the asset already existed.
+
 ## [2.4.0-exp.2] - 2023-8-16
 
 ### Added

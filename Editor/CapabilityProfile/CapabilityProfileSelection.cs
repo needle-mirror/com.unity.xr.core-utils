@@ -12,8 +12,7 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
     public static class CapabilityProfileSelection
     {
         const string k_CapabilityProfileSelectionKey = "CapabilityProfileSelection";
-        const char k_GuidSeparatorChar = ',';
-        const string k_GuidSeparatorString = ",";
+        const string k_GuidSeparator = ",";
         const string k_UndoSelectedProfileName = "Select Capability Profile";
 
         [Serializable]
@@ -78,7 +77,7 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
             internal void LoadFromUserSettings()
             {
                 var serializedProfileGuids = EditorUserSettings.GetConfigValue(k_CapabilityProfileSelectionKey);
-                var profileGuids = serializedProfileGuids == null ? AssetDatabase.FindAssets("t:CapabilityProfile") : serializedProfileGuids.Split(k_GuidSeparatorChar);
+                var profileGuids = serializedProfileGuids == null ? AssetDatabase.FindAssets("t:CapabilityProfile") : serializedProfileGuids.Split(k_GuidSeparator[0]);
                 foreach (var profileGuid in profileGuids)
                 {
                     var profilePath = AssetDatabase.GUIDToAssetPath(profileGuid);
@@ -112,7 +111,7 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
                     profileGuids.Add(profileGuid);
                 }
 
-                EditorUserSettings.SetConfigValue(k_CapabilityProfileSelectionKey, string.Join(k_GuidSeparatorString, profileGuids));
+                EditorUserSettings.SetConfigValue(k_CapabilityProfileSelectionKey, string.Join(k_GuidSeparator, profileGuids));
 
                 SelectionSaved?.Invoke();
             }
@@ -172,7 +171,7 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
         }
 
         /// <summary>
-        /// Checks if a given capability key is currently available in  the current selected profiles
+        /// Checks if a given capability key is currently available in the current selected profiles 
         /// </summary>
         /// <param name="capabilityKey">The capability key to check</param>
         /// <returns>Returns true if the capability key is available and enabled.</returns>

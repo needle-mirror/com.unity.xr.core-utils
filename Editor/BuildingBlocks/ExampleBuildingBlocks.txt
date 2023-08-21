@@ -7,7 +7,7 @@ using UnityEngine;
 class ScriptedBuildingBlockSample : IBuildingBlock
 {
     const string k_Id = "Building Block 1";
-    const string k_BuildingBlockPath = "GameObject/Quantum/MySection/"+k_Id;
+    const string k_BuildingBlockPath = "GameObject/PolySpatial/MySection/"+k_Id;
     const string k_IconPath = "buildingblockIcon";
     const int k_SectionPriority = 10;
 
@@ -43,7 +43,7 @@ class BuildingBlockSection1 : IBuildingBlockSection
 
     static PrefabCreatorBuildingBlock s_Prefab1BuildingBlock;
     const int k_Prefab1BuildingBlockPriority = 10;
-    const string k_Prefab1BuildingBlockPath = "GameObject/Quantum/MyBBSection/"+k_SectionId;
+    const string k_Prefab1BuildingBlockPath = "GameObject/PolySpatial/MyBBSection/"+k_SectionId;
 
     // We add this Menu Item to the prefab building block since its complex to force the user to create the menu item within the PrefabCreatorBuildingBlock class
     // and each Building Block *should* have a menu item along.

@@ -282,7 +282,13 @@ namespace Unity.XR.CoreUtils
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-            AssetDatabase.CreateAsset(BaseInstance, savePath);
+#if UNITY_2021_1_OR_NEWER
+            var guid = AssetDatabase.AssetPathToGUID(savePath, AssetPathToGUIDOptions.OnlyExistingAssets);
+#else
+            var guid = AssetDatabase.AssetPathToGUID(savePath);
+#endif
+            if (string.IsNullOrEmpty(guid))
+                AssetDatabase.CreateAsset(BaseInstance, savePath);
         }
 #endif
     }
