@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Unity.XR.CoreUtils.Editor
@@ -31,6 +32,10 @@ namespace Unity.XR.CoreUtils.Editor
             if(m_ValidationDrawer == null)
                 m_ValidationDrawer = new ProjectValidationDrawer(BuildTargetGroup.Unknown);
             
+            DrawCapabilitiesSection();
+            GUILayout.Space(10);
+            
+            EditorGUILayout.LabelField("Validation Rules", EditorStyles.boldLabel);
             m_ValidationDrawer.OnGUI();
         }
 
@@ -39,6 +44,17 @@ namespace Unity.XR.CoreUtils.Editor
             base.OnInspectorUpdate();
             if (m_ValidationDrawer.UpdateIssues(true, false))
                 Repaint();
+        }
+        
+        static void DrawCapabilitiesSection()
+        {
+            EditorGUILayout.LabelField("Scene Validation", EditorStyles.boldLabel);
+
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel("Selected Profiles");
+                SceneValidationUIUtils.DrawCapabilitiesSelectionDropdown(false);
+            }
         }
     }
 }

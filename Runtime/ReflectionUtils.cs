@@ -255,5 +255,13 @@ namespace Unity.XR.CoreUtils
             name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name);
             return name;
         }
+
+#if !UNITY_2020_1_OR_NEWER
+        public static void GetFieldsWithAttribute(Type attributeType, List<FieldInfo> fields,
+            BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
+        {
+            ForEachType(type => type.GetFieldsWithAttribute(attributeType, fields, bindingAttr));
+        }
+#endif
     }
 }

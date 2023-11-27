@@ -26,6 +26,8 @@ The XR Core Utilities package contains a variety of classes and extension method
 - [Scriptable Settings (serialized project settings)](xref:Unity.XR.CoreUtils.Editor.ScriptableSettingsProvider`1)
 - [XROrigin](xref:xr-core-utils-xr-origin)
 - [Project validation](xref:xr-core-utils-project-validation)
+- [Building blocks](xref:xr-core-utils-building-blocks)
+- [Capability Profile](xref:xr-core-utils-capability-profile)
 
 Refer to the [Script Reference](../../../api/index.md) for a complete list of utility classes.
 

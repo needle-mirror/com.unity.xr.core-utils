@@ -265,7 +265,11 @@ namespace Unity.XR.CoreUtils
             var initialized = true;
 
 #if XR_MODULE_AVAILABLE
+#if UNITY_2023_2_OR_NEWER
+            SubsystemManager.GetSubsystems(s_InputSubsystems);
+#else
             SubsystemManager.GetInstances(s_InputSubsystems);
+#endif
             if (s_InputSubsystems.Count > 0)
             {
                 foreach (var inputSubsystem in s_InputSubsystems)

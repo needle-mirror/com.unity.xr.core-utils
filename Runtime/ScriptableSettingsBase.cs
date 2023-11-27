@@ -171,7 +171,7 @@ namespace Unity.XR.CoreUtils
         {
             if (BaseInstance != null)
             {
-                XRLoggingUtils.LogError($"ScriptableSingleton {typeof(T)} already exists. This can happen if " +
+                XRLoggingUtils.LogWarning($"ScriptableSingleton {typeof(T)} already exists. This can happen if " +
                     $"there are two copies of the asset or if you query the singleton in a constructor.", BaseInstance);
             }
         }
@@ -282,7 +282,13 @@ namespace Unity.XR.CoreUtils
             if (!Directory.Exists(folderPath))
                 Directory.CreateDirectory(folderPath);
 
-            AssetDatabase.CreateAsset(BaseInstance, savePath);
+#if UNITY_2021_1_OR_NEWER
+            var guid = AssetDatabase.AssetPathToGUID(savePath, AssetPathToGUIDOptions.OnlyExistingAssets);
+#else
+            var guid = AssetDatabase.AssetPathToGUID(savePath);
+#endif
+            if (string.IsNullOrEmpty(guid))
+                AssetDatabase.CreateAsset(BaseInstance, savePath);
         }
 #endif
     }

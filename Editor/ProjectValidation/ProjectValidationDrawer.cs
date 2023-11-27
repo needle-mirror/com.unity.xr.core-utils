@@ -97,7 +97,8 @@ namespace Unity.XR.CoreUtils.Editor
                 {
                     wordWrap = true,
                     alignment = TextAnchor.MiddleLeft,
-                    padding = new RectOffset(0, 5, 1, 1)
+                    padding = new RectOffset(0, 5, 1, 1),
+                    richText = true
                 };
 
                 IconStyle = new GUIStyle(EditorStyles.label)
@@ -205,7 +206,7 @@ namespace Unity.XR.CoreUtils.Editor
         Vector2 m_ScrollViewPos = Vector2.zero;
         bool m_CheckedInPlayMode;
 
-        List<BuildValidationRule> m_BuildRules = new List<BuildValidationRule>();
+        List<BuildValidationRule> m_BuildRules;
 
         // Fix all state
         List<BuildValidationRule> m_FixAllList = new List<BuildValidationRule>();
@@ -282,9 +283,11 @@ namespace Unity.XR.CoreUtils.Editor
                 GUILayout.Label(styles.PlayMode);
             }
 
-            EditorGUILayout.Space();
-
-            DrawIssuesList();
+            if (m_BuildRules != null)
+            {
+                EditorGUILayout.Space();
+                DrawIssuesList();
+            }
 
             EditorGUILayout.EndVertical();
             EditorGUILayout.EndBuildTargetSelectionGrouping();
@@ -469,24 +472,23 @@ namespace Unity.XR.CoreUtils.Editor
             if (!BuildValidator.HasRulesForPlatform(activeBuildTargetGroup))
                 return false;
 
-            var failureCount = m_BuildRules.Count;
-
             BuildValidator.GetCurrentValidationIssues(m_RuleFailures, activeBuildTargetGroup);
 
-            // Repaint the window if the failure count has changed
-            var needsRepaint = m_BuildRules.Count > 0 || failureCount > 0;
+            // Always repaint the window if there are rules
+            var needsRepaint = m_BuildRules != null && m_BuildRules.Count > 0;
 
             m_LastUpdate = EditorApplication.timeSinceStartup;
             return needsRepaint;
         }
 
-        List<BuildValidationRule> SortRulesByEnabledCondition(List<BuildValidationRule> rulesToSort)
+        static List<BuildValidationRule> SortRulesByEnabledCondition(List<BuildValidationRule> rulesToSort)
         {
-            var sortedRules = new List<BuildValidationRule>();
-            foreach(var rule in rulesToSort)
+            var sortedRules = new List<BuildValidationRule>(rulesToSort.Count);
+            var enabledInsertIndex = 0;
+            foreach (var rule in rulesToSort)
             {
-                if(rule.IsRuleEnabled.Invoke())
-                    sortedRules.Insert(0, rule);
+                if (rule.IsRuleEnabled.Invoke())
+                    sortedRules.Insert(enabledInsertIndex++, rule);
                 else
                     sortedRules.Add(rule);
             }
