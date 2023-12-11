@@ -7,6 +7,11 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.3.0-pre.3] - 2023-12-11
+
+### Fixed
+
+- Fix conditional compilation of analytics API on 2023.2 and newer editor versions. 
 
 ## [2.3.0-pre.2] - 2023-11-27
 
