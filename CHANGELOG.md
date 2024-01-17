@@ -7,11 +7,22 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+<!-- Changelog for 2.3.0 -->
+## [2.3.0] - 2024-01-17
+
+### Added
+
+- Added a new collection [ReadOnlyList\<T\>](xref:Unity.XR.CoreUtils.ReadOnlyList`1) as a more performant alternative to `ReadOnlyCollection`. `ReadOnlyList` improves upon `ReadOnlyCollection` by removing the heap allocations associated with `GetEnumerator()`.
+
+### Fixed
+
+- Fixed the XmlDocs issues for API documentation.
+
 ## [2.3.0-pre.3] - 2023-12-11
 
 ### Fixed
 
-- Fix conditional compilation of analytics API on 2023.2 and newer editor versions. 
+- Fix conditional compilation of analytics API on 2023.2 and newer editor versions.
 
 ## [2.3.0-pre.2] - 2023-11-27
 

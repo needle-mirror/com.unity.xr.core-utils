@@ -3,13 +3,11 @@
 namespace Unity.XR.CoreUtils.Datums.Editor
 {
     /// <summary>
-    /// Variable reference drawer used to represent an Animation Curve reference.
+    /// Variable reference drawer used to represent an Animation Curve reference
+    /// and draw an <see cref="AnimationCurveDatumProperty"/>.
     /// </summary>
     /// <seealso cref="AnimationCurveDatumProperty"/>
     /// <seealso cref="DatumPropertyDrawer"/>
-    /// <summary>
-    /// Class used to draw an <see cref="AnimationCurveDatumProperty"/>.
-    /// </summary>
     [CustomPropertyDrawer(typeof(AnimationCurveDatumProperty))]
     public class AnimationCurveDatumPropertyDrawer : DatumPropertyDrawer
     {

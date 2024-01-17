@@ -257,6 +257,12 @@ namespace Unity.XR.CoreUtils
         }
 
 #if !UNITY_2020_1_OR_NEWER
+        /// <summary>
+        /// Get the fields with <paramref name="attributeType"/> in every assembly.
+        /// </summary>
+        /// <param name="attributeType">The attribute type for which to search.</param>
+        /// <param name="fields">A list containing the <see cref="FieldInfo"/> of the fields with the attribute specified by <paramref name="attributeType"/>.</param>
+        /// <param name="bindingAttr">Binding flags of the attribute.</param>
         public static void GetFieldsWithAttribute(Type attributeType, List<FieldInfo> fields,
             BindingFlags bindingAttr = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)
         {

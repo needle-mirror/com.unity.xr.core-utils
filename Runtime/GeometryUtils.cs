@@ -111,13 +111,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Generates a standard triangle buffer with a given number of indices and adds it to the specified list. 
+        /// Generates a standard triangle buffer with a given number of indices and adds it to the specified list.
         /// </summary>
         /// <remarks>
         /// Set <paramref name="reverse"/> <see langword="true"/> to reverse the normal winding order.
         ///
         /// Example winding orders:
-        /// 
+        ///
         /// | **Normal winding** | **Reverse winding** |
         /// | :----------------- | :------------------ |
         /// | 0, 1, 2,  | 0, 2, 1,
@@ -543,8 +543,8 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <remarks>
         /// Based on algorithm outlined in
-        /// <see href="https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html">
-        /// Gift Wrapping Convex Hull Algorithm With Unity Implementation</see>.
+        /// <a href="https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html">
+        /// Gift Wrapping Convex Hull Algorithm With Unity Implementation</a>.
         /// </remarks>
         /// <param name="points">Points used to find the convex hull. The y coordinates of these points are ignored.</param>
         /// <param name="hull">The vertices that define the smallest convex polygon are assigned to this list. The list is not cleared.</param>

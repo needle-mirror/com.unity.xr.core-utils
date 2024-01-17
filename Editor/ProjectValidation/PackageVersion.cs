@@ -41,27 +41,27 @@ namespace Unity.XR.CoreUtils.Editor
         /// Major version number.
         /// </summary>
         public ulong MajorVersion => m_MajorVersion;
-        
+
         /// <summary>
         /// Minor version number.
         /// </summary>
         public ulong MinorVersion => m_MinorVersion;
-        
+
         /// <summary>
         /// Patch version number.
         /// </summary>
         public ulong PatchVersion => m_PatchVersion;
-        
+
         /// <summary>
         /// Reports whether the package is a prerelease.
         /// </summary>
         public bool IsPrerelease => !string.IsNullOrEmpty(m_Prerelease);
-        
+
         /// <summary>
         /// The prerelease version information.
         /// </summary>
         public string Prerelease => m_Prerelease;
-        
+
         /// <summary>
         /// The build metadata version information.
         /// </summary>
@@ -170,7 +170,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/>s are equal
         /// <returns><c>true</c> if operands are equal, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator==(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is equal to <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator ==(PackageVersion left, PackageVersion right)
         {
             return left.Equals(right);
         }
@@ -179,7 +182,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/>s are not equal
         /// <returns><c>true</c> if operands are not equal, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator!=(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is not equal to <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator !=(PackageVersion left, PackageVersion right)
         {
             return !left.Equals(right);
         }
@@ -188,7 +194,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/> <paramref name="left"/> is greater than <paramref name="right"/>.
         /// <returns><c>true</c> if <paramref name="left"/> is greater than <paramref name="right"/>, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator>(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is greater than <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator >(PackageVersion left, PackageVersion right)
         {
             return left.CompareTo(right) > 0;
         }
@@ -197,7 +206,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/> <paramref name="left"/> is less than <paramref name="right"/>.
         /// <returns><c>true</c> if <paramref name="left"/> is less than <paramref name="right"/>, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator<(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is less than <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator <(PackageVersion left, PackageVersion right)
         {
             return left.CompareTo(right) < 0;
         }
@@ -206,7 +218,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/> <paramref name="left"/> is greater than or equals <paramref name="right"/>.
         /// <returns><c>true</c> if <paramref name="left"/> is greater than or equals <paramref name="right"/>, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator>=(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is greater than and equal to <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator >=(PackageVersion left, PackageVersion right)
         {
             return left.CompareTo(right) >= 0;
         }
@@ -215,7 +230,10 @@ namespace Unity.XR.CoreUtils.Editor
         /// Operand to check if <see cref="PackageVersion"/> <paramref name="left"/> is less than or equals <paramref name="right"/>.
         /// <returns><c>true</c> if <paramref name="left"/> is less than or equals <paramref name="right"/>, <c>false</c> otherwise.</returns>
         /// </summary>
-        public static bool operator<=(PackageVersion left, PackageVersion right)
+        /// <param name="left">The left-hand side of the comparison.</param>
+        /// <param name="right">The right-hand side of the comparison.</param>
+        /// <returns><see langword="true"/> if <paramref name="left"/> is less than and equal to <paramref name="right"/>, otherwise <see langword="false"/>.</returns>
+        public static bool operator <=(PackageVersion left, PackageVersion right)
         {
             return left.CompareTo(right) <= 0;
         }

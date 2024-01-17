@@ -11,8 +11,8 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         /// <summary>
         /// Generates a string message with a set of capability keys that are required for a building block to be enabled.
         /// </summary>
-        /// <param name="capabilityKeys"></param>
-        /// <returns>the formatted string</returns>
+        /// <param name="capabilityKeys">The capability keys which should be included in the message.</param>
+        /// <returns>The formatted string.</returns>
         public static string GenerateMissingCapabilitiesRequiredTooltip(params string[] capabilityKeys)
         {
             var tooltip = "The following capabilities are required for this building block to be enabled:\n";
@@ -20,12 +20,12 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             {
                 tooltip += $"- {key}\n";
             }
-            
+
             tooltip += "\nPlease select a capability profile that supports these capabilities in the Project Validation window under Project Settings > Project Validation.";
 
             return tooltip;
         }
-        
+
         /// <summary>
         /// Checks if any capability profiles are currently selected.
         /// </summary>

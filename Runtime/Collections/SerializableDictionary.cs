@@ -47,7 +47,7 @@ namespace Unity.XR.CoreUtils.Collections
         /// Initializes a new instance of the dictionary that contains elements copied from the given
         /// <paramref name="input"/> dictionary.
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="input">The dictionary from which to copy the elements.</param>
         public SerializableDictionary(IDictionary<TKey, TValue> input) : base(input) { }
 
         /// <summary>

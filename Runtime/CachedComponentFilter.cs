@@ -43,7 +43,9 @@ namespace Unity.XR.CoreUtils
     /// <summary>
     /// Provides utility functions to retrieve filtered lists of components. The lists created are automatically cached.
     /// </summary>
-    /// <remarks>
+    /// <typeparam name="TFilterType">The type of component to find.</typeparam>
+    /// <typeparam name="TRootType">The type of component at the root of the hierarchy.</typeparam>
+    /// <example>
     /// Proper usage of this class is:
     /// <code>
     /// using (var componentFilter = new CachedComponentFilter&lt;typeToFind,componentTypeThatContains&gt;(instanceOfComponent))
@@ -51,9 +53,7 @@ namespace Unity.XR.CoreUtils
     ///
     /// }
     /// </code>
-    /// </remarks>
-    /// <typeparam name="TFilterType">The type of component to find.</typeparam>
-    /// <typeparam name="TRootType">The type of component at the root of the hierarchy.</typeparam>
+    /// </example>
     public class CachedComponentFilter<TFilterType, TRootType> : IDisposable where TRootType : Component where TFilterType : class
     {
         readonly List<TFilterType> m_MasterComponentStorage;
