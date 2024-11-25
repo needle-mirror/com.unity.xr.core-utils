@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Unity.XR.CoreUtils
 {
@@ -7,5 +7,5 @@ namespace Unity.XR.CoreUtils
     /// makes the property non-editable.
     /// </summary>
     public class ReadOnlyAttribute : PropertyAttribute
-    {}
+    { }
 }

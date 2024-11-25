@@ -1,4 +1,4 @@
-﻿#if INCLUDE_UGUI
+#if INCLUDE_UGUI
 using UnityEngine;
 
 using UnityEngine.UI;

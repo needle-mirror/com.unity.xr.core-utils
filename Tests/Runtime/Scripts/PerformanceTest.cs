@@ -1,4 +1,4 @@
-﻿namespace Unity.XR.CoreUtils.Tests
+namespace Unity.XR.CoreUtils.Tests
 {
     abstract class PerformanceTest : PerformanceTestBase
     {
@@ -15,7 +15,7 @@
 
         protected override string GetReport()
         {
-            var count = (float) (m_CallCount * m_FrameCounter);
+            var count = (float)(m_CallCount * m_FrameCounter);
             m_Report = $"{m_TestClassLabel} - {m_CallCount * m_FrameCount} calls\n\n";
             m_Report += $"using {m_MethodLabel}\naverage {m_ElapsedTicks / count} ticks / call\n";
             return m_Report;

@@ -1,4 +1,8 @@
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
+#if ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER
+#if UNITY_2023_2_OR_NEWER
+using System;
+using System.Collections.Generic;
+#endif
 using UnityEditor;
 using UnityEngine.Analytics;
 
@@ -9,6 +13,9 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
     /// </summary>
     /// <seealso cref="EditorAnalytics"/>
     public abstract class EditorAnalyticsEvent<T>
+#if UNITY_2023_2_OR_NEWER
+        : IAnalytic where T : IAnalytic.IData
+#endif
     {
         /// <summary>
         /// The event name determines which database table it goes into in the backend.
@@ -26,11 +33,39 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
         /// </summary>
         public bool Registered { get; private set; }
 
+#if UNITY_2023_2_OR_NEWER
         /// <summary>
-        /// Set this to <see langword="true"/> to log invocations to <see cref="Send"/> and <see cref="Register"/> to
-        /// the Unity editor console. It's recommended to use the Analytics Debugger window to actually debug your events.
+        /// The data to send to the analytics server. Fill this data in the <see cref="Send"/> method, and use it in the
+        /// <see cref="TryGatherData"/> implementation.
         /// </summary>
-        public bool LogEnabled { get; set; }
+        protected Queue<T> m_QueuedData = new Queue<T>();
+
+        /// <summary>
+        /// The implementation to gather the data to send to the analytics server.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        public virtual bool TryGatherData(out IAnalytic.IData data, out Exception error)
+        {
+            if (m_QueuedData.Count == 0)
+            {
+                data = null;
+                error = new Exception("No data to send. Do not invoke this method directly, call Send() when " +
+                                      "you want to send new analytics data.");
+                return false;
+            }
+
+            data = m_QueuedData.Dequeue();
+            error = null;
+            return true;
+        }
+
+        /// <summary>
+        /// The class constructor.
+        /// </summary>
+        public EditorAnalyticsEvent() { }
+#endif
 
         /// <summary>
         /// The class constructor.
@@ -44,17 +79,6 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
         }
 
         /// <summary>
-        /// The implementation to send the given parameter as payload to the analytics server.
-        /// </summary>
-        /// <param name="parameter">The parameter to send.</param>
-        /// <returns>The analytics result of the send invocation.</returns>
-        /// <remarks>
-        /// It's recommended to implement this method inside the package editor <c>asmdef/DLL</c> that owns this event.
-        /// The editor analytics API may add its invocation info to the payload message.
-        /// </remarks>
-        protected abstract AnalyticsResult SendToAnalyticsServer(T parameter);
-
-        /// <summary>
         /// The implementation to register this event with the analytics server.
         /// </summary>
         /// <returns>The analytics result of the event registration.</returns>
@@ -63,14 +87,6 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
         /// The editor analytics API may add its invocation info to the payload message.
         /// </remarks>
         protected abstract AnalyticsResult RegisterWithAnalyticsServer();
-
-        /// <summary>
-        /// Send the given parameter as payload to the analytics server.
-        /// </summary>
-        /// <param name="parameter">The parameter object within the event.</param>
-        /// <returns>Returns whenever the event was successfully sent. Returns <see langword="false"/> if this event was not registered yet.</returns>
-        public bool Send(T parameter) =>
-            Registered && SendToAnalyticsServer(parameter) == AnalyticsResult.Ok;
 
         /// <summary>
         /// Register this event with the analytics server.
@@ -93,6 +109,41 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
             Registered = result == AnalyticsResult.Ok || result == AnalyticsResult.TooManyRequests;
             return Registered;
         }
+
+        /// <summary>
+        /// The implementation to send the given parameter as payload to the analytics server.
+        /// </summary>
+        /// <param name="parameter">The parameter to send.</param>
+        /// <returns>The analytics result of the send invocation.</returns>
+        /// <remarks>
+        /// It's recommended to implement this method inside the package editor <c>asmdef/DLL</c> that owns this event.
+        /// The editor analytics API may add its invocation info to the payload message.
+        /// </remarks>
+        protected abstract AnalyticsResult SendToAnalyticsServer(T parameter);
+
+        /// <summary>
+        /// Send the given parameter as payload to the analytics server.
+        /// </summary>
+        /// <param name="parameter">The parameter object within the event.</param>
+        /// <returns>Returns whenever the event was successfully sent. Returns <see langword="false"/> if this event was not registered yet.</returns>
+        public bool Send(T parameter)
+        {
+#if !UNITY_2023_2_OR_NEWER
+            if (!Registered)
+                return false;
+#else
+            if (parameter is IAnalytic.IData)
+            {
+                m_QueuedData.Enqueue(parameter);
+            }
+            else if (!Registered)
+            {
+                return false;
+            }
+#endif
+
+            return SendToAnalyticsServer(parameter) == AnalyticsResult.Ok;
+        }
     }
 }
-#endif //ENABLE_CLOUD_SERVICES_ANALYTICS
+#endif // ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER

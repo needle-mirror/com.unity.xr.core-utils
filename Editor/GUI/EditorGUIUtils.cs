@@ -26,14 +26,14 @@ namespace Unity.XR.CoreUtils.Editor
             {
                 name = "url-label",
                 richText = true,
-                normal = new GUIStyleState {textColor = new Color(8 / 255f, 8 / 255f, 252 / 255f)},
+                normal = new GUIStyleState { textColor = new Color(8 / 255f, 8 / 255f, 252 / 255f) },
             };
 
             internal static readonly GUIStyle UrlLabelProfessional = new GUIStyle(EditorStyles.miniLabel)
             {
                 name = "url-label",
                 richText = true,
-                normal = new GUIStyleState {textColor = new Color(79 / 255f, 128 / 255f, 248 / 255f)},
+                normal = new GUIStyleState { textColor = new Color(79 / 255f, 128 / 255f, 248 / 255f) },
             };
         }
 

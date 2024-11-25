@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-
-#if UNITY_2020_1_OR_NEWER
 using UnityEditor;
-#endif
 
 namespace Unity.XR.CoreUtils.Capabilities.Editor
 {
@@ -17,10 +14,6 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
 
         static readonly string[] k_CapabilityKeys;
         internal static string[] CapabilityKeys => k_CapabilityKeys;
-
-#if !UNITY_2020_1_OR_NEWER
-        static readonly List<FieldInfo> k_Fields = new List<FieldInfo>();
-#endif
 
         static CapabilityKeysDefinition()
         {
@@ -44,13 +37,8 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
 
         static void DefineCustomCapabilities(List<string> capabilityKeys, List<int> capabilityOrders)
         {
-#if UNITY_2020_1_OR_NEWER
             var extractedFields = TypeCache.GetFieldsWithAttribute<CustomCapabilityKeyAttribute>();
-#else
-            k_Fields.Clear();
-            ReflectionUtils.GetFieldsWithAttribute(typeof(CustomCapabilityKeyAttribute), k_Fields);
-            var extractedFields = k_Fields;
-#endif
+
             foreach (var fieldInfo in extractedFields)
             {
                 if (!IsCustomCapabilityFieldValid(fieldInfo, out var attribute))

@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Datums.Editor
@@ -27,7 +27,7 @@ namespace Unity.XR.CoreUtils.Datums.Editor
             var selectedValue = GetSelectedProperty(property);
             if (selectedValue.hasVisibleChildren)
             {
-                return EditorGUI.GetPropertyHeight(selectedValue, true); 
+                return EditorGUI.GetPropertyHeight(selectedValue, true);
             }
 
             return base.GetPropertyHeight(property, label);

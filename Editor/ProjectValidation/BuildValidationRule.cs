@@ -34,6 +34,9 @@ namespace Unity.XR.CoreUtils.Editor
         /// Lambda function that returns <see langword="true"/> if validation passes.
         /// Otherwise, returns <see langword="false"/>.
         /// </summary>
+        /// <remarks>
+        /// By default the validation fails, equivalent to a function that returns <see langword="false"/>.
+        /// </remarks>
         public Func<bool> CheckPredicate { get; set; }
 
         /// <summary>
@@ -84,7 +87,7 @@ namespace Unity.XR.CoreUtils.Editor
             /// Name of the window tab to highlight in.
             /// </summary>
             public string WindowTitle { get; set; }
-            
+
             /// <summary>
             /// Text to highlight.
             /// </summary>

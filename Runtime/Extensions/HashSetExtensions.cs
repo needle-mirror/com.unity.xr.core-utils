@@ -8,7 +8,7 @@ namespace Unity.XR.CoreUtils
     public static class HashSetExtensions
     {
         /// <summary>
-        /// Remove any elements in this set that are in the set specified by <paramref name="other"/>. 
+        /// Remove any elements in this set that are in the set specified by <paramref name="other"/>.
         /// </summary>
         /// <remarks>
         /// Equivalent to <see cref="HashSet{T}.ExceptWith(IEnumerable{T})"/>, but without any allocation.

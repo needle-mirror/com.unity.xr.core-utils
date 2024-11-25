@@ -41,18 +41,14 @@ namespace Unity.XR.CoreUtils.Collections
         /// <summary>
         /// Initializes a new instance of the dictionary.
         /// </summary>
-        public SerializableDictionary()
-        {
-        }
+        public SerializableDictionary() { }
 
         /// <summary>
         /// Initializes a new instance of the dictionary that contains elements copied from the given
         /// <paramref name="input"/> dictionary.
         /// </summary>
-        /// <param name="input"></param>
-        public SerializableDictionary(IDictionary<TKey, TValue> input) : base(input)
-        {
-        }
+        /// <param name="input">The dictionary from which to copy the elements.</param>
+        public SerializableDictionary(IDictionary<TKey, TValue> input) : base(input) { }
 
         /// <summary>
         /// See <see cref="ISerializationCallbackReceiver"/>
@@ -62,7 +58,7 @@ namespace Unity.XR.CoreUtils.Collections
         {
             m_Items.Clear();
             foreach (var pair in this)
-                m_Items.Add(new Item {Key = pair.Key, Value = pair.Value});
+                m_Items.Add(new Item { Key = pair.Key, Value = pair.Value });
         }
 
         /// <summary>

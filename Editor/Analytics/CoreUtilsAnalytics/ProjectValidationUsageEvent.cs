@@ -1,12 +1,19 @@
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
+#if ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER
 using System;
 using UnityEngine;
+
+#if UNITY_2023_2_OR_NEWER
+using UnityEngine.Analytics;
+#endif
 
 namespace Unity.XR.CoreUtils.Editor.Analytics
 {
     /// <summary>
     /// The project validation usage analytics event.
     /// </summary>
+#if UNITY_2023_2_OR_NEWER
+    [AnalyticInfo(k_EventName, CoreUtilsAnalytics.VendorKey, k_EventVersion, k_MaxEventPerHour, k_MaxItems)]
+#endif
     class ProjectValidationUsageEvent : CoreUtilsEditorAnalyticsEvent<ProjectValidationUsageEvent.Payload>
     {
         const string k_EventName = "xrcoreutils_projectvalidation_usage";
@@ -20,6 +27,9 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
         /// </summary>
         [Serializable]
         internal struct Payload
+#if UNITY_2023_2_OR_NEWER
+            : IAnalytic.IData
+#endif
         {
             internal const string FixIssuesName = "FixIssues";
 
@@ -28,6 +38,25 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
 
             [SerializeField]
             internal IssuesStatus[] IssuesStatusByCategory;
+
+#if UNITY_2023_2_OR_NEWER
+            [SerializeField]
+            internal string package;
+
+            [SerializeField]
+            internal string package_ver;
+#endif
+
+            internal Payload(string name, IssuesStatus[] issuesStatus)
+            {
+                Name = name;
+                IssuesStatusByCategory = issuesStatus;
+
+#if UNITY_2023_2_OR_NEWER
+                package = CoreUtilsAnalytics.PackageName;
+                package_ver = CoreUtilsAnalytics.PackageVersion;
+#endif
+            }
         }
 
         /// <summary>
@@ -47,12 +76,11 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
             internal int FailedToFix;
         }
 
-        internal ProjectValidationUsageEvent() : base(k_EventName, k_EventVersion)
-        {
-        }
-
+#if !UNITY_2023_2_OR_NEWER
+        internal ProjectValidationUsageEvent() : base(k_EventName, k_EventVersion) { }
+#endif
         internal bool SendFixIssues(IssuesStatus[] issuesStatusByCategory) =>
-            Send(new Payload {Name = Payload.FixIssuesName, IssuesStatusByCategory = issuesStatusByCategory});
+            Send(new Payload(Payload.FixIssuesName, issuesStatusByCategory));
     }
 }
 #endif //ENABLE_CLOUD_SERVICES_ANALYTICS

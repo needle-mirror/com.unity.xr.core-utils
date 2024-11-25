@@ -1,4 +1,4 @@
-﻿// ENABLE_VR is not defined on Game Core but the assembly is available with limited features when the XR module is enabled.
+// ENABLE_VR is not defined on Game Core but the assembly is available with limited features when the XR module is enabled.
 #if ENABLE_VR || UNITY_GAMECORE
 #define XR_MODULE_AVAILABLE
 #endif
@@ -64,7 +64,7 @@ namespace Unity.XR.CoreUtils.Editor
             /// <summary><see cref="GUIContent"/> for <see cref="XROrigin.CameraYOffset"/>.</summary>
             public static readonly GUIContent CameraYOffset = EditorGUIUtility.TrTextContent("Camera Y Offset", "Camera height to be used when in \"Device\" Tracking Origin Mode to define the height of the user from the floor.");
             /// <summary><see cref="GUIContent"/> to indicate mixed values when multi-object editing.</summary>
-            public static readonly GUIContent  MixedValues = EditorGUIUtility.TrTextContent("\u2014", "Mixed Values");
+            public static readonly GUIContent MixedValues = EditorGUIUtility.TrTextContent("\u2014", "Mixed Values");
         }
 
         /// <summary>

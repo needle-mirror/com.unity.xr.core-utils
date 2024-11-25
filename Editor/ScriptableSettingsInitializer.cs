@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +20,7 @@ namespace Unity.XR.CoreUtils.Editor.Internal
 
         static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
-            if (state ==  PlayModeStateChange.EnteredEditMode)
+            if (state == PlayModeStateChange.EnteredEditMode)
                 LoadAllSettingsClasses();
         }
 

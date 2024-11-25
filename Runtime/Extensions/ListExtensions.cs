@@ -15,7 +15,7 @@ namespace Unity.XR.CoreUtils
         /// <typeparam name="T">The type of objects in this list.</typeparam>
         /// <returns>The list that was filled.</returns>
         public static List<T> Fill<T>(this List<T> list, int count)
-            where T: new()
+            where T : new()
         {
             for (var i = 0; i < count; i++)
             {

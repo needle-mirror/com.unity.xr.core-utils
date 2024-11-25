@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +23,7 @@ namespace Unity.XR.CoreUtils.EditorTests
         public void RemoveDestroyedObjectsTest()
         {
             var go = new GameObject();
-            var list = new List<GameObject>{ go };
+            var list = new List<GameObject> { go };
             UnityObjectUtils.Destroy(go);
             UnityObjectUtils.RemoveDestroyedObjects(list);
             Assert.Zero(list.Count);

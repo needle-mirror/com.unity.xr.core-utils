@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// </summary>
         /// <param name="host">The declaring type.</param>
         /// <param name="path">The property path relative to the declaring type. See
-        /// <seealso cref="SerializedProperty.propertyPath"/>.</param>
+        /// <see cref="SerializedProperty.propertyPath"/>.</param>
         /// <param name="type">Assigned the Type of the property.</param>
         /// <returns>Attributes and metadata about the member identified by <paramref name="host"/>
         /// and <paramref name="path"/>.</returns>
@@ -55,7 +55,7 @@ namespace Unity.XR.CoreUtils.Editor
                 return null;
             MemberInfo memberInfo = null;
 
-            var parts = path.Split ('.');
+            var parts = path.Split('.');
             for (var i = 0; i < parts.Length; i++)
             {
                 var member = parts[i];
@@ -65,7 +65,7 @@ namespace Unity.XR.CoreUtils.Editor
                 // so they should be skipped by the code that drills down into the types.
                 // However, we want to change the type from the type of the array to the type of the array
                 // element before we do the skipping.
-                if (i < parts.Length - 1 && member == "Array" && parts[i + 1].StartsWith ("data["))
+                if (i < parts.Length - 1 && member == "Array" && parts[i + 1].StartsWith("data["))
                 {
                     Type listType = null;
                     // ReSharper disable once PossibleNullReferenceException would have returned if host was null
@@ -108,7 +108,8 @@ namespace Unity.XR.CoreUtils.Editor
                 }
 
                 memberInfo = foundMember;
-                switch (memberInfo.MemberType) {
+                switch (memberInfo.MemberType)
+                {
                     case MemberTypes.Field:
                         var info = memberInfo as FieldInfo;
                         if (info != null)
@@ -222,7 +223,7 @@ namespace Unity.XR.CoreUtils.Editor
         }
 
         /// <summary>
-        /// Cleans up a string received from <see cref="SerializedProperty"/>.<see cref="SerializedProperty.type"/>. 
+        /// Cleans up a string received from <see cref="SerializedProperty"/>.<see cref="SerializedProperty.type"/>.
         /// </summary>
         /// <remarks>
         /// Strips `PPtr&lt;&gt;` and `$` from a string. Use this function when getting a `System.Type` using `SerializedProperty.type`.

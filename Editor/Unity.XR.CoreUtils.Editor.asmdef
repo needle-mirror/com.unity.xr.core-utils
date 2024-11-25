@@ -11,7 +11,7 @@
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "versionDefines": [
-        {      
+        {
             "name": "com.unity.inputsystem",
             "expression": "1.0.0",
             "define": "INCLUDE_INPUT_SYSTEM"

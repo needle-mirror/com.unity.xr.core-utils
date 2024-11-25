@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
@@ -17,18 +17,26 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         GameObject m_Prefab = null;
         string m_PrefabPath;
 
-        /// </inheritdoc>
+        /// <inheritdoc />
         public string Id => m_Id;
 
-        /// </inheritdoc>
+        /// <inheritdoc />
         public string IconPath => m_IconPath;
 
-        /// </inheritdoc>
+        /// <inheritdoc />
         public string Tooltip => m_Tooltip;
 
-        /// </inheritdoc>
+        /// <inheritdoc />
         public bool IsEnabled => m_IsEnabled;
 
+        /// <summary>
+        /// Class constructor.
+        /// </summary>
+        /// <param name="prefabPath">The path for the prefab to be created.</param>
+        /// <param name="buildingBlockId">The name of this Building Block. This id will be used to show this Building Block in the UI.</param>
+        /// <param name="buildingBlockIconPath">The path to the icon of this Building Block in the UI. This icon should be placed in a Resources folder.</param>
+        /// <param name="isEnabled">Whether the user know if this Building Block is enabled or disabled. If disabled, the Building Block will be grayed out in the UI.</param>
+        /// <param name="tooltip">Description of the Building Block. This description will be displayed as a tooltip in the UI.</param>
         public PrefabCreatorBuildingBlock(string prefabPath, string buildingBlockId = "Prefab Creator", string buildingBlockIconPath = null, bool isEnabled = true, string tooltip = "")
         {
             m_PrefabPath = prefabPath;
@@ -38,6 +46,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             m_Tooltip = tooltip;
         }
 
+        /// <inheritdoc />
         public void ExecuteBuildingBlock()
         {
             // Do lazy loading of the asset since AssetDatabase is non deterministic and can cause false positives when starting a new project
@@ -50,8 +59,8 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                     return;
                 }
             }
-            
-            var objName = GameObjectUtility.GetUniqueNameForSibling(null,m_Prefab.name);
+
+            var objName = GameObjectUtility.GetUniqueNameForSibling(null, m_Prefab.name);
             var createdObj = Object.Instantiate(m_Prefab);
             createdObj.name = objName;
 

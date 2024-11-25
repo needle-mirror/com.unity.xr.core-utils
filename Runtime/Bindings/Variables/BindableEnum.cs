@@ -11,11 +11,15 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
     /// <typeparam name="T">The type of the variable enum.</typeparam>
     public class BindableEnum<T> : BindableVariableBase<T> where T : struct, IConvertible
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Constructor for bindable enum, which is a variable that notifies listeners when the internal enum value changes.
+        /// </summary>
+        /// <param name="initialValue">Enum value of type <typeparamref name="T"/> to initialize enum with. Defaults to type <see langword="default" />.</param>
+        /// <param name="checkEquality">Setting <see langword="true"/> checks whether to compare new enum to old before triggering callback. Defaults to <see langword="true"/>.</param>
+        /// <param name="equalityMethod">Func used to provide custom equality checking behavior. Defaults to <c>Equals</c> check.</param>
+        /// <param name="startInitialized">Setting <see langword="false"/> results in initial enum setting will trigger registered callbacks, regardless of whether the value is the same as the initial one. Defaults to <see langword="false"/>.</param>
         public BindableEnum(T initialValue = default, bool checkEquality = true, Func<T, T, bool> equalityMethod = null, bool startInitialized = false)
-            : base(initialValue, checkEquality, equalityMethod, startInitialized)
-        {
-        }
+            : base(initialValue, checkEquality, equalityMethod, startInitialized) { }
 
         /// <summary>
         /// Performs equal operation by comparing hash codes.

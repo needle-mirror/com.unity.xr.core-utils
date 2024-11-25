@@ -14,7 +14,7 @@ namespace Unity.XR.CoreUtils.Capabilities
     public sealed class CapabilityDictionary : SerializableDictionary<string, bool>
     {
         /// <summary>
-        /// Force save the dictionary entries into the <see cref="CapabilityDictionary.SerializedItems"/> list.
+        /// Force save the dictionary entries into the <see cref="SerializableDictionary{T,T}.SerializedItems"/> list.
         /// </summary>
         public void ForceSerialize()
         {

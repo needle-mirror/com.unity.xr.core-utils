@@ -58,11 +58,8 @@ For a detailed description of how to use the Package Manager, see the [Package M
 
 This contains entirely C# code. Refer to the [API documentation](../../../api/index.md) for details.
 
-## Troubleshoot the Input System
-There is an issue with missing dependencies in version 1.0.2 of `com.unity.inputsystem`. This issue appears in versions 2019.4, 2020.3 and 2021.1 of the Unity Editor. Upgrading to version 1.1.1 of the input system package fixes these missing dependencies.
-
 ## Technical details
 
 ### Requirements
 This version of the XR Core Utilities package is compatible with the following versions of the Unity Editor:
- - 2019.4+
+ - 2021.3 or newer

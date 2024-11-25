@@ -1,7 +1,7 @@
 ---
 uid: xr-core-utils-xr-origin-reference
 ---
-# XR Origin component 
+# XR Origin component
 
 The purpose of the XR Origin is to transform objects and trackable features to their final position, orientation, and scale in the Unity scene.
 
@@ -22,7 +22,7 @@ The purpose of the XR Origin is to transform objects and trackable features to t
   </ul></td></tr>
   <tr>
    <td colspan="2" ><strong>Camera</strong></td>
-   <td>The Camera for the XR Origin. The GameObject containing this Camera must be underneath the <strong>Origin Base GameObject</strong> in the Scene hierarchy. It should be a child of the <strong>Camera Floor Offset GameObject</strong>. 
+   <td>The Camera for the XR Origin. The GameObject containing this Camera must be underneath the <strong>Origin Base GameObject</strong> in the Scene hierarchy. It should be a child of the <strong>Camera Floor Offset GameObject</strong>.
    <p>This [Camera](xref:UnityEngine.Camera) is used to render the XR scene.</p>
    </td>
   </tr>
@@ -37,8 +37,8 @@ The purpose of the XR Origin is to transform objects and trackable features to t
   </tr>
   <tr>
    <td><strong>Device</strong></td>
-   <td>In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value.  
-   <p>In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property.</p> 
+   <td>In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value.
+   <p>In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property.</p>
    </td>
   </tr>
   <tr>

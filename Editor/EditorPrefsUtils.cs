@@ -308,9 +308,9 @@ namespace Unity.XR.CoreUtils.Editor
         /// </summary>
         /// <remarks>
         /// `PrefToColor` decodes a string encoded by <see cref="ColorToColorPref(string, Color)"/>.
-        /// 
+        ///
         /// This function is used by <see cref="GetColor(string, Color, string)"/> to read a preference
-        /// value stored by <see cref="SetColor(string, Color, string)"/>. 
+        /// value stored by <see cref="SetColor(string, Color, string)"/>.
         /// </remarks>
         /// <param name="pref">A color preference value encoded as a string by <see cref="ColorToColorPref(string, Color)"/>.</param>
         /// <returns>A decoded <see cref="Color"/> object for a string stored in the Editor preferences. If the string cannot be decoded,
@@ -346,9 +346,9 @@ namespace Unity.XR.CoreUtils.Editor
         /// <remarks>
         /// `ColorToColorPref` encodes a string that can be decoded by <see cref="PrefToColor(string)"/>.
         /// The function prepends the color information with the string specified in <paramref name="path"/>.
-        /// 
+        ///
         /// This function is used by <see cref="SetColor(string, Color, string)"/> to store a preference
-        /// that can be retrieved with <see cref="GetColor(string, Color, string)"/>. 
+        /// that can be retrieved with <see cref="GetColor(string, Color, string)"/>.
         /// </remarks>
         /// <param name="path">The preference key/path prepended to the color string.</param>
         /// <param name="value">The color value to encode.</param>

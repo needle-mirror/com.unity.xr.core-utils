@@ -15,7 +15,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
     /// <see cref="BuildingBlockManager.GetUnsectionedBuildingBlocks"/> and <see cref="BuildingBlockManager.GetSections"/>.
     /// These methods are internal as only the Overlay creator needs to access to this information for now.
     /// </summary>
-    public static class BuildingBlockManager
+    static class BuildingBlockManager
     {
         /// <summary>
         /// Internal class created for a special Section containing all the Building BLocks without any sections (Unsectioned).

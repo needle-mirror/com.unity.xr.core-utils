@@ -3,7 +3,7 @@ uid: xr-core-utils-project-validation
 ---
 ## Project Validation
 
-The Project Validation system helps you avoid common Scene and Project configuration issues for the XR packages you have installed. The XR packages you have installed can include rules for the validation system. The system evaluates these rules when you make a build and whenever you have the Project Validation window open. To open the window, go to your project settings (menu: **Edit &gt; Project Settings**) and then select **Project Validation** in the **XR Plug-in management** section. The rules are checked per platform build target. Some rules may examine the current Scene to verify that the project settings support a feature used in the Scene. 
+The Project Validation system helps you avoid common Scene and Project configuration issues for the XR packages you have installed. The XR packages you have installed can include rules for the validation system. The system evaluates these rules when you make a build and whenever you have the Project Validation window open. To open the window, go to your project settings (menu: **Edit &gt; Project Settings**) and then select **Project Validation** in the **XR Plug-in management** section. The rules are checked per platform build target. Some rules may examine the current Scene to verify that the project settings support a feature used in the Scene.
 
 The image below shows a set of failed validation checks based on the OpenXR, Object Capture, and Google ARCore Plug-in packages.
 
@@ -11,7 +11,7 @@ The image below shows a set of failed validation checks based on the OpenXR, Obj
 
 The Project Validation section contains tabs for each of the platform Build Targets installed in the running instance of the Unity Editor. Select a tab to check the rules for that build target. (You do not need to switch targets in the [Build Settings](xref:BuildSettings) window.) The validation system evaluates the same rules at build time for a given build target.
 
-For each build target, the Project Validation section lists the relevant rules and whether they passed or failed. (The system hides rules that pass validation unless you select the **Show all** option.) If a failed rule has a **Fix** button, you can click it to change the setting that caused the failure. In some cases, a single-click fix is not available. Instead the rule provides an **Edit** button. Click **Edit** to navigate to the location in Unity where you can edit the relevant settings. You can click **Fix all** to correct all rules that have a Fix button. 
+For each build target, the Project Validation section lists the relevant rules and whether they passed or failed. (The system hides rules that pass validation unless you select the **Show all** option.) If a failed rule has a **Fix** button, you can click it to change the setting that caused the failure. In some cases, a single-click fix is not available. Instead the rule provides an **Edit** button. Click **Edit** to navigate to the location in Unity where you can edit the relevant settings. You can click **Fix all** to correct all rules that have a Fix button.
 
 > [!NOTE]
 > * In a few situations, rules must be evaluated even when they do not apply to the selected build target. When this happens, the validation system automatically marks the rules as passing. You only see such rules if you select the **Show all** option.

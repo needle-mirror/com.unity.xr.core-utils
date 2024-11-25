@@ -13,7 +13,7 @@ namespace Unity.XR.CoreUtils
         internal static readonly float EpsilonScaled = Mathf.Epsilon * 8;
 
         /// <summary>
-        /// A faster replacement for <seealso cref="Mathf.Approximately(float, float)"/>.
+        /// A faster replacement for <see cref="Mathf.Approximately(float, float)"/>.
         /// </summary>
         /// <remarks>
         /// Compares two floating point values and returns true if they are similar.
@@ -22,7 +22,7 @@ namespace Unity.XR.CoreUtils
         /// </remarks>
         /// <param name="a">The first float to compare.</param>
         /// <param name="b">The second float to compare.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the values are similar. Otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Approximately(float a, float b)
         {
@@ -35,13 +35,13 @@ namespace Unity.XR.CoreUtils
         /// A slightly faster way to do `Approximately(a, 0f)`.
         /// </summary>
         /// <param name="a">The floating point value to compare with 0.</param>
-        /// <returns></returns>
+        /// <returns><see langword="true"/> if the value is comparable to zero. Otherwise, <see langword="false"/>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool ApproximatelyZero(float a)
         {
             return (a >= 0f ? a : -a) < EpsilonScaled;
         }
-        
+
         /// <summary>
         /// Constrains a value between a minimum and a maximum.
         /// </summary>

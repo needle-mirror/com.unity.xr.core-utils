@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Unity.XR.CoreUtils.Datums
 {
@@ -9,12 +9,18 @@ namespace Unity.XR.CoreUtils.Datums
     [Serializable]
     public class StringDatumProperty : DatumProperty<string, StringDatum>
     {
-        /// <inheritdoc/>
+        /// <summary>
+        /// Constructor setting initial string value for the embedded constant.
+        /// </summary>
+        /// <param name="value">Initial string value.</param>
         public StringDatumProperty(string value) : base(value)
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Constructor setting initial datum asset reference.
+        /// </summary>
+        /// <param name="datum">Datum asset reference.</param>
         public StringDatumProperty(StringDatum datum) : base(datum)
         {
         }

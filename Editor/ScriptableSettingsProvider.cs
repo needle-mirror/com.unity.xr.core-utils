@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+using UnityEditor;
 using UnityEngine.UIElements;
 
 namespace Unity.XR.CoreUtils.Editor
@@ -46,7 +46,7 @@ namespace Unity.XR.CoreUtils.Editor
         /// <param name="path">The path to this settings view within the Preferences or Project Settings window.</param>
         /// <param name="scope">The scope of these settings.</param>
         protected ScriptableSettingsProvider(string path, SettingsScope scope = SettingsScope.User)
-            : base(path, scope) {}
+            : base(path, scope) { }
 
         /// <summary>
         /// Use this function to implement a handler for when the user clicks on the Settings in the Settings window.

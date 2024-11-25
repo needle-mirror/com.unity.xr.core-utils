@@ -171,7 +171,7 @@ namespace Unity.XR.CoreUtils.Capabilities.Editor
         }
 
         /// <summary>
-        /// Checks if a given capability key is currently available in the current selected profiles 
+        /// Checks if a given capability key is currently available in the current selected profiles
         /// </summary>
         /// <param name="capabilityKey">The capability key to check</param>
         /// <returns>Returns true if the capability key is available and enabled.</returns>

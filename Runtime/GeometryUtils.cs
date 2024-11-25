@@ -111,13 +111,13 @@ namespace Unity.XR.CoreUtils
         }
 
         /// <summary>
-        /// Generates a standard triangle buffer with a given number of indices and adds it to the specified list. 
+        /// Generates a standard triangle buffer with a given number of indices and adds it to the specified list.
         /// </summary>
         /// <remarks>
         /// Set <paramref name="reverse"/> <see langword="true"/> to reverse the normal winding order.
         ///
         /// Example winding orders:
-        /// 
+        ///
         /// | **Normal winding** | **Reverse winding** |
         /// | :----------------- | :------------------ |
         /// | 0, 1, 2,  | 0, 2, 1,
@@ -130,7 +130,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="reverse">(Optional) Whether to reverse the winding order of the vertices.</param>
         public static void TriangulatePolygon(List<int> indices, int vertCount, bool reverse = false)
         {
-            vertCount-= 2;
+            vertCount -= 2;
             indices.EnsureCapacity(vertCount * 3);
             if (reverse)
             {
@@ -217,9 +217,9 @@ namespace Unity.XR.CoreUtils
             out float s, out float t, double parallelTest = double.Epsilon)
         {
             // Cast dot products to doubles because parallel test can fail on some hardware (iOS)
-            var a = (double) (velocityA.x * velocityA.x + velocityA.z * velocityA.z);
-            var b = (double) (velocityA.x * velocityB.x + velocityA.z * velocityB.z);
-            var e = (double) (velocityB.x * velocityB.x + velocityB.z * velocityB.z);
+            var a = (double)(velocityA.x * velocityA.x + velocityA.z * velocityA.z);
+            var b = (double)(velocityA.x * velocityB.x + velocityA.z * velocityB.z);
+            var e = (double)(velocityB.x * velocityB.x + velocityB.z * velocityB.z);
 
             var d = a * e - b * b;
 
@@ -235,8 +235,8 @@ namespace Unity.XR.CoreUtils
             var c = velocityA.x * r.x + velocityA.z * r.z;
             var f = velocityB.x * r.x + velocityB.z * r.z;
 
-            s = (float) ((b * f - c * e) / d);
-            t = (float) ((a * f - c * b) / d);
+            s = (float)((b * f - c * e) / d);
+            t = (float)((a * f - c * b) / d);
 
             return true;
         }
@@ -348,7 +348,7 @@ namespace Unity.XR.CoreUtils
             if (projection < 0)
                 return a;
 
-            if (projection*projection > segment.sqrMagnitude)
+            if (projection * projection > segment.sqrMagnitude)
                 return b;
 
             return a + projection * direction;
@@ -543,8 +543,8 @@ namespace Unity.XR.CoreUtils
         /// </summary>
         /// <remarks>
         /// Based on algorithm outlined in
-        /// <see href="https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html">
-        /// Gift Wrapping Convex Hull Algorithm With Unity Implementation</see>.
+        /// <a href="https://www.bitshiftprogrammer.com/2018/01/gift-wrapping-convex-hull-algorithm.html">
+        /// Gift Wrapping Convex Hull Algorithm With Unity Implementation</a>.
         /// </remarks>
         /// <param name="points">Points used to find the convex hull. The y coordinates of these points are ignored.</param>
         /// <param name="hull">The vertices that define the smallest convex polygon are assigned to this list. The list is not cleared.</param>
@@ -658,7 +658,7 @@ namespace Unity.XR.CoreUtils
                 var vertex = vertices[i];
                 currentX = vertex.x;
                 currentZ = vertex.z;
-                var nextVertex = vertices[i+1];
+                var nextVertex = vertices[i + 1];
                 nextX = nextVertex.x;
                 nextZ = nextVertex.z;
 

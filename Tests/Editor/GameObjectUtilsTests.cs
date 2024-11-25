@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
 
@@ -60,7 +60,7 @@ namespace Unity.XR.CoreUtils.EditorTests
                 originals[i] = child;
             }
 
-            m_GameObjectCopy= GameObjectUtils.CloneWithHideFlags(m_GameObject);
+            m_GameObjectCopy = GameObjectUtils.CloneWithHideFlags(m_GameObject);
             CompareHideFlagsRecursively(m_GameObject, m_GameObjectCopy);
         }
 

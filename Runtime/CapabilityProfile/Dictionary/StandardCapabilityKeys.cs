@@ -25,7 +25,7 @@ namespace Unity.XR.CoreUtils.Capabilities
         /// The world data input capability key.
         /// </summary>
         public const string WorldDataInput = "World Data Input";
-        
+
         /// <summary>
         /// Face tracking capability key.
         /// </summary>

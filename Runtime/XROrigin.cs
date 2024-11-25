@@ -35,7 +35,7 @@ namespace Unity.XR.CoreUtils
         /// the <see cref="GameObject"/> containing this <c>XROrigin</c> component.
         /// </summary>
         /// <remarks>
-        /// You can add a <see cref="UnityEngine.InputSystem.XR.TrackedPoseDriver"/> component to the <see cref="Camera"/> 
+        /// You can add a <see cref="UnityEngine.InputSystem.XR.TrackedPoseDriver"/> component to the <see cref="Camera"/>
         /// GameObject to update its position and rotation using tracking data from the XR device.
         /// You must update the <see cref="Camera"/> position and rotation using tracking data from the XR device.
         /// </remarks>

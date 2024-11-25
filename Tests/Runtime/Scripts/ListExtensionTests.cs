@@ -24,7 +24,7 @@ namespace Unity.XR.CoreUtils.Tests
             Assert.AreEqual(desiredCapacity, list.Capacity);
         }
 
-        void SwapAtIndicesHelper<T>(List<T> list, Func<int, T> create, Action<T,T> assertEqual, int addCount = k_DefaultTestCapacity)
+        void SwapAtIndicesHelper<T>(List<T> list, Func<int, T> create, Action<T, T> assertEqual, int addCount = k_DefaultTestCapacity)
         {
             Assert.NotNull(create);
             for (var i = 0; i < addCount; i++)
@@ -47,7 +47,7 @@ namespace Unity.XR.CoreUtils.Tests
             assertEqual(list[lastIndex], firstValue);
         }
 
-        void FillHelper<T>(List<T> list, Action<T,T> assertEqual, T defaultNewValue, int fillNum = 5)
+        void FillHelper<T>(List<T> list, Action<T, T> assertEqual, T defaultNewValue, int fillNum = 5)
             where T : new()
         {
             Assert.NotNull(assertEqual);

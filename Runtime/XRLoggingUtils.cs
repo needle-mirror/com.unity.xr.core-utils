@@ -12,7 +12,7 @@ namespace Unity.XR.CoreUtils
     /// anything if tests are being run via command line (using `-runTests`).
     ///
     /// See [Running tests from the command line](https://docs.unity3d.com/Packages/com.unity.test-framework@latest?subfolder=/manual/reference-command-line.html)
-    /// for information about running tests. 
+    /// for information about running tests.
     /// </remarks>
     public static class XRLoggingUtils
     {
@@ -30,7 +30,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="context">Object to which the message applies.</param>
         public static void Log(string message, UnityEngine.Object context = null)
         {
-            if(!k_DontLogAnything)
+            if (!k_DontLogAnything)
                 Debug.Log(message, context);
         }
 
@@ -41,7 +41,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="context">Object to which the message applies.</param>
         public static void LogWarning(string message, UnityEngine.Object context = null)
         {
-            if(!k_DontLogAnything)
+            if (!k_DontLogAnything)
                 Debug.LogWarning(message, context);
         }
 
@@ -52,7 +52,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="context">Object to which the message applies.</param>
         public static void LogError(string message, UnityEngine.Object context = null)
         {
-            if(!k_DontLogAnything)
+            if (!k_DontLogAnything)
                 Debug.LogError(message, context);
         }
 
@@ -63,7 +63,7 @@ namespace Unity.XR.CoreUtils
         /// <param name="context">Object to which the message applies.</param>
         public static void LogException(Exception exception, UnityEngine.Object context = null)
         {
-            if(!k_DontLogAnything)
+            if (!k_DontLogAnything)
                 Debug.LogException(exception, context);
         }
     }

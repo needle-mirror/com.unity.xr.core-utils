@@ -6,7 +6,7 @@ namespace Unity.XR.CoreUtils
     /// Provides a generic object pool implementation.
     /// </summary>
     /// <typeparam name="T">The <see cref="System.Type"/> of objects in this pool.</typeparam>
-    public class ObjectPool<T> where T: class, new()
+    public class ObjectPool<T> where T : class, new()
     {
         /// <summary>
         /// All objects currently in this pool.
@@ -14,7 +14,7 @@ namespace Unity.XR.CoreUtils
         protected readonly Queue<T> PooledQueue = new Queue<T>();
 
         /// <summary>
-        /// Gets an object instance from the pool. Creates a new instance if the pool is empty. 
+        /// Gets an object instance from the pool. Creates a new instance if the pool is empty.
         /// </summary>
         /// <returns>The object instance</returns>
         public virtual T Get()
@@ -38,7 +38,7 @@ namespace Unity.XR.CoreUtils
 
         /// <summary>
         /// Implement this function in a derived class to
-        /// automatically clear an instance when <seealso cref="Recycle"/> is called.
+        /// automatically clear an instance when <see cref="Recycle"/> is called.
         /// </summary>
         /// <param name="instance">The object to clear.</param>
         protected virtual void ClearInstance(T instance) { }

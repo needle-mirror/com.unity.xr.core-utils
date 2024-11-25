@@ -51,10 +51,19 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// This is intended to be used by developers to allow for setting multiple bindable variables before broadcasting any of them individually.
         /// </summary>
         /// <param name="value">The new value.</param>
-        /// <returns>Returns <see langword="true"/> if a broadcast would have normally occurred if the property setter was used instead.</returns>
+        /// <returns>Returns <see langword="true"/> if a broadcast would have normally occurred if the property setter was used instead.
+        /// Always returns <see langword="false"/> if no listeners are subscribed.</returns>
         /// <seealso cref="Value"/>
         public bool SetValueWithoutNotify(T value)
         {
+            // Skip the performance cost of an equality check when no listeners are subscribed.
+            if (m_BindingCount == 0)
+            {
+                m_IsInitialized = true;
+                m_InternalValue = value;
+                return false;
+            }
+
             if (m_IsInitialized && m_CheckEquality && (m_EqualityMethod?.Invoke(m_InternalValue, value) ?? ValueEquals(value)))
                 return false;
 

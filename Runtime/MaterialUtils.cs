@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using UnityEngine;
 using UnityObject = UnityEngine.Object;
@@ -37,7 +37,7 @@ namespace Unity.XR.CoreUtils
         /// <remarks>
         /// To use this function, your project must contain the
         /// [Unity UI package (com.unity.ugui)](https://docs.unity3d.com/Manual/com.unity.ugui.html).
-        /// 
+        ///
         /// > [!WARNING]
         /// > You must call <see cref="UnityObjectUtils.Destroy(UnityObject, bool)"/> on this material object when done.
         /// </remarks>

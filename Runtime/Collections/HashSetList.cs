@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -13,10 +13,14 @@ namespace Unity.XR.CoreUtils.Collections
         readonly List<T> m_InternalList;
         readonly HashSet<T> m_InternalHashSet;
 
+        // This value always matches m_InternalList.Count but we track it ourselves
+        // as a performance optimization determined through profiling.
+        int m_Count;
+
         /// <summary>
         /// Internal list count.
         /// </summary>
-        public int Count => m_InternalList.Count;
+        public int Count => m_Count;
 
         /// <summary>
         /// Mandatory field. Always false.
@@ -73,6 +77,7 @@ namespace Unity.XR.CoreUtils.Collections
             if (m_InternalHashSet.Add(item))
             {
                 m_InternalList.Add(item);
+                m_Count++;
             }
         }
 
@@ -87,6 +92,7 @@ namespace Unity.XR.CoreUtils.Collections
             if (wasAdded)
             {
                 m_InternalList.Add(item);
+                m_Count++;
             }
 
             return wasAdded;
@@ -99,10 +105,14 @@ namespace Unity.XR.CoreUtils.Collections
         /// <returns>True if the item was removed from both list and hashset.</returns>
         public bool Remove(T item)
         {
+            if (m_Count == 0)
+                return false;
+
             bool wasRemoved = m_InternalHashSet.Remove(item);
             if (wasRemoved)
             {
                 m_InternalList.Remove(item);
+                m_Count--;
             }
 
             return wasRemoved;
@@ -262,6 +272,7 @@ namespace Unity.XR.CoreUtils.Collections
         {
             m_InternalList.Clear();
             m_InternalList.AddRange(m_InternalHashSet);
+            m_Count = m_InternalList.Count;
         }
 
         /// <summary>

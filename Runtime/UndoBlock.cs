@@ -17,16 +17,16 @@ namespace Unity.XR.CoreUtils
     /// UndoBlock methods work in both Edit mode and Play mode. In Play mode undo-operations are disabled.
     /// This class mirrors the normal functions you find in the <see cref="Undo"/> class and collapses them into one operation
     /// when the block is complete.
-    /// 
-    /// Proper usage of this class is:
-    ///
-    /// <example><code>
+    /// </remarks>
+    /// <example>
+    /// <para>Proper usage of this class is:</para>
+    /// <code>
     /// using (var undoBlock = new UndoBlock("Desired Undo Message"))
     /// {
     ///     undoBlock.yourCodeToUndo()
     /// }
-    /// </code></example>
-    /// </remarks>
+    /// </code>
+    /// </example>
     public class UndoBlock : IDisposable
     {
         int m_UndoGroup;

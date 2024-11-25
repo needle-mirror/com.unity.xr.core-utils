@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,7 +29,7 @@ namespace Unity.XR.CoreUtils.Bindings.Variables
         /// Manually unsubscribe callback from Value update event, but no protections from multiple unsubscribe calls.
         /// If unsubscribing multiple times, reference count may not be accurate.
         /// </summary>
-        /// <param name="callback"></param>
+        /// <param name="callback">Callback to unregister.</param>
         void Unsubscribe(Action<T> callback);
 
         /// <summary>

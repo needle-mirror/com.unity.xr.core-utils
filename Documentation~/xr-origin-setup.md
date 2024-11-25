@@ -5,10 +5,10 @@ uid: xr-core-utils-xr-origin-setup
 
 This *XR Core Utilities* package defines the [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) component. Other XR packages use this component to provide XR Origin configurations for different types of XR applications:
 
-* [AR Foundation (com.unity.xr.arfoundation)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html) provides XR Origin GameObjects configured for AR. 
-* The [XR Interaction Toolkit (com.unity.xr.interaction.toolkit)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html) provides XR Origin GameObjects configured for VR. 
+* [AR Foundation (com.unity.xr.arfoundation)](https://docs.unity3d.com/Packages/com.unity.xr.arfoundation@latest/index.html) provides XR Origin GameObjects configured for AR.
+* The [XR Interaction Toolkit (com.unity.xr.interaction.toolkit)](https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@latest/index.html) provides XR Origin GameObjects configured for VR.
 
-AR Foundation and the XR Interaction Toolkit are independent packages, but can also be used together to build XR applications. 
+AR Foundation and the XR Interaction Toolkit are independent packages, but can also be used together to build XR applications.
 
 | **XR Origin configuration** | **Purpose** | **Package** |
 | :-------------------------- | :---------- | :---------- |
@@ -26,7 +26,7 @@ Right-click in the Hierarchy window       |  Select XR Origin (Mobile AR)
 ![Select XR](images/xr-origin-xr.png)  |  ![Select XR Origin (Mobile AR)](images/xr-origin-mobile.png)
 
 > [!NOTE]
-> Without the AR Foundation or XR Interaction Toolkit packages installed, the **XR** menu only contains a **Convert main camera to XR Rig** option. This option converts the main camera to a simple **XR Rig** GameObject that configures the Camera object to track the user's XR device. Unity recommends that you use the **XR Origin** setup when possible for better compatibility across the Unity XR ecosystem.   
+> Without the AR Foundation or XR Interaction Toolkit packages installed, the **XR** menu only contains a **Convert main camera to XR Rig** option. This option converts the main camera to a simple **XR Rig** GameObject that configures the Camera object to track the user's XR device. Unity recommends that you use the **XR Origin** setup when possible for better compatibility across the Unity XR ecosystem.
 
 ## Set up XR input
 

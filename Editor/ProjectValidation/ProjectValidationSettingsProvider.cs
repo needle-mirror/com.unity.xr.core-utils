@@ -9,7 +9,7 @@ namespace Unity.XR.CoreUtils.Editor
         const string ProjectValidationSettingsPath = "Project/XR Plug-in Management/Project Validation";
 
         ProjectValidationDrawer m_ValidationDrawer;
-        
+
         [SettingsProvider]
         public static SettingsProvider CreateProjectValidationSettingsProvider()
         {
@@ -18,7 +18,7 @@ namespace Unity.XR.CoreUtils.Editor
 
         ProjectValidationSettingsProvider(string path = ProjectValidationSettingsPath,
                                           SettingsScope scopes = SettingsScope.Project)
-            : base(path, scopes) {}
+            : base(path, scopes) { }
 
         public override void OnActivate(string searchContext, VisualElement rootElement)
         {
@@ -29,12 +29,12 @@ namespace Unity.XR.CoreUtils.Editor
         public override void OnGUI(string searchContext)
         {
             base.OnGUI(searchContext);
-            if(m_ValidationDrawer == null)
+            if (m_ValidationDrawer == null)
                 m_ValidationDrawer = new ProjectValidationDrawer(BuildTargetGroup.Unknown);
-            
+
             DrawCapabilitiesSection();
             GUILayout.Space(10);
-            
+
             EditorGUILayout.LabelField("Validation Rules", EditorStyles.boldLabel);
             m_ValidationDrawer.OnGUI();
         }
@@ -45,7 +45,7 @@ namespace Unity.XR.CoreUtils.Editor
             if (m_ValidationDrawer.UpdateIssues(true, false))
                 Repaint();
         }
-        
+
         static void DrawCapabilitiesSection()
         {
             EditorGUILayout.LabelField("Scene Validation", EditorStyles.boldLabel);

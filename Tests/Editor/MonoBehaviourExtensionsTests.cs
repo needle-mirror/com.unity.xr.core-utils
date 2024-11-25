@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace Unity.XR.CoreUtils.EditorTests
 {
     class MonoBehaviourExtensionsTests
     {
-        class DummyBehaviour : MonoBehaviour {}
+        class DummyBehaviour : MonoBehaviour { }
 
         GameObject m_GameObject;
         DummyBehaviour m_Behaviour;

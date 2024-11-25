@@ -14,7 +14,7 @@ namespace Unity.XR.CoreUtils.Tests
 
             return array;
         }
-        
+
         public static Vector3[] RandomXZVector3Array(int length, float range = 0.0001f)
         {
             var array = new Vector3[length];

@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 namespace Unity.XR.CoreUtils.Tests
 {
@@ -24,10 +24,10 @@ namespace Unity.XR.CoreUtils.Tests
 
         protected override string GetReport()
         {
-            var count = (float) (m_CallCount * m_FrameCounter);
+            var count = (float)(m_CallCount * m_FrameCounter);
             m_Report = $"{m_TestClassLabel} - {m_CallCount * m_FrameCount} calls\n\n";
 
-            var ratio = m_ElapsedTicks / (float) m_ElapsedTicksB;
+            var ratio = m_ElapsedTicks / (float)m_ElapsedTicksB;
             var ratioMsg = ratio.ToString("F5");
             m_Report += $"{ratioMsg} : 1 ratio for execution time\n\n";
             m_Report += $"using {m_MethodLabel}\naverage {m_ElapsedTicks / count} ticks / call\n\n";

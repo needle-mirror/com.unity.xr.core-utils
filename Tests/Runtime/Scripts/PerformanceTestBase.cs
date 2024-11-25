@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Unity.XR.CoreUtils.Tests

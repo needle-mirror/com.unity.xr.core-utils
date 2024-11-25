@@ -9,7 +9,7 @@ using UnityEditor.Toolbars;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
+#if ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER
 using Unity.XR.CoreUtils.Editor.Analytics;
 #endif
 
@@ -24,7 +24,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
     [Overlay(typeof(SceneView), "XR Building Blocks")]
     internal class BuildingBlocksOverlay : Overlay, ICreateToolbar
     {
-        internal static readonly string k_OverlayStyleSheet = "BuildingBlockOverlay";
+        internal static readonly string k_OverlayStyleSheet = "Packages/com.unity.xr.core-utils/Editor/BuildingBlocks/BuildingBlockOverlay.uss";
         static readonly string k_OverlayClass = "building-block-overlay";
         static readonly string k_NoBuildingBlockMessage = L10n.Tr("No building blocks are defined.");
 
@@ -40,7 +40,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
             // for the first time the assets will not be found
             EditorApplication.delayCall += () =>
             {
-                var styleSheet = Resources.Load(k_OverlayStyleSheet) as StyleSheet;
+                var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(k_OverlayStyleSheet);
                 m_Root.styleSheets.Add(styleSheet);
 
                 m_Root.AddToClassList(k_OverlayClass);
@@ -146,7 +146,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
 
             button.SetEnabled(buildingBlock.IsEnabled);
             button.tooltip = buildingBlock.Tooltip;
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
+#if ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER
             button.clicked += () => CoreUtilsAnalytics.BuildingBlocksUsageEvent.SendOverlayButtonClicked(sectionId, buildingBlock.Id);
 #endif
 
@@ -252,7 +252,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
         public BuildingBlocksToolbar()
         {
             name = id;
-            var styleSheet = Resources.Load(BuildingBlocksOverlay.k_OverlayStyleSheet) as StyleSheet;
+            var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(BuildingBlocksOverlay.k_OverlayStyleSheet);
             styleSheets.Add(styleSheet);
 
             var unsectionedBblocks = new List<IBuildingBlock>();
@@ -384,7 +384,7 @@ namespace Unity.XR.CoreUtils.Editor.BuildingBlocks
                     {
                         block.ExecuteBuildingBlock();
 
-#if ENABLE_CLOUD_SERVICES_ANALYTICS
+#if ENABLE_CLOUD_SERVICES_ANALYTICS || UNITY_2023_2_OR_NEWER
                         CoreUtilsAnalytics.BuildingBlocksUsageEvent.SendToolbarButtonClicked(
                             m_SectionsWithSameID.First().SectionId, block.Id);
 #endif

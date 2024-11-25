@@ -7,23 +7,65 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
-
-## [2.4.0-exp.3] - 2023-8-21
-
-### Fixed
-- Made prefabs for the [Building Blocks system](xref:xr-core-utils-building-blocks) load on a lazy-load approach to avoid non deterministic loading issues from the Asset Database.
-- Fixed a bug in `ScriptableSettingsBase` that would attempt to create a new instance of the settings asset even when the asset already existed.
-
-## [2.4.0-exp.2] - 2023-8-16
+## [2.4.0] - 2024-11-25
 
 ### Added
+
+- Added [ReadOnlyList\<T\>.Empty()](xref:Unity.XR.CoreUtils.Collections.ReadOnlyList`1.Empty), a static shortcut method that allows you to re-use the same empty collection throughout your app.
+- Added new collection [ReadOnlyListSpan\<T\>](xref:Unity.XR.CoreUtils.Collections.ReadOnlyListSpan) that creates a read-only wrapper around a `List` and allows for slicing similar to [ReadOnlySpan.Slice](https://learn.microsoft.com/en-us/dotnet/api/system.readonlyspan-1.slice?view=net-8.0).
+
+### Changed
+
+- Changed the minimum version of supported Unity editor to 2021.3 LTS.
+
+### Removed
+
+- Removed `Type.GetFieldsWithAttribute` and `ReflectionUtils.GetFieldsWithAttribute` APIs which were only available in Unity 2019.4.
+
+### Fixed
+
+- Improved performance of [HashSetList\<T\>](xref:Unity.XR.CoreUtils.Collections.HashSetList`1) to optimize getting `Count` and optimize `Remove` when empty.
+- Improved performance of [BindableVariableBase\<T\>](xref:Unity.XR.CoreUtils.Bindings.Variables.BindableVariableBase`1) to optimize value changes by skipping the equality check when there are no subscribers. The `SetValueWithoutNotify` method will now always return `false` when there are no subscribers.
+
+## [2.3.0] - 2024-01-17
+
+### Added
+
+- Added a new collection [ReadOnlyList\<T\>](xref:Unity.XR.CoreUtils.Collections.ReadOnlyList`1) as a more performant alternative to `ReadOnlyCollection`. `ReadOnlyList` improves upon `ReadOnlyCollection` by removing the heap allocations associated with `GetEnumerator()`.
+
+### Fixed
+
+- Fixed the XmlDocs issues for API documentation.
+
+## [2.3.0-pre.3] - 2023-12-11
+
+### Fixed
+
+- Fix conditional compilation of analytics API on 2023.2 and newer editor versions.
+
+## [2.3.0-pre.2] - 2023-11-27
+
+### Added
+
 - Added the [Building Blocks system](xref:xr-core-utils-building-blocks), an overlay window in the scene view with quick access to commonly used items in the project.
 - Added the [Capability Profile system](xref:xr-core-utils-capability-profile) that allows the creation of assets with key-value pairs to abstract the capabilities of a platform, device, OS, or a combination of them.
-- Added `EditorAnalyticsEvent` class that can be extended to create editor analytics events.
+- Added `EditorAnalyticsEvent` class that can be extended to create editor analytics events. This class supports the new analytics APIs introduced in editor version 2023.2 as well as the analytics APIs from older editor versions.
+
+### Changed
+
+- Changed Project Validation to query `IsRuleEnabled` and `CheckPredicate` before invoking `FixIt` action of a `BuildValidationRule` via **Fix All** button. This prevents `FixIt` action being called unexpectedly via **Fix All** button while the changes by another rule are in progress.
+
+### Fixed
+
+- Fixed the sort order of enabled issues in the Project Validation window to keep them in the original order added in code.
+- Fixed to prevent the progress bar from getting stuck when an exception is thrown during the `BuildValidationRule.FixIt` method.
+- Fixed a bug in `ScriptableSettingsBase` that would attempt to create a new instance of the settings asset even when the asset already existed.
+- Fixed an issue in the Project Validation window where opening a Unity project without window focus could throw an exception.
 
 ## [2.3.0-pre.1] - 2023-08-14
 
 ### Added
+
 - Added `BuildValidationRule.HighlighterFocus` property in project validation rules to allow for the searching and highlighting of text in the editor.
 - Added ability to the Datum property drawer to allow the Use Asset/Use Value property to be reverted separately from the parent property when right-clicking the More menu (`⋮`) button.
 
