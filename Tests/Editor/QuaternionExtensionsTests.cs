@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class QuaternionExtensionsTests
     {

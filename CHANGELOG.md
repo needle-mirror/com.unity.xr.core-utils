@@ -7,6 +7,26 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.5.0] - 2024-12-16
+
+### Added
+
+- Added support for [TrackingOriginModeFlags.Unbounded](https://docs.unity3d.com/ScriptReference/XR.TrackingOriginModeFlags.Unbounded.html) in XROrigin.
+- Added support for the `IEquatable<ReadOnlyList<T>>` interface to [ReadOnlyList](xref:Unity.XR.CoreUtils.Collections.ReadOnlyList`1).
+- Added support for the `IEquatable<ReadOnlyListSpan<T>>` interface to [ReadOnlyListSpan](xref:Unity.XR.CoreUtils.Collections.ReadOnlyListSpan`1).
+- Added overrides for the `==` and `!=` operators for `ReadOnlyList<T>` and `ReadOnlyListSpan<T>` to use the new `IEquatable` implementations.
+- Added overrides for `object.ToString` to `ReadOnlyList<T>` and `ReadOnlyListSpan<T>` for a better debugging experience.
+
+### Changed
+
+- Changed [ReadOnlyListSpan\<T\>](xref:Unity.XR.CoreUtils.Collections.ReadOnlyListSpan`1) so that it can provide a read-only view of any implementation of `IReadOnlyList<T>`, instead of only working for `List<T>`.
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
 ## [2.4.0] - 2024-11-25
 
 ### Added

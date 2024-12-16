@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using Unity.Collections;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class NativeArrayUtilsTests
     {

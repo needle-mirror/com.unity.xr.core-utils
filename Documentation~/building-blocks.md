@@ -45,4 +45,4 @@ The example below creates two building blocks (_Scripted Building Block_ and _Pr
 
 The _scripted building block_ (when pressed) will create an empty game object called "Empty Object" and the _Prefab Creator Block_ building block shows how to use the `PrefabCreatorBuildingBlock` block mentioned above; you will need to set the `m_PrefabAssetPath` variable accordingly to point to a prefab for it to instantiate correctly.
 
-[!code-cs[building_blocks_sample](../Tests/CodeSamples/ScriptedBuildingBlockSample.cs#building_blocks_sample)]
+[!code-cs[building_blocks_sample](../Tests/Runtime/CodeSamples/ScriptedBuildingBlockSample.cs#building_blocks_sample)]

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Unity.XR.CoreUtils.Collections
 {
@@ -13,7 +14,7 @@ namespace Unity.XR.CoreUtils.Collections
     /// This collection is not thread-safe.
     /// </remarks>
     /// <typeparam name="T">The element type.</typeparam>
-    public class ReadOnlyList<T> : IReadOnlyList<T>
+    public class ReadOnlyList<T> : IReadOnlyList<T>, IEquatable<ReadOnlyList<T>>
     {
         static ReadOnlyList<T> s_EmptyList;
 
@@ -60,10 +61,7 @@ namespace Unity.XR.CoreUtils.Collections
         /// Returns an enumerator that iterates through the read-only list.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public List<T>.Enumerator GetEnumerator()
-        {
-            return m_List.GetEnumerator();
-        }
+        public List<T>.Enumerator GetEnumerator() => m_List.GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through the read-only list.
@@ -74,10 +72,7 @@ namespace Unity.XR.CoreUtils.Collections
         /// > Use the public <see cref="GetEnumerator"/> overload instead.
         /// </remarks>
         /// <returns>The boxed enumerator.</returns>
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator<T> IEnumerable<T>.GetEnumerator() => GetEnumerator();
 
         /// <summary>
         /// Returns an enumerator that iterates through the read-only list.
@@ -88,9 +83,83 @@ namespace Unity.XR.CoreUtils.Collections
         /// > Use the public <see cref="GetEnumerator"/> overload instead.
         /// </remarks>
         /// <returns>The boxed enumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>`true` if the current object is equal to the `other` parameter. Otherwise, `false`.</returns>
+        /// <remarks>
+        /// Two `ReadOnlyList` instances compare equal if they are read-only views of the same list instance.
+        /// </remarks>
+        public bool Equals(ReadOnlyList<T> other)
         {
-            return GetEnumerator();
+            if (other is null)
+                return false;
+            return ReferenceEquals(this, other) || Equals(m_List, other.m_List);
+        }
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="obj">An object to compare with this object.</param>
+        /// <returns>`true` if the current object is equal to the `other` parameter. Otherwise, `false`.</returns>
+        /// <remarks>
+        /// Two `ReadOnlyList` instances compare equal if they are read-only views of the same list instance.
+        /// </remarks>
+        public override bool Equals(object obj)
+        {
+            if (obj is null)
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            return obj.GetType() == GetType() && Equals((ReadOnlyList<T>)obj);
+        }
+
+        /// <summary>
+        /// Returns `true` if objects are equal by <see cref="Equals(Unity.XR.CoreUtils.Collections.ReadOnlyList{T})"/>.
+        /// Otherwise, `false`.
+        /// </summary>
+        /// <param name="lhs">The left-hand side of the comparison.</param>
+        /// <param name="rhs">The right-hand side of the comparison.</param>
+        /// <returns>`true` if objects are equal. Otherwise, `false`.</returns>
+        public static bool operator ==(ReadOnlyList<T> lhs, ReadOnlyList<T> rhs)
+        {
+            if (lhs == null && rhs == null)
+                return true;
+            return lhs != null && lhs.Equals(rhs);
+        }
+
+        /// <summary>
+        /// Returns `false` if objects are equal by <see cref="Equals(Unity.XR.CoreUtils.Collections.ReadOnlyList{T})"/>.
+        /// Otherwise, `true`.
+        /// </summary>
+        /// <param name="lhs">The left-hand side of the comparison.</param>
+        /// <param name="rhs">The right-hand side of the comparison.</param>
+        /// <returns>`false` if objects are equal. Otherwise, `true`.</returns>
+        public static bool operator !=(ReadOnlyList<T> lhs, ReadOnlyList<T> rhs) => !(lhs == rhs);
+
+        /// <summary>
+        /// Get a hash code for this object.
+        /// </summary>
+        /// <returns>The hash code.</returns>
+        public override int GetHashCode() => m_List != null ? m_List.GetHashCode() : 0;
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>The string.</returns>
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("{");
+            foreach (var item in m_List)
+            {
+                sb.AppendLine(item == null ? "  null," : $"  {item.ToString()},");
+            }
+            sb.Append("}");
+            return sb.ToString();
         }
     }
 }

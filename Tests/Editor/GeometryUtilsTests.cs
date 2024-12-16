@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class GeometryUtilsTests
     {

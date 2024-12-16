@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Unity.XR.CoreUtils.Editor;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class PackageVersionTests
     {

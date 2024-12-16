@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class ScriptableSettingsTests
     {

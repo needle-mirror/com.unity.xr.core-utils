@@ -1,5 +1,5 @@
 {
-    "name": "Unity.XR.CoreUtils.EditorTests",
+    "name": "Unity.XR.CoreUtils.Editor.Tests",
     "rootNamespace": "",
     "references": [
         "Unity.XR.CoreUtils.Editor",

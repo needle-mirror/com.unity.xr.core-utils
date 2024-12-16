@@ -4,33 +4,30 @@ using UnityEngine;
 using Unity.XR.CoreUtils.Collections;
 using System.Collections.Generic;
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class ReadOnlyListSpanTests
     {
         [Test]
         public void TestCreatingReadOnlyListSpanWithNullList()
         {
-            List<int> list = null;
-
             Assert.Throws<ArgumentNullException>(() =>
             {
-                var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
+                var readOnlyListSpan = new ReadOnlyListSpan<int>(null);
             });
         }
 
         [Test]
         public void TestCreatingReadOnlyListSpanWithEmptyList()
         {
-            var list = new List<int>();
-            var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
+            var readOnlyListSpan = new ReadOnlyListSpan<int>(new List<int>());
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var slice = readOnlyListSpan.Slice(0, 1);
             });
 
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
             Assert.AreEqual(false, enumerator.MoveNext());
 
             Assert.AreEqual(0, readOnlyListSpan.Count);
@@ -45,7 +42,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(3);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             Assert.True(enumerator.MoveNext());
             Assert.AreEqual(1, enumerator.Current);
@@ -68,7 +65,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(3);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list, 1, 1);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             Assert.True(enumerator.MoveNext());
             Assert.AreEqual(2, enumerator.Current);
@@ -86,7 +83,7 @@ namespace Unity.XR.CoreUtils.EditorTests
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
             var slice = readOnlyListSpan.Slice(1, 1);
-            var enumerator = slice.GetEnumerator();
+            using var enumerator = slice.GetEnumerator();
 
             Assert.True(enumerator.MoveNext());
             Assert.AreEqual(2, enumerator.Current);
@@ -103,7 +100,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(3);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -120,7 +117,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(3);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             enumerator.MoveNext();
             enumerator.MoveNext();
@@ -144,7 +141,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(5);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list, 1, 2);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
@@ -173,7 +170,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(5);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list, 1, 2);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             enumerator.MoveNext();
             enumerator.MoveNext();
@@ -188,7 +185,7 @@ namespace Unity.XR.CoreUtils.EditorTests
         {
             var list = new List<int>();
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
-            var enumerator = readOnlyListSpan.GetEnumerator();
+            using var enumerator = readOnlyListSpan.GetEnumerator();
 
             Assert.False(enumerator.MoveNext());
         }
@@ -228,12 +225,12 @@ namespace Unity.XR.CoreUtils.EditorTests
             list.Add(3);
 
             var readOnlyListSpan = new ReadOnlyListSpan<int>(list);
-            var enumerator1 = readOnlyListSpan.GetEnumerator();
+            using var enumerator1 = readOnlyListSpan.GetEnumerator();
 
             enumerator1.MoveNext();
             enumerator1.MoveNext();
 
-            var enumerator2 = readOnlyListSpan.GetEnumerator();
+            using var enumerator2 = readOnlyListSpan.GetEnumerator();
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 var temp = enumerator2.Current;
@@ -298,11 +295,11 @@ namespace Unity.XR.CoreUtils.EditorTests
             var slice2 = slice.Slice(1, 2);
             Assert.AreNotEqual(slice.Count, slice2.Count);
 
-            var sliceEnumerator = slice.GetEnumerator();
+            using var sliceEnumerator = slice.GetEnumerator();
             sliceEnumerator.MoveNext();
             Assert.AreEqual(2, sliceEnumerator.Current);
 
-            var slice2Enumerator = slice2.GetEnumerator();
+            using var slice2Enumerator = slice2.GetEnumerator();
             slice2Enumerator.MoveNext();
             Assert.AreEqual(3, slice2Enumerator.Current);
         }
@@ -324,6 +321,15 @@ namespace Unity.XR.CoreUtils.EditorTests
             {
                 var anotherReadOnlyListSpan = new ReadOnlyListSpan<int>(list, 0, 4);
             });
+        }
+
+        [Test]
+        public void ToString_SucceedsWithNullItemsInList()
+        {
+            var list = new List<object> { 1, null, 2 };
+            var readOnlySpan = new ReadOnlyListSpan<object>(list);
+            Debug.Log(readOnlySpan.ToString());
+            // test passes if no error are logged
         }
     }
 }

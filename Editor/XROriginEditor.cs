@@ -198,9 +198,13 @@ namespace Unity.XR.CoreUtils.Editor
 
             EditorGUILayout.PropertyField(m_RequestedTrackingOriginMode, Contents.TrackingOriginMode);
 
+            // We need to show the offset for unbounded because the previous behavior from MRTK was that it behaved as
+            // if it was unspecified. We need to emulate this behavior, as existing projects may have taken a dependency
+            // on it.
             var showCameraYOffset =
                 m_RequestedTrackingOriginMode.enumValueIndex == (int)XROrigin.TrackingOriginMode.NotSpecified ||
                 m_RequestedTrackingOriginMode.enumValueIndex == (int)XROrigin.TrackingOriginMode.Device ||
+                m_RequestedTrackingOriginMode.enumValueIndex == (int)XROrigin.TrackingOriginMode.Unbounded ||
                 m_RequestedTrackingOriginMode.hasMultipleDifferentValues;
             if (showCameraYOffset)
             {

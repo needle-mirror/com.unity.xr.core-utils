@@ -5,90 +5,42 @@ uid: xr-core-utils-xr-origin-reference
 
 The purpose of the XR Origin is to transform objects and trackable features to their final position, orientation, and scale in the Unity scene.
 
-![XR Origin](images/xr-origin.png "XR Origin")<br />*XROrigin Component properties*
+![XR Origin](images/xr-origin.png "XR Origin")<br />*XR Origin Component properties*
 
-<table>
-<tr><td colspan="2" ><strong>Property</strong></td><td><strong>Description</strong></td></tr>
-  <tr>
-   <td colspan="2" ><strong>Origin Base GameObject</strong></td>
-   <td>The GameObject whose Transform serves as the origin for trackables or device-relative elements in an XR scene.</td>
-  </tr>
-  <tr>
-   <td colspan="2" ><strong>Camera Floor Offset GameObject</strong></td>
-   <td>GameObject that offsets the [Camera](xref:UnityEngine.Camera) position from the XR Origin. The XR Origin component controls the Y coordinate of the [Transform](xref:UnityEngine.Transform) of this GameObject according to the chosen <strong>Tracking Origin Mode</strong> option:
-   <ul>
-      <li><strong>Device</strong>: initialized to the value specified by <strong>Camera Y Offset</strong>. Reset when the user resets the view.</li>
-      <li><strong>Floor</strong>: initialized to zero.</li>
-  </ul></td></tr>
-  <tr>
-   <td colspan="2" ><strong>Camera</strong></td>
-   <td>The Camera for the XR Origin. The GameObject containing this Camera must be underneath the <strong>Origin Base GameObject</strong> in the Scene hierarchy. It should be a child of the <strong>Camera Floor Offset GameObject</strong>.
-   <p>This [Camera](xref:UnityEngine.Camera) is used to render the XR scene.</p>
-   </td>
-  </tr>
-  <tr>
-   <td colspan="2" ><strong>Tracking Origin Mode</strong></td>
-   <td>Specifies spatial relationship between the XR Origin and the XR device.</td>
-  </tr>
-  <tr>
-   <td rowspan="3"></td>
-   <td><strong>Not Specified</strong></td>
-   <td>Use the default tracking mode of the device (either <strong>Device</strong> or <strong>Floor</strong>).</td>
-  </tr>
-  <tr>
-   <td><strong>Device</strong></td>
-   <td>In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value.
-   <p>In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property.</p>
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Floor</strong></td>
-   <td>Differs from the <strong>Device</strong> mode by deriving the height based on the "floor" or other surface determined by the XR device.
-   <p>In this mode, the height of the user (for VR) or the device (for AR) is included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input).</p>
-   </td>
-  </tr>
-  <tr>
-   <td colspan="2" ><strong>Camera Y Offset</strong></td>
-   <td>The distance to offset the [Camera](xref:UnityEngine.Camera) from the XR Origin when the <strong>Device </strong>tracking origin mode is active.
-   <p>Only displayed when either <strong>Not Specified</strong> or <strong>Device</strong> is enabled.</p>
-   </td>
-  </tr>
-</table>
+| **Property**                             | **Description** |
+|------------------------------------------|-----------------|
+| **Origin Base GameObject**               | The GameObject whose Transform serves as the origin for trackables or device-relative elements in an XR scene. |
+| **Camera Floor Offset GameObject**       | GameObject that offsets the [Camera](xref:UnityEngine.Camera) position from the XR Origin. The XR Origin component controls the Y coordinate of the [Transform](xref:UnityEngine.Transform) of this GameObject according to the chosen **Tracking Origin Mode** option: <ul><li>**Device**: initialized to the value specified by **Camera Y Offset**. Reset when the user resets the view.</li><li>**Floor**: initialized to zero.</li></ul> |
+| **Camera**                               | The Camera for the XR Origin. The GameObject containing this Camera must be underneath the **Origin Base GameObject** in the Scene hierarchy. It should be a child of the **Camera Floor Offset GameObject**. This [Camera](xref:UnityEngine.Camera) is used to render the XR scene. |
+| **Tracking Origin Mode**                 | Specifies spatial relationship between the XR Origin and the XR device. (Refer to the following table to understand the tracking origin mode options. |
+| **Camera Y Offset**                      | The distance to offset the [Camera](xref:UnityEngine.Camera) from the XR Origin when the **Device** tracking origin mode is active. Only displayed when either **Not Specified** or **Device** is enabled. |
+
+### Tracking origin mode
+
+The following table describes the three options for the XR Origin tracking origin mode property:
+
+| **Tracking origin mode** | **Description** |
+| :----------------------- | :-------------- |
+|  **Not Specified**                      | Use the default tracking mode of the device (either **Device** or **Floor**). |
+|  **Device**                             | In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value. In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property. |
+|  **Floor**                              | Differs from the **Device** mode by deriving the height based on the "floor" or other surface determined by the XR device. In this mode, the height of the user (for VR) or the device (for AR) is included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). |
+
+## XR Origin hierarchy
 
 The [XROrigin](xref:Unity.XR.CoreUtils.XROrigin) component is designed to work in a specific hierarchy of GameObjects and related components. A typical, recommended setup for an XR Scene includes the following GameObjects and Components:
 
-<table>
-<tr><td colspan="3" ><strong>GameObjects</strong></td><td><strong>Components</strong></td></tr>
-<tr><td colspan="3" >XR Origin</td><td><ul><li>[XROrigin](xref:Unity.XR.CoreUtils.XROrigin)</li></ul></td></tr>
-<tr><td rowspan="4" ></td><td colspan="2" >Camera Offset</td><td><ul><li>None</li></ul></td></tr>
-<tr><td rowspan="3" ></td><td>Main Camera</td><td>
-<ul>
-<li>[Camera](xref:UnityEngine.Camera)</li>
-<li>[TrackedPoseDriver](xref:UnityEngine.InputSystem.XR.TrackedPoseDriver)</li>
-<li>[ARCameraManager](xref:UnityEngine.XR.ARFoundation.ARCameraManager) (AR)</li>
-<li>[ARCameraBackground](xref:UnityEngine.XR.ARFoundation.ARCameraBackground) (AR)</li>
-</ul>
-</td></tr>
-<tr><td>LeftHand Controller</td><td>
-<ul>
-<li>[XRController](xref:UnityEngine.XR.Interaction.Toolkit.ActionBasedController)</li>
-<li>[XRRayInteractor](xref:UnityEngine.XR.Interaction.Toolkit.XRRayInteractor)</li>
-<li>[LineRenderer](xref:UnityEngine.LineRenderer)</li>
-<li>[XRInteractorLineVisual](xref:UnityEngine.XR.Interaction.Toolkit.XRInteractorLineVisual)</li>
-</ul>
-</td></tr>
-<tr><td>RightHand Controller</td><td>
-<ul>
-<li>[XRController](xref:UnityEngine.XR.Interaction.Toolkit.ActionBasedController)</li>
-<li>[XRRayInteractor](xref:UnityEngine.XR.Interaction.Toolkit.XRRayInteractor)</li>
-<li>[LineRenderer](xref:UnityEngine.LineRenderer)</li>
-<li>[XRInteractorLineVisual](xref:UnityEngine.XR.Interaction.Toolkit.XRInteractorLineVisual)</li>
-</ul>
-</td></tr>
-</table>
+| **GameObjects**         | **Components**                                                                                           |
+|-------------------------|---------------------------------------------------------------------------------------------------------|
+| **XR Origin**           | [XROrigin](xref:Unity.XR.CoreUtils.XROrigin)                                                            |
+| **Camera Offset**       | None                                                                                                    |
+| **Main Camera**         | [Camera](xref:UnityEngine.Camera), [TrackedPoseDriver](xref:UnityEngine.InputSystem.XR.TrackedPoseDriver), [ARCameraManager](xref:UnityEngine.XR.ARFoundation.ARCameraManager) (AR), [ARCameraBackground](xref:UnityEngine.XR.ARFoundation.ARCameraBackground) (AR) |
+| **LeftHand Controller** | [XRController](xref:UnityEngine.XR.Interaction.Toolkit.ActionBasedController), [XRRayInteractor](xref:UnityEngine.XR.Interaction.Toolkit.XRRayInteractor), [LineRenderer](xref:UnityEngine.LineRenderer), [XRInteractorLineVisual](xref:UnityEngine.XR.Interaction.Toolkit.XRInteractorLineVisual) |
+| **RightHand Controller**| [XRController](xref:UnityEngine.XR.Interaction.Toolkit.ActionBasedController), [XRRayInteractor](xref:UnityEngine.XR.Interaction.Toolkit.XRRayInteractor), [LineRenderer](xref:UnityEngine.LineRenderer), [XRInteractorLineVisual](xref:UnityEngine.XR.Interaction.Toolkit.XRInteractorLineVisual) |
 
 > [!NOTE]
 > You can have more than one XR Origin in a scene, but only one should be enabled at any given time. For example, if you need different XR Origin configurations in the same scene, you can add them to the scene and choose the one to enable as needed.
+
+## XR Origin configurations
 
 Depending on which XR packages you have added to your project, Unity provides a few menu options that add the recommended XR Origin configurations to a scene. You can add the desired configuration to the scene using the **GameObject** > **XR** menu. The XR Origin configurations include:
 

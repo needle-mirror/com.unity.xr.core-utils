@@ -102,6 +102,17 @@ namespace Unity.XR.CoreUtils
             /// </remarks>
             /// <seealso cref="TrackingOriginModeFlags.Floor"/>
             Floor,
+
+            /// <summary>
+            /// Sets the Tracking Origin Mode to <see cref="TrackingOriginModeFlags.Unbounded"/>.
+            /// Input devices will be tracked relative to a location in the world.
+            /// </summary>
+            /// <remarks>
+            /// Represents a relative tracking origin. A relative tracking origin is defined as a point at an
+            /// arbitrary position and rotation provided by the underlying XR Runtime. Pose data provided by the
+            /// device will be in this space relative to the local origin.
+            /// </remarks>
+            Unbounded
         }
 
         //This is the average seated height in meters (which equals 44 inches).
@@ -221,6 +232,7 @@ namespace Unity.XR.CoreUtils
                     MoveOffsetHeight(0f);
                     break;
                 case TrackingOriginModeFlags.Device:
+                case TrackingOriginModeFlags.Unbounded:
                     MoveOffsetHeight(m_CameraYOffset);
                     break;
                 default:
@@ -307,6 +319,7 @@ namespace Unity.XR.CoreUtils
                     break;
                 case TrackingOriginMode.Device:
                 case TrackingOriginMode.Floor:
+                case TrackingOriginMode.Unbounded:
                 {
                     var supportedModes = inputSubsystem.GetSupportedTrackingOriginModes();
 
@@ -315,9 +328,7 @@ namespace Unity.XR.CoreUtils
                         return false;
 
                     // Convert from the request enum to the flags enum that is used by the subsystem
-                    var equivalentFlagsMode = m_RequestedTrackingOriginMode == TrackingOriginMode.Device
-                        ? TrackingOriginModeFlags.Device
-                        : TrackingOriginModeFlags.Floor;
+                    var equivalentFlagsMode = ConvertTrackingOriginModeToFlag(m_RequestedTrackingOriginMode);
 
                     // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags -- Treated like Flags enum when querying supported modes
                     if ((supportedModes & equivalentFlagsMode) == 0)
@@ -334,14 +345,16 @@ namespace Unity.XR.CoreUtils
                 }
                 break;
                 default:
-                    Assert.IsTrue(false, $"Unhandled {nameof(TrackingOriginMode)}={m_RequestedTrackingOriginMode}");
+                    Debug.LogError($"Unhandled {nameof(TrackingOriginMode)}={m_RequestedTrackingOriginMode}");
                     return false;
             }
 
             if (successful)
                 MoveOffsetHeight();
 
-            if (CurrentTrackingOriginMode == TrackingOriginModeFlags.Device || m_RequestedTrackingOriginMode == TrackingOriginMode.Device)
+            if (CurrentTrackingOriginMode == TrackingOriginModeFlags.Device || m_RequestedTrackingOriginMode == TrackingOriginMode.Device
+                || CurrentTrackingOriginMode == TrackingOriginModeFlags.Unbounded || m_RequestedTrackingOriginMode == TrackingOriginMode.Unbounded
+                )
                 successful = inputSubsystem.TryRecenter();
 
             return successful;
@@ -633,22 +646,10 @@ namespace Unity.XR.CoreUtils
                     foreach (var inputSubsystem in s_InputSubsystems)
                     {
                         // Convert from the request enum to the flags enum that is used by the subsystem
-                        TrackingOriginModeFlags equivalentFlagsMode;
-                        switch (m_RequestedTrackingOriginMode)
-                        {
-                            case TrackingOriginMode.NotSpecified:
-                                // Don't need to initialize the camera since we don't set the mode when NotSpecified (we just keep the current value)
-                                return false;
-                            case TrackingOriginMode.Device:
-                                equivalentFlagsMode = TrackingOriginModeFlags.Device;
-                                break;
-                            case TrackingOriginMode.Floor:
-                                equivalentFlagsMode = TrackingOriginModeFlags.Floor;
-                                break;
-                            default:
-                                Assert.IsTrue(false, $"Unhandled {nameof(TrackingOriginMode)}={m_RequestedTrackingOriginMode}");
-                                return false;
-                        }
+                        TrackingOriginModeFlags equivalentFlagsMode = ConvertTrackingOriginModeToFlag(m_RequestedTrackingOriginMode);
+                        if (equivalentFlagsMode == TrackingOriginModeFlags.Unknown)
+                            // Don't need to initialize the camera since we don't set the mode when NotSpecified (we just keep the current value)
+                            return false;
 
                         if (inputSubsystem != null && inputSubsystem.GetTrackingOriginMode() != equivalentFlagsMode)
                         {
@@ -658,6 +659,24 @@ namespace Unity.XR.CoreUtils
                 }
 #endif
                 return false;
+            }
+        }
+
+        static TrackingOriginModeFlags ConvertTrackingOriginModeToFlag(TrackingOriginMode mode)
+        {
+            switch (mode)
+            {
+                case TrackingOriginMode.NotSpecified:
+                    return TrackingOriginModeFlags.Unknown;
+                case TrackingOriginMode.Device:
+                    return TrackingOriginModeFlags.Device;
+                case TrackingOriginMode.Floor:
+                    return TrackingOriginModeFlags.Floor;
+                case TrackingOriginMode.Unbounded:
+                    return TrackingOriginModeFlags.Unbounded;
+                default:
+                    Assert.IsTrue(false, $"Unhandled {nameof(TrackingOriginMode)}={mode}");
+                    return TrackingOriginModeFlags.Unknown;
             }
         }
 

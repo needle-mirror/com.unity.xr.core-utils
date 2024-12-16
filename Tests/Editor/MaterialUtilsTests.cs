@@ -5,7 +5,7 @@ using NUnit.Framework;
 using UnityEngine.UI;
 #endif
 
-namespace Unity.XR.CoreUtils.EditorTests
+namespace Unity.XR.CoreUtils.Editor.Tests
 {
     class MaterialUtilsTests
     {
@@ -28,7 +28,7 @@ namespace Unity.XR.CoreUtils.EditorTests
             m_Renderer.sharedMaterial = new Material(shader);
 
 #if INCLUDE_UGUI
-            m_Graphic = m_GameObject.AddComponent<Tests.TestImage>();
+            m_Graphic = m_GameObject.AddComponent<Unity.XR.CoreUtils.Tests.TestImage>();
             m_Graphic.material = m_Renderer.sharedMaterial;
 #endif
         }
