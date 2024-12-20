@@ -18,7 +18,7 @@ The capability profile is an asset in the project that abstracts the capabilitie
 
 You can create a custom capability profile by inheriting from the [CapabilityProfile](xref:Unity.XR.CoreUtils.Capabilities.CapabilityProfile) class (a [ScriptableObject](xref:UnityEngine.ScriptableObject)) and implementing the interface [ICapabilityModifier](xref:Unity.XR.CoreUtils.Capabilities.ICapabilityModifier).
 
-[!code-cs[custom_capability_sample](../Tests/Runtime/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_sample)]
+[!code-cs[custom_capability_sample](../Tests/Editor/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_sample)]
 
 > [!NOTE]
 > The [CapabilityDictionary](xref:Unity.XR.CoreUtils.Capabilities.CapabilityDictionary) is a dictionary to store a set of capabilities, and uses a custom UI drawer to display these capabilities in the Inspector.
@@ -29,10 +29,10 @@ You can create a custom capability profile by inheriting from the [CapabilityPro
 
 You can add a new capability key by tagging a `const string` definition with the [CustomCapabilityKey](xref:Unity.XR.CoreUtils.Capabilities.CustomCapabilityKeyAttribute) attribute. Custom capability keys tagged with this attribute will showup in the Inspectors of a `CapabilityDictionary`. You can specify the order that your custom capability key will be displayed in the context menu by passing an `int` value to the attribute constructor, high values are displayed later.
 
-[!code-cs[custom_capability_key_sample](../Tests/Runtime/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_key_sample)]
+[!code-cs[custom_capability_key_sample](../Tests/Editor/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_key_sample)]
 
 ### Custom Capability with non Boolean Value
 
 It's possible to define a capability that has a different value type than boolean (for example, a screen width and height maximum size). In this case it's recommended to define an interface as the capability key and query for the values using this interface. The code below has an example for this situation:
 
-[!code-cs[custom_capability_type_sample](../Tests/Runtime/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_type_sample)]
+[!code-cs[custom_capability_type_sample](../Tests/Editor/CodeSamples/ScriptedCapabilityProfileSamples.cs#custom_capability_type_sample)]

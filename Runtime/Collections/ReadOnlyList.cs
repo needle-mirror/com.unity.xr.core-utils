@@ -126,9 +126,9 @@ namespace Unity.XR.CoreUtils.Collections
         /// <returns>`true` if objects are equal. Otherwise, `false`.</returns>
         public static bool operator ==(ReadOnlyList<T> lhs, ReadOnlyList<T> rhs)
         {
-            if (lhs == null && rhs == null)
+            if (lhs is null && rhs is null)
                 return true;
-            return lhs != null && lhs.Equals(rhs);
+            return lhs is not null && lhs.Equals(rhs);
         }
 
         /// <summary>
