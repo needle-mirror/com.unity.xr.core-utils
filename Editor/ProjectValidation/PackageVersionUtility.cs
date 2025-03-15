@@ -43,10 +43,20 @@ namespace Unity.XR.CoreUtils.Editor
                 System.Threading.Thread.Sleep(50);
             }
 
-            foreach (var package in request.Result)
+            if (request.Status == UnityEditor.PackageManager.StatusCode.Success)
             {
-                var version = new PackageVersion(package.version);
-                s_PackageCache.Add(package.name, version);
+                if (request.Result != null)
+                {
+                    foreach (var package in request.Result)
+                    {
+                        var version = new PackageVersion(package.version);
+                        s_PackageCache.Add(package.name, version);
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Failed to get package versions: {(request.Error != null ? request.Error.message : "no result returned.")}");
             }
 
             s_PackageLogLock = false;

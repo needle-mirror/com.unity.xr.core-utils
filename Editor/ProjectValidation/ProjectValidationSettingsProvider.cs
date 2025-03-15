@@ -42,6 +42,9 @@ namespace Unity.XR.CoreUtils.Editor
         public override void OnInspectorUpdate()
         {
             base.OnInspectorUpdate();
+            if (m_ValidationDrawer == null)
+                m_ValidationDrawer = new ProjectValidationDrawer(BuildTargetGroup.Unknown);
+
             if (m_ValidationDrawer.UpdateIssues(true, false))
                 Repaint();
         }

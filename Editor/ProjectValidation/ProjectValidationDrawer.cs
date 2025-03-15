@@ -248,11 +248,10 @@ namespace Unity.XR.CoreUtils.Editor
 
         internal void OnGUI()
         {
-            EditorGUIUtility.SetIconSize(Styles.IconSize);
-
             using (var change = new EditorGUI.ChangeCheckScope())
             {
                 m_SelectedBuildTargetGroup = EditorGUILayout.BeginBuildTargetSelectionGrouping();
+                EditorGUIUtility.SetIconSize(Styles.IconSize);
                 if (m_SelectedBuildTargetGroup == BuildTargetGroup.Unknown)
                 {
                     m_SelectedBuildTargetGroup = BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget);
