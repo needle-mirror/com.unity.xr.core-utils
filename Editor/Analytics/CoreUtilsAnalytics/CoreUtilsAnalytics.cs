@@ -13,7 +13,13 @@ namespace Unity.XR.CoreUtils.Editor.Analytics
 
 #if UNITY_2023_2_OR_NEWER
         internal const string PackageName = "com.unity.xr.core-utils";
-        internal static readonly string PackageVersion = PackageInfo.FindForPackageName(PackageName).version;
+
+        static string s_PackageVersion;
+
+        // This is evaluated rather than initialized into a readonly field since FindForPackageName can return null
+        // when called too early, even when the package is installed, so instead it's called when the payload
+        // is constructed.
+        internal static string PackageVersion => s_PackageVersion ??= PackageInfo.FindForPackageName(PackageName)?.version;
 #endif
 
         internal static readonly ProjectValidationUsageEvent ProjectValidationUsageEvent = new ProjectValidationUsageEvent();

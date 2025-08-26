@@ -22,8 +22,8 @@ The following table describes the three options for the XR Origin tracking origi
 | **Tracking origin mode** | **Description** |
 | :----------------------- | :-------------- |
 |  **Not Specified**                      | Use the default tracking mode of the device (either **Device** or **Floor**). |
-|  **Device**                             | In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value. In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property. |
-|  **Floor**                              | Differs from the **Device** mode by deriving the height based on the "floor" or other surface determined by the XR device. In this mode, the height of the user (for VR) or the device (for AR) is included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:xrsdk-input). |
+|  **Device**                             | In this mode, you manually set the height of the user (for VR) or their hand-held device (for AR) with the **Camera Y Offset** value. In this mode, the height is not included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:UnityEngine.XR.XRInputSubsystem). At runtime, you must make any needed adjustments manually, which you can do by changing the [XROrigin.CameraYOffset](xref:Unity.XR.CoreUtils.XROrigin.CameraYOffset) property. |
+|  **Floor**                              | Differs from the **Device** mode by deriving the height based on the "floor" or other surface determined by the XR device. In this mode, the height of the user (for VR) or the device (for AR) is included in the [Poses](xref:UnityEngine.Pose) returned by [XR Input Subsystem](xref:UnityEngine.XR.XRInputSubsystem). |
 
 ## XR Origin hierarchy
 

@@ -7,6 +7,12 @@ All notable changes to this package will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- Headers should be listed in this order: Added, Changed, Deprecated, Removed, Fixed, Security -->
+## [2.5.3] - 2025-08-26
+
+### Fixed
+
+- Fixed potential `NullReferenceException` in internal analytics code when getting the package version.
+
 ## [2.5.2] - 2025-03-15
 
 ### Fixed
